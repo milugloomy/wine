@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wine.base.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.wine.base.bean.User">
+    <id column="userSeq" jdbcType="INTEGER" property="userseq" />
+    <result column="openId" jdbcType="VARCHAR" property="openid" />
+    <result column="nickName" jdbcType="VARCHAR" property="nickname" />
+    <result column="sex" jdbcType="CHAR" property="sex" />
+    <result column="phoneNo" jdbcType="VARCHAR" property="phoneno" />
+    <result column="headImgUrl" jdbcType="VARCHAR" property="headimgurl" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="userLevel" jdbcType="CHAR" property="userlevel" />
+    <result column="regTime" jdbcType="TIMESTAMP" property="regtime" />
+    <result column="country" jdbcType="VARCHAR" property="country" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    userSeq, openId, nickName, sex, phoneNo, headImgUrl, status, userLevel, regTime, 
+    country, province, city
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where userSeq = #{userseq,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where userSeq = #{userseq,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wine.base.bean.User">
+    insert into user (userSeq, openId, nickName, 
+      sex, phoneNo, headImgUrl, 
+      status, userLevel, regTime, 
+      country, province, city
+      )
+    values (#{userseq,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=CHAR}, #{phoneno,jdbcType=VARCHAR}, #{headimgurl,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{userlevel,jdbcType=CHAR}, #{regtime,jdbcType=TIMESTAMP}, 
+      #{country,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wine.base.bean.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userseq != null">
+        userSeq,
+      </if>
+      <if test="openid != null">
+        openId,
+      </if>
+      <if test="nickname != null">
+        nickName,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="phoneno != null">
+        phoneNo,
+      </if>
+      <if test="headimgurl != null">
+        headImgUrl,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="userlevel != null">
+        userLevel,
+      </if>
+      <if test="regtime != null">
+        regTime,
+      </if>
+      <if test="country != null">
+        country,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userseq != null">
+        #{userseq,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null">
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="phoneno != null">
+        #{phoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="headimgurl != null">
+        #{headimgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="userlevel != null">
+        #{userlevel,jdbcType=CHAR},
+      </if>
+      <if test="regtime != null">
+        #{regtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="country != null">
+        #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wine.base.bean.User">
+    update user
+    <set>
+      <if test="openid != null">
+        openId = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        nickName = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="phoneno != null">
+        phoneNo = #{phoneno,jdbcType=VARCHAR},
+      </if>
+      <if test="headimgurl != null">
+        headImgUrl = #{headimgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="userlevel != null">
+        userLevel = #{userlevel,jdbcType=CHAR},
+      </if>
+      <if test="regtime != null">
+        regTime = #{regtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="country != null">
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userSeq = #{userseq,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wine.base.bean.User">
+    update user
+    set openId = #{openid,jdbcType=VARCHAR},
+      nickName = #{nickname,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=CHAR},
+      phoneNo = #{phoneno,jdbcType=VARCHAR},
+      headImgUrl = #{headimgurl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      userLevel = #{userlevel,jdbcType=CHAR},
+      regTime = #{regtime,jdbcType=TIMESTAMP},
+      country = #{country,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR}
+    where userSeq = #{userseq,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wine.base.dao.PayJnlMapper">
+  <resultMap id="BaseResultMap" type="com.wine.base.bean.PayJnl">
+    <id column="pJnlNo" jdbcType="INTEGER" property="pjnlno" />
+    <result column="amount" jdbcType="DOUBLE" property="amount" />
+    <result column="userSeq" jdbcType="INTEGER" property="userseq" />
+    <result column="activityId" jdbcType="INTEGER" property="activityid" />
+    <result column="payStatus" jdbcType="VARCHAR" property="paystatus" />
+    <result column="payTime" jdbcType="TIMESTAMP" property="paytime" />
+    <result column="sendTime" jdbcType="TIMESTAMP" property="sendtime" />
+    <result column="addrSeq" jdbcType="INTEGER" property="addrseq" />
+    <result column="deliComp" jdbcType="VARCHAR" property="delicomp" />
+    <result column="deliNo" jdbcType="VARCHAR" property="delino" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pJnlNo, amount, userSeq, activityId, payStatus, payTime, sendTime, addrSeq, deliComp, 
+    deliNo
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from payjnl
+    where pJnlNo = #{pjnlno,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from payjnl
+    where pJnlNo = #{pjnlno,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wine.base.bean.PayJnl">
+    insert into payjnl (pJnlNo, amount, userSeq, 
+      activityId, payStatus, payTime, 
+      sendTime, addrSeq, deliComp, 
+      deliNo)
+    values (#{pjnlno,jdbcType=INTEGER}, #{amount,jdbcType=DOUBLE}, #{userseq,jdbcType=INTEGER}, 
+      #{activityid,jdbcType=INTEGER}, #{paystatus,jdbcType=VARCHAR}, #{paytime,jdbcType=TIMESTAMP}, 
+      #{sendtime,jdbcType=TIMESTAMP}, #{addrseq,jdbcType=INTEGER}, #{delicomp,jdbcType=VARCHAR}, 
+      #{delino,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wine.base.bean.PayJnl">
+    insert into payjnl
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pjnlno != null">
+        pJnlNo,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="userseq != null">
+        userSeq,
+      </if>
+      <if test="activityid != null">
+        activityId,
+      </if>
+      <if test="paystatus != null">
+        payStatus,
+      </if>
+      <if test="paytime != null">
+        payTime,
+      </if>
+      <if test="sendtime != null">
+        sendTime,
+      </if>
+      <if test="addrseq != null">
+        addrSeq,
+      </if>
+      <if test="delicomp != null">
+        deliComp,
+      </if>
+      <if test="delino != null">
+        deliNo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pjnlno != null">
+        #{pjnlno,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="userseq != null">
+        #{userseq,jdbcType=INTEGER},
+      </if>
+      <if test="activityid != null">
+        #{activityid,jdbcType=INTEGER},
+      </if>
+      <if test="paystatus != null">
+        #{paystatus,jdbcType=VARCHAR},
+      </if>
+      <if test="paytime != null">
+        #{paytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendtime != null">
+        #{sendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addrseq != null">
+        #{addrseq,jdbcType=INTEGER},
+      </if>
+      <if test="delicomp != null">
+        #{delicomp,jdbcType=VARCHAR},
+      </if>
+      <if test="delino != null">
+        #{delino,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wine.base.bean.PayJnl">
+    update payjnl
+    <set>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="userseq != null">
+        userSeq = #{userseq,jdbcType=INTEGER},
+      </if>
+      <if test="activityid != null">
+        activityId = #{activityid,jdbcType=INTEGER},
+      </if>
+      <if test="paystatus != null">
+        payStatus = #{paystatus,jdbcType=VARCHAR},
+      </if>
+      <if test="paytime != null">
+        payTime = #{paytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendtime != null">
+        sendTime = #{sendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addrseq != null">
+        addrSeq = #{addrseq,jdbcType=INTEGER},
+      </if>
+      <if test="delicomp != null">
+        deliComp = #{delicomp,jdbcType=VARCHAR},
+      </if>
+      <if test="delino != null">
+        deliNo = #{delino,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pJnlNo = #{pjnlno,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wine.base.bean.PayJnl">
+    update payjnl
+    set amount = #{amount,jdbcType=DOUBLE},
+      userSeq = #{userseq,jdbcType=INTEGER},
+      activityId = #{activityid,jdbcType=INTEGER},
+      payStatus = #{paystatus,jdbcType=VARCHAR},
+      payTime = #{paytime,jdbcType=TIMESTAMP},
+      sendTime = #{sendtime,jdbcType=TIMESTAMP},
+      addrSeq = #{addrseq,jdbcType=INTEGER},
+      deliComp = #{delicomp,jdbcType=VARCHAR},
+      deliNo = #{delino,jdbcType=VARCHAR}
+    where pJnlNo = #{pjnlno,jdbcType=INTEGER}
+  </update>
+</mapper>

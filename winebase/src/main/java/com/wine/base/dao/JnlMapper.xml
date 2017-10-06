@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wine.base.dao.JnlMapper">
+  <resultMap id="BaseResultMap" type="com.wine.base.bean.Jnl">
+    <id column="jnlNo" jdbcType="INTEGER" property="jnlno" />
+    <result column="transCode" jdbcType="VARCHAR" property="transcode" />
+    <result column="transType" jdbcType="VARCHAR" property="transtype" />
+    <result column="transTime" jdbcType="TIMESTAMP" property="transtime" />
+    <result column="returnTime" jdbcType="TIMESTAMP" property="returntime" />
+    <result column="returnCode" jdbcType="VARCHAR" property="returncode" />
+    <result column="returnMsg" jdbcType="VARCHAR" property="returnmsg" />
+    <result column="userSeq" jdbcType="INTEGER" property="userseq" />
+    <result column="clientIp" jdbcType="VARCHAR" property="clientip" />
+    <result column="channel" jdbcType="VARCHAR" property="channel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    jnlNo, transCode, transType, transTime, returnTime, returnCode, returnMsg, userSeq, 
+    clientIp, channel
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from jnl
+    where jnlNo = #{jnlno,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from jnl
+    where jnlNo = #{jnlno,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wine.base.bean.Jnl">
+    insert into jnl (jnlNo, transCode, transType, 
+      transTime, returnTime, returnCode, 
+      returnMsg, userSeq, clientIp, 
+      channel)
+    values (#{jnlno,jdbcType=INTEGER}, #{transcode,jdbcType=VARCHAR}, #{transtype,jdbcType=VARCHAR}, 
+      #{transtime,jdbcType=TIMESTAMP}, #{returntime,jdbcType=TIMESTAMP}, #{returncode,jdbcType=VARCHAR}, 
+      #{returnmsg,jdbcType=VARCHAR}, #{userseq,jdbcType=INTEGER}, #{clientip,jdbcType=VARCHAR}, 
+      #{channel,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wine.base.bean.Jnl">
+    insert into jnl
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="jnlno != null">
+        jnlNo,
+      </if>
+      <if test="transcode != null">
+        transCode,
+      </if>
+      <if test="transtype != null">
+        transType,
+      </if>
+      <if test="transtime != null">
+        transTime,
+      </if>
+      <if test="returntime != null">
+        returnTime,
+      </if>
+      <if test="returncode != null">
+        returnCode,
+      </if>
+      <if test="returnmsg != null">
+        returnMsg,
+      </if>
+      <if test="userseq != null">
+        userSeq,
+      </if>
+      <if test="clientip != null">
+        clientIp,
+      </if>
+      <if test="channel != null">
+        channel,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="jnlno != null">
+        #{jnlno,jdbcType=INTEGER},
+      </if>
+      <if test="transcode != null">
+        #{transcode,jdbcType=VARCHAR},
+      </if>
+      <if test="transtype != null">
+        #{transtype,jdbcType=VARCHAR},
+      </if>
+      <if test="transtime != null">
+        #{transtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returntime != null">
+        #{returntime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returncode != null">
+        #{returncode,jdbcType=VARCHAR},
+      </if>
+      <if test="returnmsg != null">
+        #{returnmsg,jdbcType=VARCHAR},
+      </if>
+      <if test="userseq != null">
+        #{userseq,jdbcType=INTEGER},
+      </if>
+      <if test="clientip != null">
+        #{clientip,jdbcType=VARCHAR},
+      </if>
+      <if test="channel != null">
+        #{channel,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wine.base.bean.Jnl">
+    update jnl
+    <set>
+      <if test="transcode != null">
+        transCode = #{transcode,jdbcType=VARCHAR},
+      </if>
+      <if test="transtype != null">
+        transType = #{transtype,jdbcType=VARCHAR},
+      </if>
+      <if test="transtime != null">
+        transTime = #{transtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returntime != null">
+        returnTime = #{returntime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returncode != null">
+        returnCode = #{returncode,jdbcType=VARCHAR},
+      </if>
+      <if test="returnmsg != null">
+        returnMsg = #{returnmsg,jdbcType=VARCHAR},
+      </if>
+      <if test="userseq != null">
+        userSeq = #{userseq,jdbcType=INTEGER},
+      </if>
+      <if test="clientip != null">
+        clientIp = #{clientip,jdbcType=VARCHAR},
+      </if>
+      <if test="channel != null">
+        channel = #{channel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where jnlNo = #{jnlno,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wine.base.bean.Jnl">
+    update jnl
+    set transCode = #{transcode,jdbcType=VARCHAR},
+      transType = #{transtype,jdbcType=VARCHAR},
+      transTime = #{transtime,jdbcType=TIMESTAMP},
+      returnTime = #{returntime,jdbcType=TIMESTAMP},
+      returnCode = #{returncode,jdbcType=VARCHAR},
+      returnMsg = #{returnmsg,jdbcType=VARCHAR},
+      userSeq = #{userseq,jdbcType=INTEGER},
+      clientIp = #{clientip,jdbcType=VARCHAR},
+      channel = #{channel,jdbcType=VARCHAR}
+    where jnlNo = #{jnlno,jdbcType=INTEGER}
+  </update>
+</mapper>

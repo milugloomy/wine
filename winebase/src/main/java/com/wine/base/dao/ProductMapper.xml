@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wine.base.dao.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.wine.base.bean.Product">
+    <id column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="origin_price" jdbcType="DOUBLE" property="originPrice" />
+    <result column="vip_price" jdbcType="DOUBLE" property="vipPrice" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="total_quantity" jdbcType="INTEGER" property="totalQuantity" />
+    <result column="remain" jdbcType="INTEGER" property="remain" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    product_id, origin_price, vip_price, product_name, total_quantity, remain, status, 
+    add_time
+  </sql>
+  <select id="selectByPageNo" resultMap="BaseResultMap">
+    select a.*,b.img_url from product a,image b where a.product_id=b.product_id and b.main_pic=1 and a.status='N'
+		order by a.add_time desc
+	limit #{offset},#{length}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select a.*,b.img_url from product a,image b where a.product_id=b.product_id and b.main_pic=1 and a.product_id=#{productId}
+  </select>
+  <select id="selectTotal" resultType="java.lang.Integer">
+    select count(*) from product where status='N'
+  </select>  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    update product set status='C' where product_id = #{productId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wine.base.bean.Product">
+    insert into product (product_id, origin_price, vip_price, 
+      product_name, total_quantity, remain, 
+      status, add_time)
+    values (#{productId,jdbcType=INTEGER}, #{originPrice,jdbcType=DOUBLE}, #{vipPrice,jdbcType=DOUBLE}, 
+      #{productName,jdbcType=VARCHAR}, #{totalQuantity,jdbcType=INTEGER}, #{remain,jdbcType=INTEGER}, 
+      #{status,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="productId" parameterType="com.wine.base.bean.Product">
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="originPrice != null">
+        origin_price,
+      </if>
+      <if test="vipPrice != null">
+        vip_price,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="totalQuantity != null">
+        total_quantity,
+      </if>
+      <if test="remain != null">
+        remain,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="originPrice != null">
+        #{originPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="vipPrice != null">
+        #{vipPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="totalQuantity != null">
+        #{totalQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="remain != null">
+        #{remain,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wine.base.bean.Product">
+    update product
+    <set>
+      <if test="originPrice != null">
+        origin_price = #{originPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="vipPrice != null">
+        vip_price = #{vipPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="totalQuantity != null">
+        total_quantity = #{totalQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="remain != null">
+        remain = #{remain,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where product_id = #{productId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wine.base.bean.Product">
+    update product
+    set origin_price = #{originPrice,jdbcType=DOUBLE},
+      vip_price = #{vipPrice,jdbcType=DOUBLE},
+      product_name = #{productName,jdbcType=VARCHAR},
+      total_quantity = #{totalQuantity,jdbcType=INTEGER},
+      remain = #{remain,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP}
+    where product_id = #{productId,jdbcType=INTEGER}
+  </update>
+
+</mapper>

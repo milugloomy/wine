@@ -1,0 +1,128 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>花道酒业管理后台</title>
+<meta content="webkit" name="renderer" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
+</head>
+<body>
+<div id="menu">
+	<mymenu menu1="true"></mynav>
+</div>
+<div class="content" id="divBody">
+	<mynav name="商品详情页"></mynav>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="btn-toolbar">
+				<button v-on:click="edit" class="btn btn-primary">
+					<i class="icon-pencil"></i> 编辑
+				</button>
+				<a class="btn" v-on:click="deleteConfirm(product.productId)">
+					<i class="icon-remove"></i> 删除</a>
+				<div class="btn-group"></div>
+			</div>
+			<div class="well">
+			<div class="tab-pane active in" id="home">
+			<table class="table">
+				<tr>
+					<td style="width: 20%; border-top: none;">商品名称:</td>
+					<td style="border-top: none;">{{product.productName}}</td>
+				</tr>
+				<tr>
+					<td>商品图片:<br/>(点击查看原图)</td>
+					<td>
+						<template v-for="img in product.imgList">
+							<a :href="img.imgUrl" target="_blank">
+								<img style="height:120px" :src="img.imgUrl" />
+							</a>
+							&nbsp;
+						</template>
+					</td>
+				</tr>
+				<tr>
+					<td>原价:</td>
+					<td>{{product.originPrice}}元</td>
+					</td>
+				</tr>
+				<tr>
+					<td>vip价:</td>
+					<td>{{product.vipPrice}}元</td>
+				</tr>
+				<tr>
+					<td>商品总数量:</td>
+					<td>{{product.totalQuantity}}件</td>
+				</tr>
+				<tr>
+					<td>库存量:</td>
+					<td>{{product.remain}}件</td>
+				</tr>
+				<tr>
+					<td>添加时间:</td>
+					<td>{{product.addTime}}</td>
+				</tr>
+				<tr>
+					<td colespan="2"><b>以下是商品详情：</b></td>
+				</tr>
+			</table>
+			</div>
+			</div>
+			<button style="margin-left:45%" class="btn btn-primary" onclick="location='/wineback/productList.html'">
+					<i class="icon-arrow-left"></i>返回
+			</button>
+		</div>
+	</div>
+	<myfooter ></myfooter>
+</div>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/layer.js"></script>
+<script type="text/javascript" src="js/sync.js"></script>
+<script type="text/javascript" src="js/header.js"></script>
+<script type="text/javascript">
+var db=new Vue({
+	el:"#divBody",
+	mounted:function(){
+		var productId=getQueryString("productId");
+		var that=this;
+		post2SRV("productDetail",{productId:productId},function(data){
+			that.product=data;
+		},"json");
+	},	
+	methods:{
+		deleteConfirm:function(productId){
+			var deleteLayer=layer.confirm("<div style='font-size:16px'>确认删除该商品么</div>",{
+				title:"删除确认",
+				btn: ["确定","取消"],
+				btn1:function(){
+					post2SRV("productDelete",{productId:productId},function(data){
+						layer.close(deleteLayer);
+						layer.msg("删除成功", {
+							offset: '200px',
+							time: 1000, //10s后自动关闭
+					  	});
+						setTimeout(function(){
+					        window.location.href='/wineback/productList.html';
+					    },800);
+					},"json");
+				},
+				offset:"200px",
+			});
+		},
+		edit:function(){
+			window.location.href="/wineback/productEdit.html?productId="+this.product.productId;
+		}
+	},
+	data:{
+		product:{}
+	}
+});
+</script>
+</body>
+</html>
+
+

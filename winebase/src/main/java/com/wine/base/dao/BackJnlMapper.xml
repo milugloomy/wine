@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wine.base.dao.BackJnlMapper">
+  <resultMap id="BaseResultMap" type="com.wine.base.bean.BackJnl">
+    <id column="bJnlNo" jdbcType="INTEGER" property="bjnlno" />
+    <result column="userId" jdbcType="VARCHAR" property="userid" />
+    <result column="transCode" jdbcType="VARCHAR" property="transcode" />
+    <result column="transTime" jdbcType="TIMESTAMP" property="transtime" />
+    <result column="returnCode" jdbcType="VARCHAR" property="returncode" />
+    <result column="returnMsg" jdbcType="VARCHAR" property="returnmsg" />
+    <result column="clientIp" jdbcType="VARCHAR" property="clientip" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    bJnlNo, userId, transCode, transTime, returnCode, returnMsg, clientIp
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from backjnl
+    where bJnlNo = #{bjnlno,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from backjnl
+    where bJnlNo = #{bjnlno,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wine.base.bean.BackJnl">
+    insert into backjnl (bJnlNo, userId, transCode, 
+      transTime, returnCode, returnMsg, 
+      clientIp)
+    values (#{bjnlno,jdbcType=INTEGER}, #{userid,jdbcType=VARCHAR}, #{transcode,jdbcType=VARCHAR}, 
+      #{transtime,jdbcType=TIMESTAMP}, #{returncode,jdbcType=VARCHAR}, #{returnmsg,jdbcType=VARCHAR}, 
+      #{clientip,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wine.base.bean.BackJnl">
+    insert into backjnl
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bjnlno != null">
+        bJnlNo,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="transcode != null">
+        transCode,
+      </if>
+      <if test="transtime != null">
+        transTime,
+      </if>
+      <if test="returncode != null">
+        returnCode,
+      </if>
+      <if test="returnmsg != null">
+        returnMsg,
+      </if>
+      <if test="clientip != null">
+        clientIp,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bjnlno != null">
+        #{bjnlno,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="transcode != null">
+        #{transcode,jdbcType=VARCHAR},
+      </if>
+      <if test="transtime != null">
+        #{transtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returncode != null">
+        #{returncode,jdbcType=VARCHAR},
+      </if>
+      <if test="returnmsg != null">
+        #{returnmsg,jdbcType=VARCHAR},
+      </if>
+      <if test="clientip != null">
+        #{clientip,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wine.base.bean.BackJnl">
+    update backjnl
+    <set>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="transcode != null">
+        transCode = #{transcode,jdbcType=VARCHAR},
+      </if>
+      <if test="transtime != null">
+        transTime = #{transtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returncode != null">
+        returnCode = #{returncode,jdbcType=VARCHAR},
+      </if>
+      <if test="returnmsg != null">
+        returnMsg = #{returnmsg,jdbcType=VARCHAR},
+      </if>
+      <if test="clientip != null">
+        clientIp = #{clientip,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where bJnlNo = #{bjnlno,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wine.base.bean.BackJnl">
+    update backjnl
+    set userId = #{userid,jdbcType=VARCHAR},
+      transCode = #{transcode,jdbcType=VARCHAR},
+      transTime = #{transtime,jdbcType=TIMESTAMP},
+      returnCode = #{returncode,jdbcType=VARCHAR},
+      returnMsg = #{returnmsg,jdbcType=VARCHAR},
+      clientIp = #{clientip,jdbcType=VARCHAR}
+    where bJnlNo = #{bjnlno,jdbcType=INTEGER}
+  </update>
+</mapper>

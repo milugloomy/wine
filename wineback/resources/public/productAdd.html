@@ -1,0 +1,169 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>花道酒业管理后台</title>
+<meta content="webkit" name="renderer" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
+<style type="text/css">
+input{
+	margin-bottom:0px;
+	height:30px;
+}
+.imgDiv{
+	display: inline-block;
+	position: relative;
+	margin-right: 10px;
+}
+.imgDiv img{
+	height:120px;
+}
+.imgDiv .delete {
+	background: white;
+	position: absolute;
+    top: 0px;
+    right: 0px;
+    font-size: 28px;
+    padding-top: 5px;
+}
+</style>
+</head>
+<body>
+<div id="menu">
+	<mymenu menu1="true"></mynav>
+</div>
+<div class="content" id="divBody">
+	<mynav name="商品新增页"></mynav>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="well">
+			<table class="table">
+				<tr>
+					<td style="width: 20%; border-top: none;">商品名称:</td>
+					<td style="border-top: none;">
+					<input type="text" v-model="productName" placeholder="请输入商品名称"></td>
+				</tr>
+				<tr>
+					<td>商品图片:<br/>第一张为默认图片</td>
+					<td>
+						<div class="form-control" style="min-height:125px;" />
+						<template v-for="(img,index) in imgList">
+						<div class="imgDiv">
+							<img :src="img.imgUrl" />
+							<a href="javascript:;" v-on:click="deletePic(index)" class="delete">
+								<i class="icon-remove"></i>
+   							</a>
+						</div>
+						</template>
+						<div>
+							<button style="margin-top:10px;" type="button" class="btn icon-plus" v-on:click="addPic" >
+								新增
+							</button>
+							<input type="file" v-on:change="uploadFile" id="uploadFile" style="display:none"/>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>原价:</td>
+					<td><input type="number" v-model="originPrice" placeholder="请输入价格" /> 元</td>
+				</tr>
+				<tr>
+					<td>vip价格:</td>
+					<td><input type="number" v-model="vipPrice" placeholder="请输入价格" /> 元</td>
+					</td>
+				</tr>
+				<tr>
+					<td>商品总数量:</td>
+					<td><input type="number" v-model="totalQuantity" placeholder="请输入商品总数量" /> 个</td>
+				</tr>
+				<tr>
+					<td>库存量:</td>
+					<td><input type="number" v-model="totalQuantity" placeholder="请输入商品总数量" /> 个</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<span id="errSpan" style="color:red;"></span>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<button type="button" class="btn btn-primary" v-on:click="doIt">
+							<i class="icon-save"></i> 保存
+						</button>
+						<button type="button" class="btn" onclick="window.history.go(-1)">取消</button>
+					</td>
+				</tr>
+			</table>
+			</div>
+		</div>
+	</div>
+	<myfooter></myfooter>
+</div>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/layer.js"></script>
+<script type="text/javascript" src="js/sync.js"></script>
+<script type="text/javascript" src="js/header.js"></script>
+<script type="text/javascript">
+var db=new Vue({
+	el:"#divBody",
+	mounted:function(){
+	},	
+	methods:{
+		doIt:function(){
+			var param={
+				productName:this.productName,
+				originPrice:this.originPrice,
+				vipPrice:this.vipPrice,
+				totalQuantity:this.totalQuantity,
+				remain:this.totalQuantity,
+				imgsStr:JSON.stringify(this.imgList)
+			};
+			post2SRV("productAdd",param,function(data){
+				var productId=data;
+				window.location.href="/wineback/productDetail.html?productId="+productId;
+			},"json"); 
+		},
+		addPic:function(){
+			$("#uploadFile").click();
+		},
+		uploadFile:function(e){
+			var file = e.target.files[0]; ;
+			if(file.type.indexOf('image')==-1){  
+		        alert('只能上传图片');  
+		        return ;  
+		    }
+			var reader = new FileReader();
+			reader.onload = function(e2){
+				var img={
+					imgUrl:e2.target.result
+				};
+				db.imgList.push(img);
+			};
+			reader.readAsDataURL(file);
+		},
+		deletePic:function(i){
+			//从list中删除
+			this.imgList.splice(i,1);
+		}
+	},
+	data:{
+		productName:"",
+		originPrice:"",
+		vipPrice:"",
+		totalQuantity:"",
+		remain:"",
+		imgList:[]
+	}
+});
+</script>
+</body>
+</html>
+
+
