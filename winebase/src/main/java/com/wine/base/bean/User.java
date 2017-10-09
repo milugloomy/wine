@@ -3,7 +3,9 @@ package com.wine.base.bean;
 import java.util.Date;
 
 public class User {
-    private Integer userseq;
+    private Integer userId;
+
+    private String subscribe;
 
     private String openid;
 
@@ -11,28 +13,40 @@ public class User {
 
     private String sex;
 
-    private String phoneno;
-
-    private String headimgurl;
-
-    private String status;
-
-    private String userlevel;
-
-    private Date regtime;
+    private String city;
 
     private String country;
 
     private String province;
 
-    private String city;
+    private String language;
 
-    public Integer getUserseq() {
-        return userseq;
+    private String headimgurl;
+
+    private Date subscribeTime;
+
+    private String remark;
+
+    private String status;
+
+    private String userLevel;
+
+    private Date regTime;
+
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUserseq(Integer userseq) {
-        this.userseq = userseq;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getSubscribe() {
+        return subscribe;
+    }
+
+    public void setSubscribe(String subscribe) {
+        this.subscribe = subscribe;
     }
 
     public String getOpenid() {
@@ -59,44 +73,12 @@ public class User {
         this.sex = sex;
     }
 
-    public String getPhoneno() {
-        return phoneno;
+    public String getCity() {
+        return city;
     }
 
-    public void setPhoneno(String phoneno) {
-        this.phoneno = phoneno;
-    }
-
-    public String getHeadimgurl() {
-        return headimgurl;
-    }
-
-    public void setHeadimgurl(String headimgurl) {
-        this.headimgurl = headimgurl;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getUserlevel() {
-        return userlevel;
-    }
-
-    public void setUserlevel(String userlevel) {
-        this.userlevel = userlevel;
-    }
-
-    public Date getRegtime() {
-        return regtime;
-    }
-
-    public void setRegtime(Date regtime) {
-        this.regtime = regtime;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getCountry() {
@@ -115,11 +97,59 @@ public class User {
         this.province = province;
     }
 
-    public String getCity() {
-        return city;
+    public String getLanguage() {
+        return language;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getHeadimgurl() {
+        return headimgurl;
+    }
+
+    public void setHeadimgurl(String headimgurl) {
+        this.headimgurl = headimgurl;
+    }
+
+    public Date getSubscribeTime() {
+        return subscribeTime;
+    }
+
+    public void setSubscribeTime(Date subscribeTime) {
+        this.subscribeTime = subscribeTime;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getUserLevel() {
+        return userLevel;
+    }
+
+    public void setUserLevel(String userLevel) {
+        this.userLevel = userLevel;
+    }
+
+    public Date getRegTime() {
+        return regTime;
+    }
+
+    public void setRegTime(Date regTime) {
+        this.regTime = regTime;
     }
 }

@@ -1,0 +1,174 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>花道酒业管理后台</title>
+<meta content="webkit" name="renderer" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
+</head>
+<body>
+<div id="menu">
+	<mymenu menu1="true"></mynav>
+</div>
+<div class="content" id="divBody">
+	<mynav name="订单详情页"></mynav>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="tab-pane active in" id="home">
+			<table class="table">
+				<tr>
+					<td>订单号:</td>
+					<td>{{order.orderId}}</td>
+				</tr>
+				<tr>
+					<td>商品名称:</td>
+					<td><a href="javascript:;" v-on:click="productDetail">{{order.product.productName}}</a></td>
+				</tr>
+				<tr>
+					<td>缩略图:</td>
+						<td>
+							<img width="70px" :src="order.product.imgUrl" />
+						</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>支付时间:</td>
+					<td>{{order.payTime}}</td>
+				</tr>
+				<tr>
+					<td>购买者:</td>
+					<td>
+						<img :src="order.user.headimgurl" height="70px">
+						{{order.user.nickname}}
+					</td>
+				</tr>
+				<tr>
+					<td>收货人名:</td>
+					<td>{{order.address.name}}</td>
+				</tr>
+				<tr>
+					<td>电话:</td>
+					<td>{{order.address.phoneNo}}</td>
+				</tr>
+				<tr>
+					<td>详细地址:</td>
+					<td>{{order.address.province}}{{order.address.city}}{{order.address.district}}{{order.address.detail}}</td>
+				</tr>
+				<tr>
+					<td>付款金额:</td>
+					<td>{{order.amount}}</td>
+				</tr>
+				<tr>
+					<td>订单状态:</td>
+					<td>
+						{{options[order.payStatus]}}
+						<span v-if="order.payStatus!='FL'" style="margin-left:50px;">
+							<button class="btn btn-primary" v-on:click="changeState">
+								修改状态
+							</button>
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<td>发货时间:</td>
+					<td>{{order.sendTime}}</td>
+				</tr>
+				<tr>
+					<td>物流公司:</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>物流单号:</td>
+					<td>
+					</td>
+				</tr>
+			</table>
+			</div>
+			<button style="margin-left:45%" class="btn btn-primary" onclick="location='/wineback/orderList.html'">
+					<i class="icon-arrow-left"></i>返回
+			</button>
+		</div>
+	</div>
+	<myfooter ></myfooter>
+	<div id="selectLayer" class="btn-toolbar" style="margin-left:15px;display:none">
+		<select v-model="payStatus" class="input-xlarge">
+			<option value="AP">已支付</option>
+			<option value="AS">已发送</option>
+			<option value="CL">已取消</option>
+		</select>
+	</div>
+</div>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/layer.js"></script>
+<script type="text/javascript" src="js/sync.js"></script>
+<script type="text/javascript" src="js/header.js"></script>
+<script type="text/javascript">
+var db=new Vue({
+	el:"#divBody",
+	mounted:function(){
+		var orderId=getQueryString("orderId");
+		var that=this;
+		post2SRV("orderDetail",{orderId:orderId},function(data){
+			that.order=data;
+			that.payStatus=data.payStatus;
+		},"json");
+	},	
+	methods:{
+		productDetail:function(){
+			window.location.href="/wineback/productDetail.html?productId="+this.order.product.productId;
+		},
+		changeState:function(){
+			var that=this;			
+			var selectLayer=layer.open({
+				title:"<div class='font18'>修改状态</div>",
+				btn: ["确定","取消"],
+				btn1:function(){
+					var param={
+						orderId:that.order.orderId,
+						payStatus:that.payStatus
+					}
+					post2SRV("orderChangeState",param,function(data){
+						layer.msg("修改成功", {offset: '200px',time: 1000});
+						that.order.payStatus=that.payStatus;
+						that.order.sendTime=data;
+					},"json");
+					layer.close(selectLayer);
+				},
+				btn2:function(){
+					layer.close(selectLayer);
+				},
+				type:1,
+				content:$("#selectLayer"),
+				area:"300px",
+				offset:"30%",
+			});
+		}
+	},
+	data:{
+		order:{
+			product:{},
+			user:{},
+			address:{}
+		},
+		options:{
+			ALL:"全部",
+			FL:"支付失败",
+			AP:"已支付",
+			AS:"已发货",
+			AR:"已接收",
+			CL:"已取消"
+		},
+		payStatus:""
+	}
+});
+</script>
+</body>
+</html>
+
+

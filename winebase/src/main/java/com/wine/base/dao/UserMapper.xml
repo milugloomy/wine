@@ -2,74 +2,68 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wine.base.dao.UserMapper">
   <resultMap id="BaseResultMap" type="com.wine.base.bean.User">
-    <id column="userSeq" jdbcType="INTEGER" property="userseq" />
-    <result column="openId" jdbcType="VARCHAR" property="openid" />
-    <result column="nickName" jdbcType="VARCHAR" property="nickname" />
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="subscribe" jdbcType="VARCHAR" property="subscribe" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="sex" jdbcType="CHAR" property="sex" />
-    <result column="phoneNo" jdbcType="VARCHAR" property="phoneno" />
-    <result column="headImgUrl" jdbcType="VARCHAR" property="headimgurl" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="userLevel" jdbcType="CHAR" property="userlevel" />
-    <result column="regTime" jdbcType="TIMESTAMP" property="regtime" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
     <result column="country" jdbcType="VARCHAR" property="country" />
     <result column="province" jdbcType="VARCHAR" property="province" />
-    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="language" jdbcType="VARCHAR" property="language" />
+    <result column="headimgurl" jdbcType="VARCHAR" property="headimgurl" />
+    <result column="subscribe_time" jdbcType="TIMESTAMP" property="subscribeTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="user_level" jdbcType="CHAR" property="userLevel" />
+    <result column="reg_time" jdbcType="TIMESTAMP" property="regTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    userSeq, openId, nickName, sex, phoneNo, headImgUrl, status, userLevel, regTime, 
-    country, province, city
+    user_id, subscribe, openid, nickname, sex, city, country, province, language, headimgurl, 
+    subscribe_time, remark, status, user_level, reg_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from user
-    where userSeq = #{userseq,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
-    where userSeq = #{userseq,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wine.base.bean.User">
-    insert into user (userSeq, openId, nickName, 
-      sex, phoneNo, headImgUrl, 
-      status, userLevel, regTime, 
-      country, province, city
-      )
-    values (#{userseq,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
-      #{sex,jdbcType=CHAR}, #{phoneno,jdbcType=VARCHAR}, #{headimgurl,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{userlevel,jdbcType=CHAR}, #{regtime,jdbcType=TIMESTAMP}, 
-      #{country,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}
-      )
+    insert into user (user_id, subscribe, openid, 
+      nickname, sex, city, country, 
+      province, language, headimgurl, 
+      subscribe_time, remark, status, 
+      user_level, reg_time)
+    values (#{userId,jdbcType=INTEGER}, #{subscribe,jdbcType=VARCHAR}, #{openid,jdbcType=VARCHAR}, 
+      #{nickname,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{city,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, 
+      #{province,jdbcType=VARCHAR}, #{language,jdbcType=VARCHAR}, #{headimgurl,jdbcType=VARCHAR}, 
+      #{subscribeTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{userLevel,jdbcType=CHAR}, #{regTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wine.base.bean.User">
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="userseq != null">
-        userSeq,
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="subscribe != null">
+        subscribe,
       </if>
       <if test="openid != null">
-        openId,
+        openid,
       </if>
       <if test="nickname != null">
-        nickName,
+        nickname,
       </if>
       <if test="sex != null">
         sex,
       </if>
-      <if test="phoneno != null">
-        phoneNo,
-      </if>
-      <if test="headimgurl != null">
-        headImgUrl,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="userlevel != null">
-        userLevel,
-      </if>
-      <if test="regtime != null">
-        regTime,
+      <if test="city != null">
+        city,
       </if>
       <if test="country != null">
         country,
@@ -77,13 +71,34 @@
       <if test="province != null">
         province,
       </if>
-      <if test="city != null">
-        city,
+      <if test="language != null">
+        language,
+      </if>
+      <if test="headimgurl != null">
+        headimgurl,
+      </if>
+      <if test="subscribeTime != null">
+        subscribe_time,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="userLevel != null">
+        user_level,
+      </if>
+      <if test="regTime != null">
+        reg_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="userseq != null">
-        #{userseq,jdbcType=INTEGER},
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="subscribe != null">
+        #{subscribe,jdbcType=VARCHAR},
       </if>
       <if test="openid != null">
         #{openid,jdbcType=VARCHAR},
@@ -94,20 +109,8 @@
       <if test="sex != null">
         #{sex,jdbcType=CHAR},
       </if>
-      <if test="phoneno != null">
-        #{phoneno,jdbcType=VARCHAR},
-      </if>
-      <if test="headimgurl != null">
-        #{headimgurl,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="userlevel != null">
-        #{userlevel,jdbcType=CHAR},
-      </if>
-      <if test="regtime != null">
-        #{regtime,jdbcType=TIMESTAMP},
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
       </if>
       <if test="country != null">
         #{country,jdbcType=VARCHAR},
@@ -115,37 +118,46 @@
       <if test="province != null">
         #{province,jdbcType=VARCHAR},
       </if>
-      <if test="city != null">
-        #{city,jdbcType=VARCHAR},
+      <if test="language != null">
+        #{language,jdbcType=VARCHAR},
+      </if>
+      <if test="headimgurl != null">
+        #{headimgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="subscribeTime != null">
+        #{subscribeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="userLevel != null">
+        #{userLevel,jdbcType=CHAR},
+      </if>
+      <if test="regTime != null">
+        #{regTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.wine.base.bean.User">
     update user
     <set>
+      <if test="subscribe != null">
+        subscribe = #{subscribe,jdbcType=VARCHAR},
+      </if>
       <if test="openid != null">
-        openId = #{openid,jdbcType=VARCHAR},
+        openid = #{openid,jdbcType=VARCHAR},
       </if>
       <if test="nickname != null">
-        nickName = #{nickname,jdbcType=VARCHAR},
+        nickname = #{nickname,jdbcType=VARCHAR},
       </if>
       <if test="sex != null">
         sex = #{sex,jdbcType=CHAR},
       </if>
-      <if test="phoneno != null">
-        phoneNo = #{phoneno,jdbcType=VARCHAR},
-      </if>
-      <if test="headimgurl != null">
-        headImgUrl = #{headimgurl,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="userlevel != null">
-        userLevel = #{userlevel,jdbcType=CHAR},
-      </if>
-      <if test="regtime != null">
-        regTime = #{regtime,jdbcType=TIMESTAMP},
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
       </if>
       <if test="country != null">
         country = #{country,jdbcType=VARCHAR},
@@ -153,25 +165,46 @@
       <if test="province != null">
         province = #{province,jdbcType=VARCHAR},
       </if>
-      <if test="city != null">
-        city = #{city,jdbcType=VARCHAR},
+      <if test="language != null">
+        language = #{language,jdbcType=VARCHAR},
+      </if>
+      <if test="headimgurl != null">
+        headimgurl = #{headimgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="subscribeTime != null">
+        subscribe_time = #{subscribeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="userLevel != null">
+        user_level = #{userLevel,jdbcType=CHAR},
+      </if>
+      <if test="regTime != null">
+        reg_time = #{regTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where userSeq = #{userseq,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wine.base.bean.User">
     update user
-    set openId = #{openid,jdbcType=VARCHAR},
-      nickName = #{nickname,jdbcType=VARCHAR},
+    set subscribe = #{subscribe,jdbcType=VARCHAR},
+      openid = #{openid,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=CHAR},
-      phoneNo = #{phoneno,jdbcType=VARCHAR},
-      headImgUrl = #{headimgurl,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
-      userLevel = #{userlevel,jdbcType=CHAR},
-      regTime = #{regtime,jdbcType=TIMESTAMP},
+      city = #{city,jdbcType=VARCHAR},
       country = #{country,jdbcType=VARCHAR},
       province = #{province,jdbcType=VARCHAR},
-      city = #{city,jdbcType=VARCHAR}
-    where userSeq = #{userseq,jdbcType=INTEGER}
+      language = #{language,jdbcType=VARCHAR},
+      headimgurl = #{headimgurl,jdbcType=VARCHAR},
+      subscribe_time = #{subscribeTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      user_level = #{userLevel,jdbcType=CHAR},
+      reg_time = #{regTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=INTEGER}
   </update>
 </mapper>

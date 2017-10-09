@@ -59,6 +59,19 @@ public class WinebackStarter {
 				HttpSession session=request.getSession();
 				
 				String uri=request.getRequestURI();
+				
+				//访问登录页判断跳转到service标签的url页
+				if(uri.equals("/wineback/login.html")){
+					if(session.getAttribute("manager")!=null){
+						String redirect=request.getParameter("service");
+						redirect=redirect==null?"/wineback/index.html":redirect;
+						response.sendRedirect(redirect);
+					}else{
+						chain.doFilter(servletRequest, servletResponse);
+					}
+					return;
+				}
+				
 				String service=uri;
 				if(request.getQueryString()!=null)
 					service+="?"+request.getQueryString();
@@ -87,8 +100,8 @@ public class WinebackStarter {
 				if(uri.endsWith(".js") || uri.endsWith(".gif") || uri.endsWith("jpg")
 						|| uri.endsWith(".png") || uri.endsWith(".css") || uri.endsWith("ico") )
 					return false;
-				//wx的一些交易
-				if(uri.equals("/wineback/login") || uri.equals("/wineback/isLogin") || uri.equals("/wineback/login.html")){
+				//登录交易
+				if(uri.equals("/wineback/login")){
 					return false;
 				}
 				//其他的判断session

@@ -46,4 +46,16 @@ function getCookie(name) {
         return unescape(arr[2]); 
     else 
         return null; 
-} 
+}
+function formatDate(date){
+	//replace(/****/g,"-")等于replaceAll
+	var dateStr=date.toLocaleDateString().replace(/\//g,"-");
+	var arr=dateStr.split("-");
+	if(arr[1].length<2){
+		arr[1]="0"+arr[1]
+	}
+	if(arr[2].length<2){
+		arr[2]="0"+arr[2]
+	}
+	return arr[0]+"-"+arr[1]+"-"+arr[2];
+}

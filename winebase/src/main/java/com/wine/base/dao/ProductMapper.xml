@@ -11,18 +11,21 @@
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+    <collection property="imgList" ofType="com.wine.base.bean.Image">
+		<id column="img_id" property="imgId"/>
+		<result column="product_id" property="productId"/>
+		<result column="product_id" property="productId"/>
+		<result column="img_url" property="imgUrl"/>
+		<result column="main_pic" property="mainPic"/>
+	</collection>
   </resultMap>
-  <sql id="Base_Column_List">
-    product_id, origin_price, vip_price, product_name, total_quantity, remain, status, 
-    add_time
-  </sql>
   <select id="selectByPageNo" resultMap="BaseResultMap">
     select a.*,b.img_url from product a,image b where a.product_id=b.product_id and b.main_pic=1 and a.status='N'
 		order by a.add_time desc
 	limit #{offset},#{length}
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select a.*,b.img_url from product a,image b where a.product_id=b.product_id and b.main_pic=1 and a.product_id=#{productId}
+    select a.*,b.* from product a,image b where a.product_id=b.product_id and a.product_id=#{productId}
   </select>
   <select id="selectTotal" resultType="java.lang.Integer">
     select count(*) from product where status='N'

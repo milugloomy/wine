@@ -6,9 +6,9 @@ Vue.component('mypage', {
 		<ul>\
 		<li><a href="javascript:;" v-on:click="prev">上一页</a></li>\
 			<li>\
-				<span id="pageSpan">当前第{{pageNo}}/{{totalPage}}页</span>\
+				<span >当前第{{pageNo}}/{{totalPage}}页</span>\
 			</li>\
-			<li><span id="pageSpan">共{{totalSize}}条记录</span></li>\
+			<li><span >共{{totalSize}}条记录</span></li>\
 			<li><a href="javascript:;" v-on:click="next">下一页</a></li>\
 			<li>\
 				<span>\
@@ -20,18 +20,33 @@ Vue.component('mypage', {
 		</ul>\
 	</div>',
 	mounted:function(){
-		var that=this;
-		//url+"Size"查询总数交易
-		post2SRV(this.url+"Size",function(data){
-			that.totalSize=data;
-			if(that.totalSize%pageSize==0){
-				that.totalPage=that.totalSize/pageSize;
-			}else{
-				that.totalPage=parseInt(that.totalSize/pageSize)+1;
-			}
-		},"json");
 	},
 	methods:{
+		queryTotalAndList:function(param){
+			param=param||{};
+			var that=this;
+			//服务端定义一个url+"Size"查询总数交易
+			post2SRV(this.url+"Size",param,function(data){
+				that.totalSize=data;
+				if(that.totalSize%pageSize==0){
+					that.totalPage=that.totalSize/pageSize;
+				}else{
+					that.totalPage=parseInt(that.totalSize/pageSize)+1;
+				}
+			},"json");
+			this.queryList(param);
+		},
+		queryList:function(param,input){
+			var that=this;
+			//新增页码，默认第一页
+			input=input||1;
+			param.pageNo=input;
+			post2SRV(this.url,param,function(data){
+				//调用父组件的list对象
+				that.$parent.list=data;
+				that.pageNo=input;
+			},"json");
+		},
 		prev:function(){
 			if(parseInt(this.pageNo)==1){
 				alert("当前已是第一页");
@@ -54,10 +69,12 @@ Vue.component('mypage', {
 				alert("请输入范围内的页码");
 				return;
 			}
-			post2SRV(this.url,{pageNo:input},function(data){
-				db.list=data;
-				that.pageNo=input;
-			},"json");
+			var param={};
+			//调用父组件的getparam方法
+			if(this.$parent.getParam!=null){
+				param=this.$parent.getParam();
+			}
+			this.queryList(param,input);
 		}
 	},
 	data:function(){

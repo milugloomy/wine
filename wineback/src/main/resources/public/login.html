@@ -49,23 +49,12 @@
 var db=new Vue({
 	el:"#divBody",
 	mounted:function(){
-		var that=this;
-		//查询service字段，若已登录，直接跳转
-		that.service=getQueryString("service")||"/wineback/index.html";
-		
-		post2SRV("isLogin",function(data){
-			that.isLogin=data;
-			if(that.isLogin==true){
-				window.location.href=that.service;
-			}else{
-				var cookieUsername=getCookie("username");
-				var cookiePassword=getCookie("password");
-				if(cookieUsername!=null && cookiePassword!=null){
-					db.username=cookieUsername;
-					db.password=cookiePassword;
-				}
-			}
-		},"json");
+		var cookieUsername=getCookie("username");
+		var cookiePassword=getCookie("password");
+		if(cookieUsername!=null && cookiePassword!=null){
+			this.username=cookieUsername;
+			this.password=cookiePassword;
+		}
 	},	
 	methods:{
 		login:function(){

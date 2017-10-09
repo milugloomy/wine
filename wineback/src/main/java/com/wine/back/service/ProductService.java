@@ -34,9 +34,6 @@ public class ProductService {
 	
 	public Product productDetail(int productId){
 		Product product=productMapper.selectByPrimaryKey(productId);
-		
-		List<Image> imgList=imageMapper.selectByProductId(productId);
-		product.setImgList(imgList);
 		return product;
 	}
 

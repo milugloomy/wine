@@ -1,0 +1,147 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>花道酒业管理后台</title>
+<meta content="webkit" name="renderer" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
+<style type="text/css">
+label{
+	display:inline;
+}
+input[type=date]{
+	height:30px;
+	width:150px;
+}
+.table td {
+	vertical-align:middle;
+}
+</style>
+</head>
+<body>
+<div id="menu">
+	<mymenu menu1="true"></mynav>
+</div>
+<div class="content" id="divBody">
+	<mynav name="订单列表页"></mynav>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="btn-toolbar" style="display:inline">
+				<label>起始日期：</label>
+				<input v-model="startDate" placeholder="请选择时间" type="date" /> 
+				<label>结束日期：</label>
+				<input v-model="endDate" placeholder="请选择时间" type="date" /> 
+				<label>订单状态：</label>
+				<select v-model="payStatus" class="input-xlarge" style="width:120px">
+					<option v-for="(value, key) in options" v-bind:value="key">
+    				{{value}}
+  					</option>
+				</select>
+				<button class="btn" v-on:click="query" style="margin-bottom:9px" type="button">
+					<i class="icon-search"></i> 查找
+				</button>
+			</div>
+			<div class="well">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>订单号</th>
+							<th>商品名称</th>
+							<th>缩略图</th>
+							<th>收货人</th>
+							<th>付款金额</th>
+							<th>订单状态</th>
+							<th>支付时间</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+					<tr v-for="row in list">
+						<td><a :href="'/wineback/orderDetail.html?orderId='+row.orderId">{{row.orderId}}</a></td>
+						<td>{{row.product.productName}}</td>
+						<td>
+							<img width="70px" :src="row.product.imgUrl" />
+						</td>
+						<td>{{row.user.nickname}}</td>
+						<td>{{row.amount}}元</td>
+						<td>{{options[row.payStatus]}}</td>
+						<td>{{row.payTime}}</td>
+						<td>
+							<button class="btn" v-on:click="goDetail(row.orderId)" title="详情">
+								<i class="icon-th-list" ></i>
+							</button>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- 在子组件中加上ref即可通过this.$refs.ref.method调用 -->
+			<mypage url="orderList" ref="mypage"></mypage>
+		</div>
+	</div>
+	<myfooter ></myfooter>
+</div>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/layer.js"></script>
+<script type="text/javascript" src="js/sync.js"></script>
+<script type="text/javascript" src="js/header.js"></script>
+<script type="text/javascript" src="js/page.js"></script>
+<script type="text/javascript">
+var db=new Vue({
+	el:"#divBody",
+	mounted:function(){
+		//今天
+		this.endDate=formatDate(new Date());
+		//30天前
+		this.startDate=formatDate(new Date(new Date().getTime()-1000*3600*24*30));
+		//查询
+		this.query(); 
+	},	
+	methods:{
+		//page.js中需调用该方法获取参数		
+		getParam:function(){
+			return {
+				payStatus:this.payStatus,					
+				startDate:this.startDate,
+				endDate:this.endDate
+			};
+		},	
+		goDetail:function(orderId){
+			window.location.href="/wineback/orderDetail.html?orderId="+orderId;
+		},
+		goEdit:function(orderId){
+			window.location.href="/wineback/orderEdit.html?orderId="+orderId;
+		},
+		query:function(){
+			//调用子组件的query方法
+			this.$refs.mypage.queryTotalAndList(this.getParam());
+		}
+	},
+	data:{
+		startDate:"",
+		endDate:"",
+		list:{},
+		options:{
+			ALL:"全部",
+			FL:"支付失败",
+			AP:"已支付",
+			AS:"已发货",
+			AR:"已接收",
+			CL:"已取消"
+		},
+		//初始默认全部
+		payStatus:"ALL"
+	}
+});
+//yyyy-MM-dd
+
+</script>
+</body>
+</html>
+
+

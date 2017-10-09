@@ -8,7 +8,11 @@
 <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/theme.css">
 <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
-</head>
+<style type="text/css">
+.table td {
+	vertical-align:middle;
+}
+</style></head>
 <body>
 <div id="menu">
 	<mymenu menu1="true"></mynav>
@@ -26,7 +30,7 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th >id</th>
+							<th >商品号</th>
 							<th >商品名称</th>
 							<th >缩略图</th>
 							<th >原价</th>
@@ -37,7 +41,7 @@
 							<th>操作</th>
 						</tr>
 					</thead>
-					<tbody id="tbody">
+					<tbody>
 						<tr v-for="row in list">
 							<td>{{row.productId}}</td>
 							<td><a href="javascript:;" v-on:click="goDetail(row.productId)">{{row.productName}}</a></td>
@@ -45,7 +49,7 @@
 								<img width="70px" :src="row.imgUrl" />
 							</td>
 							<td>{{row.originPrice}}元</td>
-							<td>{{row.viPprice}}元</td>
+							<td>{{row.vipPrice}}元</td>
 							<td>{{row.totalQuantity}}件</td>
 							<td>{{row.remain}}件</td>
 							<td>{{row.addTime}}</td>
@@ -64,7 +68,8 @@
 					</tbody>
 				</table>
 			</div>
-			<mypage url="productList"></mypage>
+			<!-- 在子组件中加上ref即可通过this.$refs.ref.method调用 -->
+			<mypage url="productList" ref="mypage"></mypage>
 		</div>
 	</div>
 	<myfooter ></myfooter>
@@ -80,10 +85,7 @@
 var db=new Vue({
 	el:"#divBody",
 	mounted:function(){
-		var that=this;
-		post2SRV("productList",function(data){
-			that.list=data;
-		},"json");
+		this.$refs.mypage.queryTotalAndList();
 	},	
 	methods:{
 		goDetail:function(productId){
