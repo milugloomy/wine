@@ -28,7 +28,7 @@
 	</association>
   </resultMap>
   <select id="selectByPageNo" resultMap="BaseResultMap">
-	select a.*,b.nickname,c.product_name,d.img_url from orderJnl a,user b,product c,image d
+	select a.*,b.nickname,c.product_name,d.img_url from orderjnl a,user b,product c,image d
 		where a.product_id=c.product_id and c.product_id=d.product_id and a.user_id=b.user_id and d.main_pic=1
 	    <if test="payStatus != null">
 	         and a.pay_status = #{payStatus}
