@@ -42,7 +42,7 @@
 	order by a.pay_time limit #{offset},#{length}
   </select>
   <select id="selectTotal" resultType="java.lang.Integer">
-    select count(*) from orderJnl 
+    select count(*) from orderjnl 
     <where> 
 	    <if test="payStatus != null">
 	         pay_status = #{payStatus}
