@@ -1,4 +1,4 @@
-package com.wine.back.service;
+package com.wine.back.business;
 
 import java.util.Date;
 import java.util.List;
@@ -16,8 +16,14 @@ import com.wine.base.common.Util;
 import com.wine.base.dao.ImageMapper;
 import com.wine.base.dao.ProductMapper;
 
+/**
+ * business中的方法为事务方法
+ * @author Administrator
+ *
+ */
+
 @Service
-public class ProductService {
+public class ProductBusiness {
 	@Value("${img.path}")
     private String imgPath;
 	@Autowired
@@ -27,16 +33,6 @@ public class ProductService {
 	@Autowired
 	private TransactionTemplate transactionTemplate;
 	
-	public List<Product> productList(int offset,int length){
-		List<Product> list=productMapper.selectByPageNo(offset, length);
-		return list;
-	}
-	
-	public Product productDetail(int productId){
-		Product product=productMapper.selectByPrimaryKey(productId);
-		return product;
-	}
-
 	public Integer productAdd(Product newProduct, List<Image> imgList) {
 		newProduct.setAddTime(new Date());
 		newProduct.setStatus("N");

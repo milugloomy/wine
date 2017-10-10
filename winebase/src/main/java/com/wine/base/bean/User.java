@@ -2,6 +2,8 @@ package com.wine.base.bean;
 
 import java.util.Date;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 public class User {
     private Integer userId;
 
@@ -23,6 +25,7 @@ public class User {
 
     private String headimgurl;
 
+    @JSONField (format="yyyy-MM-dd")  
     private Date subscribeTime;
 
     private String remark;
@@ -32,6 +35,8 @@ public class User {
     private String userLevel;
 
     private Date regTime;
+    
+    private Integer buyCount;
 
     public Integer getUserId() {
         return userId;
@@ -152,4 +157,12 @@ public class User {
     public void setRegTime(Date regTime) {
         this.regTime = regTime;
     }
+
+	public Integer getBuyCount() {
+		return buyCount;
+	}
+
+	public void setBuyCount(Integer buyCount) {
+		this.buyCount = buyCount;
+	}
 }

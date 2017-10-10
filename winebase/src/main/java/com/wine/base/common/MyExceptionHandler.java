@@ -32,9 +32,14 @@ public class MyExceptionHandler {
 		if(e instanceof WineException){
 			WineException be=(WineException)e;
 			jo.put("retcode", be.getCode());
-			String errMsg=errConfig.getProperty(be.getCode());
-			if(errMsg==null)
-				errMsg=errConfig.getProperty("error");
+			String errMsg=be.getMessage();
+			if(errMsg==null){
+				errMsg=errConfig.getProperty(be.getCode());
+				//若为空取默认值
+				if(errMsg==null){
+					errMsg=errConfig.getProperty("error");
+				}
+			}
 			jo.put("errMsg", errMsg);
 		}else{
 			jo.put("retcode", "error");

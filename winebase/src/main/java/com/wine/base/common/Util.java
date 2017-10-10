@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,16 +19,66 @@ import org.dom4j.io.SAXReader;
 
 import sun.misc.BASE64Decoder;
 
+@SuppressWarnings("restriction")
 public class Util {
-	
+
 	public static int pageSize=10;
-	
+
 	public static String getTimeStr() {
 		Date now=new Date();
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		return sdf.format(now);
 	}
+
+	public static boolean domainEquals(Object source, Object target, Class<?> clazz) {
+		try {
+	        Method[] methods = clazz.getMethods();
+			for (Method method : methods) {
+				if (!method.getName().startsWith("get")) {
+	                continue;
+	            }
+				Object srcValue = method.invoke(source, new Object[] {});
+				Object tarValue = method.invoke(target, new Object[] {});
+				if (!srcValue.equals(tarValue)) {
+					return false;
+				}
+			}
+			return true;
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	public static Object getClassValue(Object obj, String fieldName) {
+        Class<?> beanClass = obj.getClass();
+        Method[] ms = beanClass.getMethods();
+        for (int i = 0; i < ms.length; i++) {
+            // 非get方法不取
+            if (!ms[i].getName().startsWith("get")) {
+                continue;
+            }
+            Object objValue = null;
+            try {
+                objValue = ms[i].invoke(obj, new Object[] {});
+            } catch (Exception e) {
+                continue;
+            }
+            if (objValue == null) {
+                continue;
+            }
+            if (ms[i].getName().toUpperCase().equals(fieldName.toUpperCase())
+                    || ms[i].getName().substring(3).toUpperCase().equals(fieldName.toUpperCase())) {
+                return objValue;
+            } else if (fieldName.toUpperCase().equals("SID")
+                    && (ms[i].getName().toUpperCase().equals("ID") || ms[i].getName().substring(3).toUpperCase()
+                            .equals("ID"))) {
+                return objValue;
+            }
+        }
+        return null;
+    }
 	
+
 	public static String decodeAndSave(String data,String fileName){
 		BASE64Decoder decoder = new BASE64Decoder();
 		try {

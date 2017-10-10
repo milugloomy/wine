@@ -42,7 +42,7 @@
 				<tr>
 					<td>购买者:</td>
 					<td>
-						<img :src="order.user.headimgurl" height="70px">
+						<img :src="order.user.headimgurl" style="height:70px">
 						{{order.user.nickname}}
 					</td>
 				</tr>
@@ -134,7 +134,7 @@ var db=new Vue({
 						payStatus:that.payStatus
 					}
 					post2SRV("orderChangeState",param,function(data){
-						layer.msg("修改成功", {offset: '200px',time: 1000});
+						layer.msg("修改成功", {time: 1000});
 						that.order.payStatus=that.payStatus;
 						that.order.sendTime=data;
 					},"json");
@@ -145,8 +145,7 @@ var db=new Vue({
 				},
 				type:1,
 				content:$("#selectLayer"),
-				area:"300px",
-				offset:"30%",
+				area:"300px"
 			});
 		}
 	},

@@ -33,6 +33,10 @@
 					<td>{{product.productName}}</td>
 				</tr>
 				<tr>
+					<td>商品类型:</td>
+					<td>{{types[product.productType]}}</td>
+				</tr>
+				<tr>
 					<td>商品图片:<br/>(点击查看原图)</td>
 					<td>
 						<template v-for="img in product.imgList">
@@ -102,7 +106,6 @@ var db=new Vue({
 					post2SRV("productDelete",{productId:productId},function(data){
 						layer.close(deleteLayer);
 						layer.msg("删除成功", {
-							offset: '200px',
 							time: 1000, //10s后自动关闭
 					  	});
 						setTimeout(function(){
@@ -110,7 +113,6 @@ var db=new Vue({
 					    },800);
 					},"json");
 				},
-				offset:"200px",
 			});
 		},
 		edit:function(){
@@ -118,7 +120,11 @@ var db=new Vue({
 		}
 	},
 	data:{
-		product:{}
+		product:{},
+		types:{
+			ww:"白酒",
+			rw:"红酒"
+		}
 	}
 });
 </script>

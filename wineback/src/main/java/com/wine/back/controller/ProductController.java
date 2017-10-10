@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
-import com.wine.back.service.ProductService;
+import com.wine.back.business.ProductBusiness;
 import com.wine.base.bean.Image;
 import com.wine.base.bean.Product;
 import com.wine.base.bean.ProductForm;
@@ -22,13 +22,13 @@ import com.wine.base.dao.ProductMapper;
 public class ProductController {
 	
 	@Autowired
-	private ProductService productService;
+	private ProductBusiness productBusiness;
 	@Autowired
 	private ProductMapper productMapper;
 	
 	@RequestMapping("/productDetail")
 	public MyResEntity productDetail(int productId) throws WineException{
-		Product product=productService.productDetail(productId);
+		Product product=productMapper.selectByPrimaryKey(productId);
 		return new MyResEntity(product);
 	}
 	
@@ -36,7 +36,7 @@ public class ProductController {
 	public MyResEntity productList(@RequestParam(defaultValue="1")int pageNo){
 		int offset=(pageNo-1)*Util.pageSize;
 		int length=Util.pageSize;
-		List<Product> list=productService.productList(offset, length);
+		List<Product> list=productMapper.selectByPageNo(offset, length);
 		return new MyResEntity(list);
 	}
 	
@@ -51,7 +51,7 @@ public class ProductController {
 		List<Image> imgList=JSON.parseArray(imgsStr, Image.class);
 		Product product=new Product();
 		BeanUtils.copyProperties(productForm, product);
-		int productId=productService.productAdd(product,imgList);
+		int productId=productBusiness.productAdd(product,imgList);
 		return new MyResEntity(productId);
 	}
 	
@@ -60,7 +60,7 @@ public class ProductController {
 		List<Image> imgList=JSON.parseArray(imgsStr, Image.class);
 		Product product=new Product();
 		BeanUtils.copyProperties(productForm, product);
-		productService.productEdit(product,imgList);
+		productBusiness.productEdit(product,imgList);
 		return new MyResEntity();
 	}
 	

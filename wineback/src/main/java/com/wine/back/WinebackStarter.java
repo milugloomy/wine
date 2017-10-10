@@ -33,6 +33,8 @@ import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
 import com.alibaba.fastjson.JSONObject;
 
+import batch.service.BatchFactoryBean;
+
 @ComponentScan(basePackages={"com.wine"})  
 @SpringBootApplication
 public class WinebackStarter {
@@ -155,6 +157,11 @@ public class WinebackStarter {
 		}
         return pro;
     }
-
+    
+    //BatchJar的配置
+    @Bean
+    public BatchFactoryBean batchFactoryBean(){
+    	return new BatchFactoryBean();
+    }
 	
 }

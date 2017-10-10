@@ -17,6 +17,7 @@
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="user_level" jdbcType="CHAR" property="userLevel" />
     <result column="reg_time" jdbcType="TIMESTAMP" property="regTime" />
+    <result column="buy_count" jdbcType="INTEGER" property="buyCount" />
   </resultMap>
   <sql id="Base_Column_List">
     user_id, subscribe, openid, nickname, sex, city, country, province, language, headimgurl, 
@@ -27,6 +28,21 @@
     <include refid="Base_Column_List" />
     from user
     where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByOpenid" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where openid = #{openid,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPageNo" resultMap="BaseResultMap">
+  	select * from user a left join
+		(select count(*) buy_count,user_id from orderjnl group by user_id) b
+	  on a.user_id = b.user_id order by buy_count desc,a.user_id asc 
+		limit #{offset},#{length}
+  </select>
+  <select id="selectTotal" resultType="java.lang.Integer">
+  	select count(*) from user
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user

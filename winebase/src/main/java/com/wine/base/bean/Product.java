@@ -6,7 +6,10 @@ import java.util.List;
 import com.alibaba.fastjson.annotation.JSONField;
 
 public class Product {
+	
     private Integer productId;
+    
+    private String productType;
 
     private Double originPrice;
 
@@ -34,7 +37,15 @@ public class Product {
         this.productId = productId;
     }
 
-    public Double getOriginPrice() {
+    public String getProductType() {
+		return productType;
+	}
+
+	public void setProductType(String productType) {
+		this.productType = productType;
+	}
+
+	public Double getOriginPrice() {
         return originPrice;
     }
 

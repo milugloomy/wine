@@ -15,7 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Aspect  
 @Component  
 public class RestControllerAop {  
-	private static final Logger log = LoggerFactory.getLogger(RestControllerAop.class);
+	private Logger log = LoggerFactory.getLogger(RestControllerAop.class);
 
 	//controller下的所有@RequestMapping的方法
 	@Around("execution(* com.wine.back.controller.*.*(..)) and @annotation(org.springframework.web.bind.annotation.RequestMapping)") 

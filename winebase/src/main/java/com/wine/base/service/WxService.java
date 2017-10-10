@@ -2,13 +2,17 @@ package com.wine.base.service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.wine.base.bean.User;
 import com.wine.base.common.Util;
 import com.wine.base.common.WineException;
 
@@ -18,6 +22,26 @@ public class WxService {
 	private String token="token_wine";
 	@Autowired
 	private HttpService httpService;
+	
+	public List<String> userList() throws WineException{
+		String url="https://api.weixin.qq.com/cgi-bin/user/get?access_token="+httpService.getAcToken();
+		String ret=httpService.wxGet(url);
+		JSONObject jo=JSON.parseObject(ret);
+		JSONArray ja=(JSONArray)((JSONObject)jo.get("data")).get("openid");
+		
+		List<String> openidList=new ArrayList<String>();
+		for(int i=0;i<ja.size();i++){
+			openidList.add(ja.get(i).toString());
+		}
+		return openidList;
+	}
+	
+	public User userDetail(String openid) throws WineException{
+		String url="https://api.weixin.qq.com/cgi-bin/user/info?access_token="+httpService.getAcToken()+"&openid="+openid;
+		String ret=httpService.wxGet(url);
+		User user=JSON.parseObject(ret,User.class);
+		return user;
+	}
 	
 	public void createMenu() throws WineException{
 		String url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token="+httpService.getAcToken();

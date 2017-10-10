@@ -1,0 +1,105 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>花道酒业管理后台</title>
+<meta content="webkit" name="renderer" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
+<style type="text/css">
+.table td {
+	vertical-align:middle;
+}
+</style>
+</head>
+<body>
+<div id="menu">
+	<mymenu menu2="true"></mynav>
+</div>
+<div class="content" id="divBody">
+	<mynav name="用户列表页"></mynav>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="btn-toolbar">
+				<button class="btn btn-primary" v-on:click="sync">
+					用户数据同步
+				</button>
+			</div>
+			<div class="well">
+				<table class="table">
+					<thead>
+						<tr>
+							<th >昵称</th>
+							<th >性别</th>
+							<th >城市</th>
+							<th >头像</th>
+							<th >关注时间</th>
+							<th >状态</th>
+							<th >购买数</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="row in list">
+							<td>{{row.nickname}}</td>
+							<td>{{sexOpt[row.sex]}}</td>
+							<td>{{row.province}}{{row.city}}</td>
+							<td><img :src="row.headimgurl" style="height:70px"></td>
+							<td>{{row.subscribeTime}}</td>
+							<td>{{stateOpt[row.status]}}</td>
+							<td>{{row.buyCount==null?0:row.buyCount}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- 在子组件中加上ref即可通过this.$refs.ref.method调用 -->
+			<mypage url="userList" ref="mypage"></mypage>
+		</div>
+	</div>
+	<myfooter ></myfooter>
+</div>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/layer.js"></script>
+<script type="text/javascript" src="js/sync.js"></script>
+<script type="text/javascript" src="js/header.js"></script>
+<script type="text/javascript" src="js/page.js"></script>
+<script type="text/javascript">
+var db=new Vue({
+	el:"#divBody",
+	mounted:function(){
+		this.$refs.mypage.queryTotalAndList();
+	},
+	methods:{
+		sync:function(){
+			var confirmLayer=layer.confirm("<div style='font-size:16px'>数据同步需耗时大约10分钟，确认同步么？</div>",{
+				title:"删除确认",
+				btn: ["确定","取消"],
+				btn1:function(){
+					post2SRV("userSync",function(data){
+						layer.close(confirmLayer);
+						layer.alert("同步成功");
+					},"json");
+				},
+			});
+		}
+	},
+	data:{
+		list:{},
+		sexOpt:{
+			0:"未知",			
+			1:"男",
+			2:"女"
+		},
+		stateOpt:{
+			N:"正常"
+		}
+	}
+});
+</script>
+</body>
+</html>
+
+

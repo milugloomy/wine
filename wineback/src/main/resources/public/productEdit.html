@@ -45,7 +45,18 @@ input{
 				<tr>
 					<td>商品名称:</td>
 					<td>
-					<input type="text" v-model="product.productName" placeholder="请输入商品名称"></td>
+						<input type="text" v-model="product.productName" placeholder="请输入商品名称">
+					</td>
+				</tr>
+				<tr>
+					<td>商品类型:</td>
+					<td>
+						<select v-model="product.productType" class="input-xlarge" style="width:120px">
+							<option v-for="(value, key) in types" v-bind:value="key">
+		    				{{value}}
+		  					</option>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<td>商品图片:<br/>第一张为默认图片</td>
@@ -162,6 +173,10 @@ var db=new Vue({
 	},
 	data:{
 		product:{},
+		types:{
+			ww:"白酒",
+			rw:"红酒"
+		}
 	}
 });
 </script>

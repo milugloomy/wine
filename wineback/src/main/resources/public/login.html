@@ -55,6 +55,7 @@ var db=new Vue({
 			this.username=cookieUsername;
 			this.password=cookiePassword;
 		}
+		this.service=getQueryString("service")||"index.html";
 	},	
 	methods:{
 		login:function(){

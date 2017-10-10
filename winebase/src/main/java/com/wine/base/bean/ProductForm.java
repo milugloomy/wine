@@ -3,6 +3,8 @@ package com.wine.base.bean;
 public class ProductForm {
 	private Integer productId;
 	
+	private String productType;
+	
     private Double originPrice;
 
     private Double vipPrice;
@@ -19,6 +21,14 @@ public class ProductForm {
 
 	public void setProductId(Integer productId) {
 		this.productId = productId;
+	}
+
+	public String getProductType() {
+		return productType;
+	}
+
+	public void setProductType(String productType) {
+		this.productType = productType;
 	}
 
 	public Double getOriginPrice() {

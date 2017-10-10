@@ -16,12 +16,11 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.wine.base.common.MyExceptionHandler;
 import com.wine.base.common.WineException;
 
 @Component
 public class HttpService {
-	private static final Logger log = LoggerFactory.getLogger(MyExceptionHandler.class);
+	private static final Logger log = LoggerFactory.getLogger(HttpService.class);
 
 	public static String appId="wxee167cddcba2af47";
 	public static String appSecret="971412dbe7e6f89204675995409c251a";
@@ -46,6 +45,15 @@ public class HttpService {
 			acTokenTime=System.currentTimeMillis();
 		}
 		return acToken;
+	}
+	
+	public String wxGet(String url) throws WineException{
+		String ret=sendGet(url);
+		JSONObject jo=JSONObject.parseObject(ret);
+		if(jo.containsKey("errcode")){
+			throw new WineException(jo.getString("errcode"),(String)jo.get("errmsg"));
+		}
+		return ret;
 	}
 	
 	public String sendGet(String url) throws WineException{
