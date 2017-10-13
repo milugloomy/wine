@@ -31,8 +31,6 @@ public class UserController {
 	@Autowired
 	private UserBatch userBatch;
 	
-	private String a="123";
-	
 	@RequestMapping("/login")
 	public MyResEntity login(String username,String password,HttpSession session) throws WineException{
 		Manager manager=managerMapper.selectManagerByUsername(username);
