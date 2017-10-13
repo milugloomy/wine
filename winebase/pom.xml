@@ -8,9 +8,11 @@
 		<artifactId>wine</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	
 	<artifactId>winebase</artifactId>
 	<name>winebase</name>
 	<url>http://maven.apache.org</url>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
