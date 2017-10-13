@@ -41,7 +41,6 @@ public class UserController {
 		session.setAttribute("manager", manager);
 		return new MyResEntity();
 	}
-	int a=22;
 	
 	@RequestMapping("/isLogin")
 	public MyResEntity isLogin(HttpSession session){

@@ -1,4 +1,4 @@
-package com.wine.back.common;
+package com.wine.wx.common;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
