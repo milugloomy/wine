@@ -28,7 +28,7 @@
 </div>-->
     <ul class="address">
       <li> <span class="col1">收货地址: </span>
-        <div class="col2 text-right" v-if="address!=undefined">
+        <div class="col2 text-right" v-if="address.addrId!=undefined">
           <p>{{address.name}} {{address.phoneNo}}</p>
           <p>{{address.province}}{{address.city}}{{address.district}}{{address.detail}}</p>
         </div>
@@ -75,23 +75,32 @@
         that.total = that.product.vipPrice * that.quantity;
       }, "json");
       post2SRV("address", function(data) {
-        that.address = data;
+        that.address = data||{};
       }, "json");
     },
     methods: {
       addAddress: function() {
+    	var that=this;
         wx.openAddress({
           success: function(res) {
-            alert(res);
-            alert(res.userName);
-            var userName = res.userName; // 收货人姓名
-            var postalCode = res.postalCode; // 邮编
-            var provinceName = res.provinceName; // 国标收货地址第一级地址（省）
-            var cityName = res.cityName; // 国标收货地址第二级地址（市）
-            var countryName = res.countryName; // 国标收货地址第三级地址（国家）
-            var detailInfo = res.detailInfo; // 详细收货地址信息
-            var nationalCode = res.nationalCode; // 收货地址国家码
-            var telNumber = res.telNumber; // 收货人手机号码
+        	//有一个不同则说明数据变化，发请求更新地址
+        	if(that.address.name != res.userName
+        			  || that.address.province != res.provinceName
+        			  || that.address.city != res.cityName
+        			  || that.address.district != res.countryName
+        			  || that.address.detail != res.detailInfo
+        			  || that.address.phoneNo != res.telNumber){
+              that.address.name = res.userName; // 收货人姓名
+              that.address.province = res.provinceName; // 国标收货地址第一级地址（省）
+              that.address.city = res.cityName; // 国标收货地址第二级地址（市）
+              that.address.district = res.countryName; // 国标收货地址第三级地址（国家）
+              that.address.detail = res.detailInfo; // 详细收货地址信息
+              that.address.phoneNo = res.telNumber; // 收货人手机号码
+              //发请求更新用户默认地址
+              post2SRV("addAddress",that.address,function(data){
+            	  that.address.addrId=data;
+              },"json");
+        	}
           }
         });
       }
@@ -106,7 +115,7 @@
   });
   post2SRV("wxSign", { url: window.location.href }, function(data) {
     wx.config({
-      debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
       appId: data.appId, // 必填，公众号的唯一标识
       timestamp: data.timestamp, // 必填，生成签名的时间戳
       nonceStr: data.nonceStr, // 必填，生成签名的随机串

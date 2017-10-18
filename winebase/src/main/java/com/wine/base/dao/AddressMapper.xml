@@ -30,6 +30,9 @@
     from address
     where addr_id = #{addrId,jdbcType=INTEGER}
   </select>
+  <update id="updateStatusByUserId" parameterType="java.lang.Integer">
+    update address set status = 'C' where user_id=#{userId,jdbcType=INTEGER}
+  </update>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from address
     where addr_id = #{addrId,jdbcType=INTEGER}
@@ -44,7 +47,7 @@
       #{district,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, 
       #{mainAddr,jdbcType=CHAR}, #{addTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.wine.base.bean.Address">
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="addrId" parameterType="com.wine.base.bean.Address">
     insert into address
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="addrId != null">

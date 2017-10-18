@@ -16,4 +16,6 @@ public interface AddressMapper {
     int updateByPrimaryKey(Address record);
 
 	Address selectByUserId(int userId);
+
+	void updateStatusByUserId(int userId);
 }
