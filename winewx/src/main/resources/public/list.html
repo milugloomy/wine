@@ -1,93 +1,197 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>商城</title>
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<link rel="stylesheet" href="css/normalize.css">
-	<link rel="stylesheet" href="css/main.css">
-	<script src="js/jquery-2.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-  </head>
+
+<head>
+  <meta charset="utf-8">
+  <title>商城</title>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/scrollbar5.css">
+  <style>
+  .active {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: none;
+  }
+  </style>
+</head>
+
 <body>
-<div class="content">
-  <ul class="chooses text-center">
-  <li><a id="sort_1">价格&nbsp;<span class="fa fa-caret-down"></span></a></li>
-  <li><a id="sort_2">销量&nbsp;<span class="fa fa-caret-down"></span></a></li>
-  <li><a id="sort_3">上架时间&nbsp;<span class="fa fa-caret-down"></span></a></li>
-  </ul>
-  <ul class="table-view list_col1 has_top"><!--商品列表--> 
-    <li class="table-view-cell media">
-      <a href="detail.html" data-transition="slide-in">
-      <img class="img-responsive" src="img/item_1.jpg">
-      <div class="h4" >商品名称商品名称</div>
-      <p class="price">¥300.00</p><del>¥500.00</del>
-      </a>
-    </li>
-	<li class="table-view-cell media">
-      <a href="detail.html" data-transition="slide-in">
-      <img class="img-responsive" src="img/item_1.jpg">
-      <div class="h4" >商品名称商品名称</div>
-      <p class="price">¥300.00</p><del>¥500.00</del>
-      </a>
-    </li>
-	<li class="table-view-cell media">
-      <a href="detail.html" data-transition="slide-in">
-      <img class="img-responsive" src="img/item_1.jpg">
-      <div class="h4" >商品名称商品名称</div>
-      <p class="price">¥300.00</p><del>¥500.00</del>
-      </a>
-    </li>
-	<li class="table-view-cell media">
-      <a href="detail.html" data-transition="slide-in">
-      <img class="img-responsive" src="img/item_1.jpg">
-      <div class="h4" >商品名称商品名称</div>
-      <p class="price">¥300.00</p><del>¥500.00</del>
-      </a>
-    </li>
-	<li class="table-view-cell media">
-      <a href="detail.html" data-transition="slide-in">
-      <img class="img-responsive" src="img/item_1.jpg">
-      <div class="h4" >商品名称商品名称</div>
-      <p class="price">¥300.00</p><del>¥500.00</del>
-      </a>
-    </li>
-	<li class="table-view-cell media">
-      <a href="detail.html" data-transition="slide-in">
-      <img class="img-responsive" src="img/item_1.jpg">
-      <div class="h4" >商品名称商品名称</div>
-      <p class="price">¥300.00</p><del>¥500.00</del>
-      </a>
-    </li>
-  </ul>
-  <!--<button type="button" class="btn btn-block" onclick="">点击查看更多</button>-->
-</div>
+  <div class="content" id="divBody">
+    <ul class="chooses text-center">
+      <li> <a :class="sort.sale.style" v-on:click="titleClick(sort.sale)">
+          销量&nbsp;<span class="fa" :class="sortType[sort.sale.sort].arrow"></span>
+        </a> </li>
+      <li> <a :class="sort.price.style" v-on:click="titleClick(sort.price)">
+          价格&nbsp;<span class="fa" :class="sortType[sort.price.sort].arrow"></span>
+        </a> </li>
+      <li> <a :class="sort.time.style" v-on:click="titleClick(sort.time)">
+ 上架时间&nbsp;<span class="fa" :class="sortType[sort.time.sort].arrow"></span>
+        </a> </li>
+    </ul>
+    <div id="wrapper">
+      <div id="scroller">
+        <ul class="table-view list_col1 has_top">
+          <li class="table-view-cell media" v-for="row in prodList" v-on:click="goDetail(row.productId)">
+            <a data-transition="slide-in">
+              <img class="img-responsive" :src="row.imgUrl">
+              <div class="h4">{{row.productName}}</div>
+              <p class="price">¥{{row.vipPrice}}</p>
+              <del>¥{{row.originPrice}}</del>
+            </a>
+          </li>
+        </ul>
+        <!--<button type="button" class="btn btn-block" onclick="">点击查看更多</button>-->
+        <div id="pullUp" class=""> <span class="pullUpIcon"></span>&nbsp;&nbsp;&nbsp;&nbsp; <span class="pullUpLabel" id="pullUpLabel">上拉加载更多...</span> </div>
+      </div>
+    </div>
+  </div>
 </body>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/layer.js"></script>
+<script type="text/javascript" src="js/iscroll-probe.js"></script>
+<script type="text/javascript" src="js/sync.js"></script>
 <script type="text/javascript">
-  	$("#sort_1").click(function(){
-	  if($("#sort_1 .fa").hasClass("fa-caret-down")){
-	    $("#sort_1 .fa").removeClass("fa-caret-down").addClass("fa-caret-up");
-	  } else { 
-	    $("#sort_1 .fa").removeClass("fa-caret-up").addClass("fa-caret-down");
-	  }
+var myScroll;
+var db = new Vue({
+  el: "#divBody",
+  mounted: function() {
+    //myScroll实例化
+    myScroll = new IScroll('#wrapper', {
+      preventDefaultException: {
+        tagName: /^(DIV|A|LI|SPAN|INPUT|TEXTAREA|BUTTON|SELECT)$/
+      },
+      probeType: 3
     });
-	$("#sort_2").click(function(){
-	  if($("#sort_2 .fa").hasClass("fa-caret-down")){
-	    $("#sort_2 .fa").removeClass("fa-caret-down").addClass("fa-caret-up");
-	  } else { 
-	    $("#sort_2 .fa").removeClass("fa-caret-up").addClass("fa-caret-down");
-	  }
+    //是否到页底向上拖动
+    myScroll.pullUpEnd = false;
+    //是否启用滚动函数
+    myScroll.enable = true;
+    myScroll.on("scroll", function() {
+      //上拉40px加载
+      if ((-myScroll.y) > (-myScroll.maxScrollY + 40) && myScroll.pullUpEnd == false && myScroll.enable == true) {
+        myScroll.pullUpEnd = true;
+        $("#pullUp").attr("class", "flip");
+        $("#pullUpLabel").html("松手开始更新...");
+      }
     });
-	$("#sort_3").click(function(){
-	  if($("#sort_3 .fa").hasClass("fa-caret-down")){
-	    $("#sort_3 .fa").removeClass("fa-caret-down").addClass("fa-caret-up");
-	  } else { 
-	    $("#sort_3 .fa").removeClass("fa-caret-up").addClass("fa-caret-down");
-	  }
+    myScroll.on("scrollEnd", function() {
+      //回弹到最后才加载
+      if (((Math.abs(myScroll.y) - Math.abs(myScroll.maxScrollY)) < 5) && myScroll.pullUpEnd == true //上拉后end才加载
+        && myScroll.enable == true) {
+        myScroll.pullUpEnd = false;
+        //loading样式
+        $("#pullUp").attr("class", "loading");
+        $("#pullUpLabel").html("加载中...");
+        //加载数据
+        db.getList();
+      }
     });
+    //默认销量
+    this.active = this.sort.sale;
+    this.type = getQueryString("type");
+    this.getList();
+  },
+  methods: {
+    getList: function(titleClick) {
+      var that = this;
+      post2SRV("productList", that.getParam(), function(data) {
+        if (data.length > 0) {
+          if (titleClick) {
+            that.prodList = data;
+            //第一页启用下拉刷新
+            $("#pullUp").show();
+            myScroll.enable = true;
+          } else {
+            that.prodList = that.prodList.concat(data);
+          }
+          //刷新高度
+          Vue.nextTick(function() {
+            myScroll.refresh();
+          });
+          //页面++
+          db.pageNo++;
+        } else {
+          //没有数据了，禁用下拉刷新
+          layer.msg("没有更多了");
+          $("#pullUp").hide();
+          myScroll.enable = false;
+        }
+        $("#pullUp").attr("class", "");
+        $("#pullUpLabel").html("上拉加载更多...");
+      }, "json");
+    },
+    getParam: function() {
+      var param = {
+        type: this.type,
+        sortType: this.active.sort,
+        sortBy: this.active.name,
+        pageNo: this.pageNo
+      }
+      return param;
+    },
+    titleClick: function(sortType) {
+      if (this.active == sortType) {
+        this.active.sort = sortType.sort == "desc" ? "asc" : "desc";
+      } else {
+        this.active.style = "typeOff";
+        this.active = sortType;
+        this.active.style = "typeOff active";
+        //恢复默认排序
+        this.active.sort = this.active.defaultSort;
+      }
+      //点击title pageNo还原第一页
+      this.pageNo = 1;
+      //true表示重新加载第一页
+      this.getList(true);
+    },
+    goDetail: function(productId) {
+      window.location.href = "/winewx/detail.html?productId=" + productId;
+    }
+  },
+  data: {
+    prodList: [],
+    type: "all", //默认全部
+    pageNo: 1, //默认第一页
+    //不同类型默认排序
+    sort: {
+      sale: {
+        name: "sale",
+        style: "typeOff active",
+        defaultSort: "desc", //默认排序
+        sort: "desc"
+      },
+      price: {
+        name: "price",
+        style: "typeOff",
+        defaultSort: "asc", //默认排序
+        sort: "asc"
+      },
+      time: {
+        name: "time",
+        style: "typeOff",
+        defaultSort: "desc", //默认排序
+        sort: "desc"
+      },
+    },
+    //箭头样式
+    sortType: {
+      asc: {
+        arrow: "fa-caret-up"
+      },
+      desc: {
+        arrow: "fa-caret-down"
+      }
+    },
+    active: {}, //激活的title
+  }
+});
 </script>
+
 </html>

@@ -1,137 +1,138 @@
 <html>
+
 <head>
-<meta charset="utf-8">
-<title>花道酒业管理后台</title>
-<meta content="webkit" name="renderer" />
-<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="css/theme.css">
-<link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
-<style type="text/css">
-.table td {
-	vertical-align:middle;
-}
-</style>
+  <meta charset="utf-8">
+  <title>花道酒业管理后台</title>
+  <meta content="webkit" name="renderer" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
+  <style type="text/css">
+  .table td {
+    vertical-align: middle;
+  }
+  </style>
 </head>
+
 <body>
-<div id="menu">
-	<mymenu menu1="true"></mynav>
-</div>
-<div class="content" id="divBody">
-	<mynav name="商品列表页"></mynav>
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="btn-toolbar">
-				<button class="btn btn-primary" onclick="location='/wineback/productAdd.html'">
-					<i class="icon-plus"></i> 添加
-				</button>
-			</div>
-			<div class="well">
-				<table class="table">
-					<thead>
-						<tr>
-							<th >商品号</th>
-							<th >类型</th>
-							<th >商品名称</th>
-							<th >缩略图</th>
-							<th >原价</th>
-							<th >vip价</th>
-							<th >商品总数</th>
-							<th >库存量</th>
-							<th >开始时间</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="row in list">
-							<td>{{row.productId}}</td>
-							<td>{{types[row.productType]}}</td>
-							<td><a href="javascript:;" v-on:click="goDetail(row.productId)">{{row.productName}}</a></td>
-							<td>
-								<img width="70px" :src="row.imgUrl" />
-							</td>
-							<td>{{row.originPrice}}元</td>
-							<td>{{row.vipPrice}}元</td>
-							<td>{{row.totalQuantity}}件</td>
-							<td>{{row.remain}}件</td>
-							<td>{{row.addTime}}</td>
-							<td>
-								<!-- <button class="btn" v-on:click="goDetail('row.productId')" title="详情">
+  <div id="menu">
+    <mymenu menu1="true"></mymenu>
+  </div>
+  <div class="content" id="divBody">
+    <mynav name="商品列表页"></mynav>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="btn-toolbar">
+          <button class="btn btn-primary" onclick="location='/wineback/productAdd.html'">
+            <i class="icon-plus"></i> 添加
+          </button>
+        </div>
+        <div class="well">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>商品号</th>
+                <th>类型</th>
+                <th>商品名称</th>
+                <th>缩略图</th>
+                <th>原价</th>
+                <th>vip价</th>
+                <th>商品总数</th>
+                <th>库存量</th>
+                <th>开始时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in list">
+                <td>{{row.productId}}</td>
+                <td>{{types[row.productType]}}</td>
+                <td><a href="javascript:;" v-on:click="goDetail(row.productId)">{{row.productName}}</a></td>
+                <td>
+                  <img width="70px" :src="row.imgUrl" />
+                </td>
+                <td>{{row.originPrice}}元</td>
+                <td>{{row.vipPrice}}元</td>
+                <td>{{row.totalQuantity}}件</td>
+                <td>{{row.remain}}件</td>
+                <td>{{row.addTime}}</td>
+                <td>
+                  <!-- <button class="btn" v-on:click="goDetail('row.productId')" title="详情">
 									<i class="icon-th-list" ></i>
 								</button> -->
-								<button class="btn" v-on:click="goEdit(row.productId)" title="编辑">
-									<i class="icon-pencil" ></i>
-								</button>
-								<button class="btn" v-on:click="deleteConfirm(row.productId)" title="删除">
-									<i class="icon-remove" ></i>
-								</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<!-- 在子组件中加上ref即可通过this.$refs.ref.method调用 -->
-			<mypage url="productList" ref="mypage"></mypage>
-		</div>
-	</div>
-	<myfooter ></myfooter>
-</div>
-<script type="text/javascript" src="js/vue.min.js"></script>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/layer.js"></script>
-<script type="text/javascript" src="js/sync.js"></script>
-<script type="text/javascript" src="js/header.js"></script>
-<script type="text/javascript" src="js/page.js"></script>
-<script type="text/javascript">
-var db=new Vue({
-	el:"#divBody",
-	mounted:function(){
-		this.$refs.mypage.queryTotalAndList();
-	},	
-	methods:{
-		goDetail:function(productId){
-			window.location.href="/wineback/productDetail.html?productId="+productId;
-		},
-		goEdit:function(productId){
-			window.location.href="/wineback/productEdit.html?productId="+productId;
-		},
-		deleteConfirm:function(productId){
-			var deleteLayer=layer.confirm("<div style='font-size:16px'>确认删除id为"+productId+"的商品么</div>",{
-				title:"删除确认",
-				btn: ["确定","取消"],
-				btn1:function(){
-					post2SRV("productDelete",{productId:productId},function(data){
-						layer.close(deleteLayer);
-						db.msg("删除成功");
-						db.refresh();
-					},"json");
-				},
-			});
-		},
-		refresh:function(){
-			setTimeout(function(){
-		        window.location.reload();
-		    },800);
-		},
-		msg:function(message,time){
-			time=time||1000;
-			layer.msg(message, {
-				time: time, //10s后自动关闭
-		  	});
-		}
-	},
-	data:{
-		list:{},
-		types:{
-			ww:"白酒",
-			rw:"红酒"
-		}
-	}
-});
-</script>
+                  <button class="btn" v-on:click="goEdit(row.productId)" title="编辑">
+                    <i class="icon-pencil"></i>
+                  </button>
+                  <button class="btn" v-on:click="deleteConfirm(row.productId)" title="删除">
+                    <i class="icon-remove"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- 在子组件中加上ref即可通过this.$refs.ref.method调用 -->
+        <mypage url="productList" ref="mypage"></mypage>
+      </div>
+    </div>
+    <myfooter></myfooter>
+  </div>
+  <script type="text/javascript" src="js/vue.min.js"></script>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/layer.js"></script>
+  <script type="text/javascript" src="js/sync.js"></script>
+  <script type="text/javascript" src="js/header.js"></script>
+  <script type="text/javascript" src="js/page.js"></script>
+  <script type="text/javascript">
+  var db = new Vue({
+    el: "#divBody",
+    mounted: function() {
+      this.$refs.mypage.queryTotalAndList();
+    },
+    methods: {
+      goDetail: function(productId) {
+        window.location.href = "/wineback/productDetail.html?productId=" + productId;
+      },
+      goEdit: function(productId) {
+        window.location.href = "/wineback/productEdit.html?productId=" + productId;
+      },
+      deleteConfirm: function(productId) {
+        var deleteLayer = layer.confirm("<div style='font-size:16px'>确认删除id为" + productId + "的商品么</div>", {
+          title: "删除确认",
+          btn: ["确定", "取消"],
+          btn1: function() {
+            post2SRV("productDelete", { productId: productId }, function(data) {
+              layer.close(deleteLayer);
+              db.msg("删除成功");
+              db.refresh();
+            }, "json");
+          },
+        });
+      },
+      refresh: function() {
+        setTimeout(function() {
+          window.location.reload();
+        }, 800);
+      },
+      msg: function(message, time) {
+        time = time || 1000;
+        layer.msg(message, {
+          time: time, //10s后自动关闭
+        });
+      }
+    },
+    data: {
+      list: {},
+      types: {
+        ww: "白酒",
+        rw: "红酒"
+      }
+    }
+  });
+  </script>
 </body>
+
 </html>
-
-

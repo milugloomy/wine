@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wine.base.bean.OrderJnl;
+import com.wine.base.bean.OrderJnlForm;
 import com.wine.base.common.MyResEntity;
 import com.wine.base.common.Util;
 import com.wine.base.common.WineException;
@@ -57,6 +59,17 @@ public class OrderController {
 		endDate.setTime(endDate.getTime()+1000*3600*24);
 		int total=orderJnlMapper.selectTotal(payStatus, startDate, endDate);
 		return new MyResEntity(total);
+	}
+	
+	@RequestMapping("/orderEdit")
+	public MyResEntity orderEdit(OrderJnlForm orderJnlForm){
+		OrderJnl orderJnl=new OrderJnl();
+		BeanUtils.copyProperties(orderJnlForm, orderJnl);
+		if(orderJnl.getPayStatus().equals("AS")){
+			orderJnl.setSendTime(new Date());
+		}
+		orderJnlMapper.updateByPrimaryKeySelective(orderJnl);
+		return new MyResEntity();
 	}
 	
 	@RequestMapping("/orderChangeState")

@@ -7,6 +7,8 @@
     <result column="pay_status" jdbcType="VARCHAR" property="payStatus" />
     <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
     <result column="send_time" jdbcType="TIMESTAMP" property="sendTime" />
+    <result column="deli_comp" jdbcType="VARCHAR" property="deliComp" />
+    <result column="deli_no" jdbcType="VARCHAR" property="deliNo" />
     <association property="user" javaType="com.wine.base.bean.User">
 	    <id column="user_id" jdbcType="INTEGER" property="userId" />
 	    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
@@ -54,7 +56,10 @@
 	        <![CDATA[ AND pay_time < #{endDate} ]]>
 	    </if>
   	</where>
-  </select>    
+  </select>
+  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select a.* from orderjnl a where a.user_id=#{userId}
+  </select> 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select a.*,d.*,b.product_name,e.img_url,c.nickname,c.headimgurl from orderjnl a,product b,user c,address d,image e
     where a.product_id=b.product_id and b.product_id=e.product_id and a.user_id=c.user_id and a.addr_id=d.addr_id and e.main_pic=1
@@ -78,10 +83,11 @@
   <insert id="insert" parameterType="com.wine.base.bean.OrderJnl">
     insert into orderjnl (order_id, amount, user_id, 
       product_id, pay_status, pay_time, 
-      send_time, addr_id)
+      send_time, addr_id, deli_comp, deli_no)
     values (#{orderId,jdbcType=INTEGER}, #{amount,jdbcType=DOUBLE}, #{userId,jdbcType=INTEGER}, 
       #{productId,jdbcType=INTEGER}, #{payStatus,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP}, 
       #{sendTime,jdbcType=TIMESTAMP}, #{addrId,jdbcType=INTEGER})
+      #{deliComp,jdbcType=VARCHAR}, #{deliNo,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wine.base.bean.OrderJnl">
     insert into orderjnl
@@ -110,6 +116,12 @@
       <if test="addrId != null">
         addr_id,
       </if>
+      <if test="deliComp != null">
+        deli_comp,
+      </if>
+      <if test="deliNo != null">
+        deli_no,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="orderId != null">
@@ -135,6 +147,12 @@
       </if>
       <if test="addrId != null">
         #{addrId,jdbcType=INTEGER},
+      </if>
+      <if test="deliComp != null">
+        #{deli_comp,jdbcType=VARCHAR},
+      </if>
+      <if test="deliNo != null">
+        #{deli_no,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -162,6 +180,12 @@
       <if test="addrId != null">
         addr_id = #{addrId,jdbcType=INTEGER},
       </if>
+      <if test="deliComp != null">
+        deli_comp = #{deliComp,jdbcType=VARCHAR},
+      </if>
+      <if test="deliNo != null">
+        deli_no = #{deliNo,jdbcType=VARCHAR},
+      </if>
     </set>
     where order_id = #{orderId,jdbcType=INTEGER}
   </update>
@@ -173,7 +197,9 @@
       pay_status = #{payStatus,jdbcType=VARCHAR},
       pay_time = #{payTime,jdbcType=TIMESTAMP},
       send_time = #{sendTime,jdbcType=TIMESTAMP},
-      addr_id = #{addrId,jdbcType=INTEGER}
+      addr_id = #{addrId,jdbcType=INTEGER},
+      deli_comp = #{deliComp,jdbcType=VARCHAR},
+      deli_no = #{deliNo,jdbcType=VARCHAR},
     where order_id = #{orderId,jdbcType=INTEGER}
   </update>
 </mapper>

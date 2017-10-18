@@ -13,6 +13,8 @@ public interface ProductMapper {
     
     //假删除，更新状态
     int deleteByPrimaryKey(Integer productId);
+    
+    List<Product> selectAllProduct();
 
     int insert(Product record);
 

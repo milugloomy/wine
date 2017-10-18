@@ -1,57 +1,58 @@
 <html>
+
 <head>
-<meta charset="utf-8">
-<title>花道酒业管理后台</title>
-<meta content="webkit" name="renderer" />
-<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="css/theme.css">
-<link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
+  <meta charset="utf-8">
+  <title>花道酒业管理后台</title>
+  <meta content="webkit" name="renderer" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
 </head>
+
 <body>
-<div id="menu">
-	<mymenu menu1="true"></mynav>
-</div>
-<div class="content" id="divBody">
-	<mynav name="主页"></mynav>
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="row-fluid">
-				<div class="alert alert-info">
-					<button type="button" class="close" data-dismiss="alert">×</button>
-					<strong>今日提醒：</strong> 通知提醒通知提醒！
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<script type="text/javascript" src="js/vue.min.js"></script>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/layer.js"></script>
-<script type="text/javascript" src="js/sync.js"></script>
-<script type="text/javascript" src="js/header.js"></script>
-<script type="text/javascript">
-var db=new Vue({
-	el:"#divBody",
-	mounted:function(){
-		var date=new Date();
-		this.year=date.getFullYear();
-		this.month=date.getMonth()+1;
-		this.day=date.getDate();
-	},	
-	methods:{
+  <div id="menu">
+    <mymenu menu1="true"></mymenu>
+  </div>
+  <div class="content" id="divBody">
+    <mynav name="主页"></mynav>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="row-fluid">
+          <div class="alert alert-info">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>今日提醒：</strong> 通知提醒通知提醒！
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="js/vue.min.js"></script>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/layer.js"></script>
+  <script type="text/javascript" src="js/sync.js"></script>
+  <script type="text/javascript" src="js/header.js"></script>
+  <script type="text/javascript">
+  var db = new Vue({
+    el: "#divBody",
+    mounted: function() {
+      var date = new Date();
+      this.year = date.getFullYear();
+      this.month = date.getMonth() + 1;
+      this.day = date.getDate();
+    },
+    methods: {
 
-	},
-	data:{
-		year:"",
-		day:"",
-		month:""
-	}
-});
-</script>
+    },
+    data: {
+      year: "",
+      day: "",
+      month: ""
+    }
+  });
+  </script>
 </body>
+
 </html>
-
-

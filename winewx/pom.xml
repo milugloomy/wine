@@ -36,11 +36,6 @@
 			<artifactId>winebase</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>edu.hust.batch</groupId>
-			<artifactId>BatchJar</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

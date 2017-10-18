@@ -8,13 +8,19 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.wine.base.bean.User;
+import com.wine.base.dao.UserMapper;
+
 @Aspect  
 @Component  
 public class RestControllerAop {  
+	@Autowired
+	private UserMapper userMapper;
 	private Logger log = LoggerFactory.getLogger(RestControllerAop.class);
 
 	//controller下的所有@RequestMapping的方法
@@ -34,6 +40,12 @@ public class RestControllerAop {
 			param.append(paraName+"-"+request.getParameter(paraName)+";");  
 		}
 		log.info("param:{}",param);
+		
+		if(request.getSession().getAttribute("user")==null){
+			String openid="oEiYVv601cx0w3qFcSTxi-dM9mpg";
+			User user=userMapper.selectByOpenid(openid);
+			request.getSession().setAttribute("user", user);
+		}
 
 		try {
 			Object result = pjp.proceed(pjp.getArgs());

@@ -8,26 +8,36 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import com.wine.base.bean.User;
+
 import sun.misc.BASE64Decoder;
 
 @SuppressWarnings("restriction")
 public class Util {
 
-	public static int pageSize=10;
+	public static int pageSize=9;
 
 	public static String getTimeStr() {
 		Date now=new Date();
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		return sdf.format(now);
+	}
+	
+	public static int getUserId(HttpSession session) {
+		User user=(User)session.getAttribute("user");
+		return user.getUserId();
 	}
 
 	public static boolean domainEquals(Object source, Object target, Class<?> clazz) {
@@ -78,6 +88,15 @@ public class Util {
         return null;
     }
 	
+	public static String byteToHex(final byte[] hash) {
+		Formatter formatter = new Formatter();
+		for (byte b : hash) {
+			formatter.format("%02x", b);
+		}
+		String result = formatter.toString();
+		formatter.close();
+		return result;
+	}
 
 	public static String decodeAndSave(String data,String fileName){
 		BASE64Decoder decoder = new BASE64Decoder();
@@ -136,4 +155,5 @@ public class Util {
 		}
 		return map;
 	}
+
 }

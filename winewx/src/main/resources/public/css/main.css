@@ -38,29 +38,29 @@ ul li { list-style-type: none; }
 /*list*/
 .chooses { position: fixed; z-index: 99; margin: 0; padding: 0; width: 100%; top: 0; }
 .chooses>li { float: left; width: 33.3%; list-style: none; }
-.chooses>li>a { display: block; color: #333; background-color: #fff; font-size: 14px; padding: 5px 0; border-bottom: 1px solid #ddd;}
-.has_top { margin-top: 35px; } /*通用顶部菜单栏*/
+.typeOff { display: block; color: #333; background-color: #fff; font-size: 18px; padding: 12px 0; border-bottom: 1px solid #ddd;}
+.has_top { margin-top: 60px; } /*通用顶部菜单栏*/
 .list_col1 { padding: 0 10px; }
 .list_col1 li { margin-top: 0; padding: 5px 0; }
 .list_col1 li a:not(.btn) { margin: 0; }
-.list_col1 li img { width: 64px; height: 64px; float: left; margin-right: 10px; }
+.list_col1 li img { max-width: 150px; max-height: 150px; float: left; margin-right: 10px; }
 .list_col1 li .h4 { color: #333; font-size: 14px; }
 .list_col1 li .price { color: red; font-size: 16px; float: left; }
 .list_col1 li .price+del { color: #777; font-size: 12px; margin-left: 5px; }
-.list_col1 li p { font-size: 12px; }
+.list_col1 li p { font-size: 16px;    padding-right: 10px; }
 
 /*detail*/
-.box { border-bottom: 10px solid #ddd; padding: 10px 20px; }
+.box { border-bottom: 10px solid #ddd; padding: 12px 20px; }
 .box .h4 { color: #333; font-size: 14px; }
 .box .price { color: red; font-size: 16px; float: left; }
 .box .price+del { color: #777; font-size: 12px; margin-left: 5px; }
 .box .btn-link { padding: 0; text-decoration: none; }
 .box p { font-size: 12px; }
-.box span { font-size: 12px; color: #777; }
+.box span { font-size: 16px; color: #777; }
 .box .pull-right { color: #777; }
 .box .quality input[type=tel] { width: 25px; height: 20px; margin: 0; padding: 0; line-height: 0; border: none; }
 .box .btn-block { color: #fff; background-color: orange; width: 100%; font-size: 16px; margin-bottom: 0; } 
-.detail_class1 a { width: 49%; display: inline-block; color: #333; font-size: 12px; padding: 10px 0; border-bottom: 2px solid #ddd; }
+.detail_class1 a { width: 49%; display: inline-block; color: #333; font-size: 16px; padding: 10px 0; border-bottom: 2px solid #ddd; }
 .detail_class1 .active { color: red; border-bottom: 2px solid #A30008; }
 .detail_class2 .detail { margin: 10px 0; font-size: 12px; }
 .detail_class2 ul { border-top: none; padding: 0 10px; }
@@ -71,9 +71,9 @@ ul li { list-style-type: none; }
 /*pay*/
 .address { border-top: none; padding: 0 10px; }
 .address>li { list-style: none; padding: 10px 0; border-bottom: 1px solid #ddd; }
-.address>li span { font-size: 12px; }
+.address>li span { font-size: 16px; }
 .address>li .col1 { display: inline-block; width: 25%; }
-.address>li .col2 { float: right; font-size: 12px; }
+.address>li .col2 { float: right; font-size: 16px; }
 .address>li .col2 p { margin-bottom: 0; }
 .address>li .col2 input { border: none; }
 .address>li .col2 #name { max-width: 60px; }

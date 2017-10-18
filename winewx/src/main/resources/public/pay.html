@@ -1,57 +1,112 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>商城</title>
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<link rel="stylesheet" href="css/normalize.css">
-	<link rel="stylesheet" href="css/main.css">
-	<script src="js/jquery-2.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-  </head>
+
+<head>
+  <meta charset="utf-8">
+  <title>商城</title>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css"> </head>
+
 <body>
-<div class="content">
-<!--<div class="text-center">
-	<button class="btn-link" onclick="">+ 添加收货地址</button>
+  <div class="content" id="divBody">
+    <!--<div class="text-center">
+  <button class="btn-link" onclick="">+ 添加收货地址</button>
 </div>-->
-<!--<ul class="address">
-  <li><span class="col1">收货地址: </span>
-    <div class="col2 text-right">
-	  <p>张三 13800000000</p>
-	  <p>湖北省武汉市某某大道1号101</p>
-	</div>
-	<div class="clear"></div>
-  </li>
-  <li><span class="col1">配送方式: </span><div class="col2">平邮 免运费</div></li>
-</ul>-->
-<ul class="address">
-  <li><span class="col1">收货地址: </span>
-    <div class="col2 text-right">
-	  <input type="text" class="text-right" id="name" value="张三">
-	  <input type="tel" maxlength="11" onkeypress="if(event.keyCode<48||event.keyCode>57)event.returnValue=false" class="text-right" id="tel" value="13800000000">
-	  <textarea class="text-right" onpropertychange="this.style.height = this.scrollHeight + 'px';" oninput="this.style.height = this.scrollHeight + 'px';">湖北省武汉市某某大道1号101</textarea>
-	</div>
-	<div class="clear"></div>
-  </li>
-  <li><span class="col1">配送方式: </span>
-    <div class="col2"><select>
-  <option>平邮 免邮费</option><option>顺丰 20元</option></select></div></li>
-</ul>
-<ul class="table-view list_col1">
-  <li class="table-view-cell media">
-    <img class="img-responsive" src="img/item_1.jpg">
-    <div class="h4" >商品名称商品名称</div>
-    <p class="pull-right">¥300.00 x3</p>
-  </li>
-</ul>
-<ul class="list_col1 pull-right">
-  <li><span>总价（免运费）: </span><span>¥900.00</span></li>
-</ul>
-<button class="btn btn-block btn-pay" onclick="">去付款</button>
-</div>
+    <ul class="address">
+      <li> <span class="col1">收货地址: </span>
+        <div class="col2 text-right" v-if="address!=undefined">
+          <p>{{address.name}} {{address.phoneNo}}</p>
+          <p>{{address.province}}{{address.city}}{{address.district}}{{address.detail}}</p>
+        </div>
+        <div class="col2 text-right" v-else v-on:click="addAddress">
+          <p style="padding: 10px;color: #aaa;">点击添加 地址</p>
+        </div>
+        <div class="clear"></div>
+      </li>
+      <li> <span class="col1">配送方式: </span>
+        <div class="col2">
+          <select>
+            <option>平邮 免邮费</option>
+          </select>
+        </div>
+      </li>
+    </ul>
+    <ul class="table-view list_col1">
+      <li class="table-view-cell media">
+        <img class="img-responsive" :src="product.imgUrl">
+        <div class="h4">{{product.productName}}</div>
+        <p class="pull-right">¥{{product.vipPrice}} x {{quantity}}</p>
+      </li>
+    </ul>
+    <ul class="list_col1 pull-right">
+      <li style="font-size:16px"> <span>总价（免运费）: </span> <span>¥{{total}}</span> </li>
+    </ul>
+    <button class="btn btn-block btn-pay" onclick="">去付款</button>
+  </div>
+  <script type="text/javascript" src="js/vue.min.js"></script>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/layer.js"></script>
+  <script type="text/javascript" src="js/sync.js"></script>
+  <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js" type="text/javascript"></script>
+  <script>
+  var db = new Vue({
+    el: "#divBody",
+    mounted: function() {
+      var that = this;
+      this.productId = getQueryString("productId");
+      this.quantity = getQueryString("quantity");
+      post2SRV("productDetail", { productId: this.productId }, function(data) {
+        that.product = data;
+        that.total = that.product.vipPrice * that.quantity;
+      }, "json");
+      post2SRV("address", function(data) {
+        that.address = data;
+      }, "json");
+    },
+    methods: {
+      addAddress: function() {
+        wx.openAddress({
+          success: function(res) {
+            alert(res);
+            alert(res.userName);
+            var userName = res.userName; // 收货人姓名
+            var postalCode = res.postalCode; // 邮编
+            var provinceName = res.provinceName; // 国标收货地址第一级地址（省）
+            var cityName = res.cityName; // 国标收货地址第二级地址（市）
+            var countryName = res.countryName; // 国标收货地址第三级地址（国家）
+            var detailInfo = res.detailInfo; // 详细收货地址信息
+            var nationalCode = res.nationalCode; // 收货地址国家码
+            var telNumber = res.telNumber; // 收货人手机号码
+          }
+        });
+      }
+    },
+    data: {
+      address: {},
+      productId: "",
+      product: {},
+      quantity: 1,
+      total: 0
+    }
+  });
+  post2SRV("wxSign", { url: window.location.href }, function(data) {
+    wx.config({
+      debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      appId: data.appId, // 必填，公众号的唯一标识
+      timestamp: data.timestamp, // 必填，生成签名的时间戳
+      nonceStr: data.nonceStr, // 必填，生成签名的随机串
+      signature: data.signature, // 必填，签名，见附录1
+      jsApiList: [ // 必填，需要使用的JS接口列表
+      ]
+    });
+  }, "json");
+  </script>
 </body>
+
 </html>

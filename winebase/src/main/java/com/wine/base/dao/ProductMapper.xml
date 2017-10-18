@@ -20,6 +20,9 @@
 		<result column="main_pic" property="mainPic"/>
 	</collection>
   </resultMap>
+  <select id="selectAllProduct" resultMap="BaseResultMap">
+    select a.*,b.* from product a,image b where a.product_id=b.product_id
+  </select>
   <select id="selectByPageNo" resultMap="BaseResultMap">
     select a.*,b.img_url from product a,image b where a.product_id=b.product_id and b.main_pic=1 and a.status='N'
 		order by a.add_time desc

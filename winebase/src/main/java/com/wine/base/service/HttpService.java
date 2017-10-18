@@ -27,7 +27,10 @@ public class HttpService {
 	public static String[] whiteIp=new String[]{"58.48.244.252","59.172.234.164","171.113.111.219"};
 	
 	private String acToken;
+	private String jsapiTicket;
 	private long acTokenTime;
+	private long jsapiTicketTime;
+
 	private HttpClient httpClient;
 	
 	public HttpService(){
@@ -45,6 +48,19 @@ public class HttpService {
 			acTokenTime=System.currentTimeMillis();
 		}
 		return acToken;
+	}
+	public String getJsapiTicket() throws WineException{
+		if(jsapiTicketTime==0l||jsapiTicket==null||
+				(System.currentTimeMillis()-jsapiTicketTime)>7200*1000){
+			
+			String url="https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="
+					+ getAcToken()+"&type=jsapi";
+			String retStr=sendGet(url);
+			JSONObject jo=JSON.parseObject(retStr);
+			jsapiTicket=(String)jo.get("ticket");
+			jsapiTicketTime=System.currentTimeMillis();
+		}
+		return jsapiTicket;
 	}
 	
 	public String wxGet(String url) throws WineException{

@@ -30,7 +30,6 @@ import org.springframework.util.ResourceUtils;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
 
-import batch.service.BatchFactoryBean;
 
 @ComponentScan(basePackages={"com.wine"})  
 @SpringBootApplication
@@ -125,10 +124,4 @@ public class WinewxStarter {
         return pro;
     }
     
-    //BatchJar的配置
-    @Bean
-    public BatchFactoryBean batchFactoryBean(){
-    	return new BatchFactoryBean();
-    }
-	
 }

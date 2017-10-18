@@ -70,20 +70,32 @@
             <tr>
               <td>订单状态:</td>
               <td>
-                {{options[order.payStatus]}}
+                <span v-if="order.payStatus!='FL'">
+					<select v-model="order.payStatus" class="input-xlarge">
+        				<option value="AP">已支付</option>
+				        <option value="AS">已发货</option>
+				        <option value="CL">已取消</option>
+				    </select>
+				</span>
+				<span v-if="order.payStatus=='FL'">
+					{{options[order.payStatus]}}
+				</span>
               </td>
             </tr>
             <tr>
               <td>物流公司:</td>
-              <td>{{order.deliComp}}</td>
+              <td><input type="text" v-model="order.deliComp"></td>
             </tr>
             <tr>
               <td>物流单号:</td>
-              <td>{{order.deliNo}}</td>
+              <td><input type="text" v-model="order.deliNo"></td>
             </tr>
             <tr>
               <td></td>
               <td>
+        <button type="button" class="btn btn-primary" v-on:click="doIt">
+          <i class="icon-save"></i> 保存
+        </button>
         <button style="margin-left:2%" class="btn btn-primary" onclick="location='/wineback/orderList.html'">
           <i class="icon-arrow-left"></i>返回
         </button>
@@ -115,6 +127,42 @@
       productDetail: function() {
         window.location.href = "/wineback/productDetail.html?productId=" + this.order.product.productId;
       },
+      doIt:function(){
+    	  var param={
+    		orderId:db.order.orderId,
+    		payStatus:db.order.payStatus,
+    		deliComp:db.order.deliComp,
+    		deliNo:db.order.deliNo
+    	  };
+    	  post2SRV("orderEdit", param, function(data) {
+    		  window.location.href = "/wineback/orderDetail.html?orderId=" + db.order.orderId;
+   	      }, "json");
+      },
+      changeState: function() {
+        var that = this;
+        var selectLayer = layer.open({
+          title: "<div class='font18'>修改状态</div>",
+          btn: ["确定", "取消"],
+          btn1: function() {
+            var param = {
+              orderId: that.order.orderId,
+              payStatus: that.payStatus
+            }
+            post2SRV("orderChangeState", param, function(data) {
+              layer.msg("修改成功", { time: 1000 });
+              that.order.payStatus = that.payStatus;
+              that.order.sendTime = data;
+            }, "json");
+            layer.close(selectLayer);
+          },
+          btn2: function() {
+            layer.close(selectLayer);
+          },
+          type: 1,
+          content: $("#selectLayer"),
+          area: "300px"
+        });
+      }
     },
     data: {
       order: {

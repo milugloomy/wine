@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.core.annotation.Order;
 
 import com.wine.base.bean.OrderJnl;
 
@@ -28,4 +29,6 @@ public interface OrderJnlMapper {
 			@Param("startDate")Date startDate,@Param("endDate")Date endDate);
 
 	int updateState(@Param("orderId")int orderId, @Param("payStatus")String payStatus);
+
+	List<Order> selectByUserId(int userId);
 }

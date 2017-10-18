@@ -12,7 +12,7 @@ public class OrderJnl {
     private User user;
     
     private String nickname;
-
+    
     private Product product;
     
     private String payStatus;
@@ -22,8 +22,34 @@ public class OrderJnl {
 
     @JSONField (format="yyyy-MM-dd hh:MM")
     private Date sendTime;
-
+    
     private Address address;
+    
+    private String deliComp;
+    
+    private String deliNo;
+    
+    private Integer userId;
+    
+    private Integer productId;
+    
+    private Integer addrId;
+
+	public String getDeliComp() {
+		return deliComp;
+	}
+
+	public void setDeliComp(String deliComp) {
+		this.deliComp = deliComp;
+	}
+
+	public String getDeliNo() {
+		return deliNo;
+	}
+
+	public void setDeliNo(String deliNo) {
+		this.deliNo = deliNo;
+	}
 
 	public Integer getOrderId() {
 		return orderId;
@@ -95,6 +121,30 @@ public class OrderJnl {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+	
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public Integer getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Integer productId) {
+		this.productId = productId;
+	}
+
+	public Integer getAddrId() {
+		return addrId;
+	}
+
+	public void setAddrId(Integer addrId) {
+		this.addrId = addrId;
 	}
 
 }

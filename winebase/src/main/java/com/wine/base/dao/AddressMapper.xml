@@ -18,6 +18,12 @@
     addr_id, user_id, name, phone_No, province, city, district, detail, status, main_addr, 
     add_time
   </sql>
+  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from address
+    where user_id = #{userId,jdbcType=INTEGER} and status='N'
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

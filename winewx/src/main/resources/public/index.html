@@ -1,88 +1,115 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>商城</title>
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<link rel="stylesheet" href="css/normalize.css">
-	<link rel="stylesheet" href="css/main.css">
-	<script src="js/jquery-2.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-  </head>
+
+<head>
+  <meta charset="utf-8">
+  <title>花道酒业</title>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no,minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+  <style type="text/css">
+  .img-responsive {
+    height: 200px;
+  }
+
+  .user_img+p {
+    width: 300px;
+  }
+  </style>
+</head>
+
 <body>
-<div class="content">
-  <div class="user_bg">
-    <img class="img-circle user_img" src="img/user_img.png">
-    <p>张三</p>
-	<p class="label label-default">您有2个在途快递，请注意查收</p>
+  <div class="content" id="divBody">
+    <div class="user_bg">
+      <img class="img-circle user_img" :src="user.headimgurl">
+      <p>{{user.nickname}}</p>
+      <p class="label label-default" v-if="orderList.length>0"> 您有{{orderList.length}}个在途快递，请注意查收 </p>
+    </div>
+    <ul class="address">
+      <li><span class="col1">在途运单号:</span>
+        <div class="col2 text-right">
+          <p v-for="row in orderList"> 顺丰 123456789--{{row.orderId}} </p>
+        </div>
+        <div class="clear"></div>
+      </li>
+    </ul>
+    <ul class="main—btns">
+      <li class="text-center">
+        <a href="list.html?type=rw" data-transition="slide-in">
+          <img class="img-responsive" src="img/main_btns_1.png">
+          <p>红葡萄酒</p>
+        </a>
+      </li>
+      <li class="text-center">
+        <a href="list.html?type=ww" data-transition="slide-in">
+          <img class="img-responsive" src="img/main_btns_2.png">
+          <p>白葡萄酒</p>
+        </a>
+      </li>
+      <li class="text-center">
+        <a href="list.html" data-transition="slide-in">
+          <img class="img-responsive" src="img/main_btns_3.png">
+          <p>全部</p>
+        </a>
+      </li>
+    </ul>
+    <ul class="table-view list_col2">
+      <li class="table-view-cell media" v-for="row in prodList">
+        <a v-on:click="goDetail(row.productId)" data-transition="slide-in">
+          <img class="img-responsive" :src="row.imgUrl">
+          <div class="h4">{{row.productName}}</div>
+          <p class="price">¥{{row.vipPrice}}</p>
+          <del>¥{{row.originPrice}}</del>
+        </a>
+      </li>
+    </ul>
   </div>
-  <!--<ul class="table-view menu">
-    <li class="table-view-cell">
-      <a href=""><span class="fa fa-angle-right pull-right"></span><p>会员专享</p></a>
-    </li>
-  </ul>-->
-  <ul class="address">
-  <li><span class="col1">在途运单号: </span>
-    <div class="col2 text-right">
-	  <p>顺丰 123456789</p>
-	  <p>顺丰 123456789</p>
-	</div>
-	<div class="clear"></div>
-  </li>
-  </ul>
-  <ul class="main—btns">
-    <li class="text-center">
-	<a href="list.html" data-transition="slide-in">
-      <img class="img-responsive" src="img/main_btns_1.png">
-      <p>红葡萄酒</p>
-      </a>
-	</li><li class="text-center">
-	<a href="list.html" data-transition="slide-in">
-      <img class="img-responsive" src="img/main_btns_2.png">
-      <p>白葡萄酒</p>
-      </a>
-	</li><li class="text-center">
-	<a href="list.html" data-transition="slide-in">
-      <img class="img-responsive" src="img/main_btns_3.png">
-      <p>全部</p>
-      </a>
-	</li>
-  </ul>
-  <ul class="table-view list_col2">	  
-    <li class="table-view-cell media">
-      <a href="detail.html" data-transition="slide-in">
-      <img class="img-responsive" src="img/item_1.jpg">
-      <div class="h4">商品名称商品名称</div>
-      <p class="price">¥300.00</p><del>¥500.00</del>
-      </a>
-    </li>
-	<li class="table-view-cell media">
-      <a href="detail.html" data-transition="slide-in">
-      <img class="img-responsive" src="img/item_1.jpg">
-      <div class="h4">商品名称商品名称</div>
-      <p class="price">¥300.00</p><del>¥500.00</del>
-      </a>
-    </li>
-	<li class="table-view-cell media">
-      <a href="detail.html" data-transition="slide-in">
-      <img class="img-responsive" src="img/item_1.jpg">
-      <div class="h4">商品名称商品名称</div>
-      <p class="price">¥300.00</p><del>¥500.00</del>
-      </a>
-    </li>
-	<li class="table-view-cell media">
-      <a href="detail.html" data-transition="slide-in">
-      <img class="img-responsive" src="img/item_1.jpg">
-      <div class="h4">商品名称商品名称</div>
-      <p class="price">¥300.00</p><del>¥500.00</del>
-      </a>
-    </li>
-  </ul>	
-  <!--<button class="btn btn-block" onclick="window.location.href='list.html'">点击查看更多</button>-->
-</div>
+  <script type="text/javascript" src="js/vue.min.js"></script>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/layer.js"></script>
+  <script type="text/javascript" src="js/sync.js"></script>
+  <script type="text/javascript">
+  var db = new Vue({
+    el: "#divBody",
+    mounted: function() {
+      this.getProdList();
+      this.getUserInfo();
+      this.getExpressList();
+    },
+    methods: {
+      getProdList: function() {
+        var that = this;
+        post2SRV("productList", function(data) {
+          that.prodList = data.slice(0, 6);
+        }, "json");
+      },
+      getUserInfo: function() {
+        var that = this;
+        post2SRV("userInfo", function(data) {
+          that.user = data;
+        }, "json");
+      },
+      getExpressList: function() {
+        var that = this;
+        post2SRV("expressList", function(data) {
+          that.orderList = data;
+        }, "json");
+      },
+      goDetail: function(productId) {
+        window.location.href = "/winewx/detail.html?productId=" + productId;
+      }
+    },
+    data: {
+      prodList: [],
+      user: {},
+      orderList: []
+    }
+  });
+  </script>
 </body>
+
 </html>

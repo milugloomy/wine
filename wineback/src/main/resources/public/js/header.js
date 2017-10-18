@@ -1,15 +1,14 @@
 Vue.component('mymenu', {
-	props: {
-		menu1:{
-			default:false
-		},
-		menu2:{
-			default:false
-		}
-	},
-	//v-bind:class 中 样式名带-的 需加单引号
-	template: 
-	'<div>\
+  props: {
+    menu1: {
+      default: false
+    },
+    menu2: {
+      default: false
+    }
+  },
+  //v-bind:class 中 样式名带-的 需加单引号
+  template: '<div>\
 		<div class="navbar">\
 			<div class="navbar-inner">\
 				<ul class="nav pull-right">\
@@ -50,33 +49,32 @@ Vue.component('mymenu', {
 		</div>\
 	</div>\
 	',
-	mounted:function(){
-		var that=this;
-		post2SRV("/wineback/manager",function(data){
-			that.username=data.username;
-		},"json");
-	},
-	methods:{
-		logout:function(){
-			post2SRV("/wineback/logout",function(data){
-				window.location.href="/wineback/index.html"
-			},"json");
-		}
-	},
-	data:function(){
-		return{
-			username:""
-		}
-	}
+  mounted: function() {
+    var that = this;
+    post2SRV("/wineback/manager", function(data) {
+      that.username = data.username;
+    }, "json");
+  },
+  methods: {
+    logout: function() {
+      post2SRV("/wineback/logout", function(data) {
+        window.location.href = "/wineback/index.html"
+      }, "json");
+    }
+  },
+  data: function() {
+    return {
+      username: ""
+    }
+  }
 });
-var nav=new Vue({
-	el:"#menu"
+var nav = new Vue({
+  el: "#menu"
 });
 
 Vue.component('mynav', {
-	props: ["name"],
-	template:
-		'<div>\
+  props: ["name"],
+  template: '<div>\
 			<div class="header">\
 				<div class="stats">\
 					<p class="stat">\
@@ -96,24 +94,23 @@ Vue.component('mynav', {
 				<li class="active">{{name}}</li>\
 			</ul>\
 		<div>',
-	mounted:function(){
-		var date=new Date();
-		this.year=date.getFullYear();
-		this.month=date.getMonth()+1;
-		this.day=date.getDate();
-	},
-	data:function(){
-		return{
-			year:"",
-			month:"",
-			day:""
-		}
-	}
+  mounted: function() {
+    var date = new Date();
+    this.year = date.getFullYear();
+    this.month = date.getMonth() + 1;
+    this.day = date.getDate();
+  },
+  data: function() {
+    return {
+      year: "",
+      month: "",
+      day: ""
+    }
+  }
 });
 
 Vue.component('myfooter', {
-	template: 
-		'<footer>\
+  template: '<footer>\
 			<hr>\
 			<p class="pull-right">版权信息</p>\
 			<p>\
