@@ -90,7 +90,7 @@
     	var that=this;
         wx.openAddress({
           success: function(res) {
-        	addressNull=false;
+        	that.addressNull=false;
         	//有一个不同则说明数据变化，发请求更新地址
         	if(that.address.name != res.userName
         			  || that.address.province != res.provinceName
