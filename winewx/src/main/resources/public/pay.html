@@ -27,13 +27,14 @@
   <button class="btn-link" onclick="">+ 添加收货地址</button>
 </div>-->
     <ul class="address">
-      <li> <span class="col1">收货地址: </span>
-        <div class="col2 text-right" v-if="address.addrId!=undefined">
+      <li v-on:click="addAddress"> 
+        <span class="col1">收货地址: </span>
+        <div class="col2 text-right" v-if="addressNull" >
+          <p style="padding: 10px;color: #aaa;">点击添加 地址</p>
+        </div>
+        <div class="col2 text-right" v-else>
           <p>{{address.name}} {{address.phoneNo}}</p>
           <p>{{address.province}}{{address.city}}{{address.district}}{{address.detail}}</p>
-        </div>
-        <div class="col2 text-right" v-else v-on:click="addAddress">
-          <p style="padding: 10px;color: #aaa;">点击添加 地址</p>
         </div>
         <div class="clear"></div>
       </li>
@@ -75,7 +76,13 @@
         that.total = that.product.vipPrice * that.quantity;
       }, "json");
       post2SRV("address", function(data) {
-        that.address = data||{};
+        if(data==undefined){
+        	that.addressNull=true;
+        	that.address={}
+        }else{
+        	that.addressNull=false;
+        	that.address = data;
+        }
       }, "json");
     },
     methods: {
@@ -110,7 +117,9 @@
       productId: "",
       product: {},
       quantity: 1,
-      total: 0
+      total: 0,
+      //地址是否为空
+      addressNull:true
     }
   });
   post2SRV("wxSign", { url: window.location.href }, function(data) {
