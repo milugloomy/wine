@@ -104,11 +104,13 @@
               that.address.district = res.countryName; // 国标收货地址第三级地址（国家）
               that.address.detail = res.detailInfo; // 详细收货地址信息
               that.address.phoneNo = res.telNumber; // 收货人手机号码
-              alert(that.address.name);
-              //发请求更新用户默认地址
-              post2SRV("addAddress",that.address,function(data){
-            	  that.address.addrId=data;
-              },"json");
+
+              Vue.nextTick(function() {
+                  //发请求更新用户默认地址
+                  post2SRV("addAddress",that.address,function(data){
+                	  that.address.addrId=data;
+                  },"json");
+              });
         	}
           }
         });
