@@ -34,8 +34,8 @@ public class AddressController {
 		int userId=Util.getUserId(session);
 		Address address=new Address();
 		BeanUtils.copyProperties(addressForm, address);
-		int addrId=addressBusiness.addressAdd(userId, address);
-		return new MyResEntity(addrId);
+		address=addressBusiness.addressAdd(userId, address);
+		return new MyResEntity(address);
 	}
 	
 }

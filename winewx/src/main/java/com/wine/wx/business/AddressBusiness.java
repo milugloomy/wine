@@ -18,17 +18,16 @@ public class AddressBusiness {
 	@Autowired
 	private TransactionTemplate transactionTemplate;
 	
-	public Integer addressAdd(int userId, Address address) {
+	public Address addressAdd(int userId, Address address) {
 		address.setAddTime(new Date());
 		address.setStatus("N");
 		address.setUserId(userId);
 		//事务，先将其他地址更新状态为C，再插入新地址
-		return transactionTemplate.execute(new TransactionCallback<Integer>(){
-			public Integer doInTransaction(TransactionStatus status) {
+		return transactionTemplate.execute(new TransactionCallback<Address>(){
+			public Address doInTransaction(TransactionStatus status) {
 				addressMapper.updateStatusByUserId(userId);
 				addressMapper.insertSelective(address);
-				int addrId=address.getAddrId();
-				return addrId;
+				return address;
 			}
 		});
 	}
