@@ -55,8 +55,8 @@
     </div>
     <div class="detail_class1" id="tabs">
       <!--分页按钮-->
-      <a class="text-center active" href="#tabs01">商品详情</a> 
-      <a class="text-center" href="#tabs02">商品参数</a> 
+      <a class="text-center active" v-on:click="tabChange('tabs01',event)">商品详情</a> 
+      <a class="text-center" v-on:click="tabChange('tabs02',event)">商品参数</a> 
     </div>
     <div class="tab-content detail_class2">
       <!--分页-->
@@ -85,10 +85,6 @@
     mounted: function() {
       $("#banner").carousel({ interval: 2000 });
       
-      $('#tabs a').click(function(e) {
-        $(this).siblings().attr("class", "text-center");
-        $(this).attr("class", "text-center active");
-      });
       var that=this;
       this.productId=getQueryString("productId");
       post2SRV("productDetail",{productId:this.productId},function(data){
@@ -96,6 +92,12 @@
       },"json");
     },
     methods: {
+	  tabChange:function(id,event){
+	    $(event.currentTarget).siblings().attr("class", "text-center");
+	    $(event.currentTarget).attr("class", "text-center active");
+	    $("#"+id).attr("class", "tab-pane active");
+	    $("#"+id).siblings().attr("class", "tab-pane");
+	  }, 	
       add:function(){
     	  this.quantity=this.quantity+1;
       },

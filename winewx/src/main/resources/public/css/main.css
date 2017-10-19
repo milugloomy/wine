@@ -82,3 +82,7 @@ ul li { list-style-type: none; }
 .address>li .col2 textarea { display: block; border: none; width: 200px; overflow-y: hidden; height: 20px; }
 .address>li .col2 select { border: none; }
 .btn-pay { font-size: 16px; }
+/*轮播图居中*/
+.carousel-inner>.item>img { height: 240px; margin: 0 auto;     max-width: none; }
+/*固定首页商品图高度*/
+.img-responsive { height: 120px; margin: 0 auto; }
