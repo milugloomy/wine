@@ -55,44 +55,46 @@
 <script type="text/javascript" src="js/vue.min.js"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/layer.js"></script>
-<script type="text/javascript" src="js/iscroll-probe.js"></script>
+<script type="text/javascript" src="js/iscroll.js"></script>
 <script type="text/javascript" src="js/sync.js"></script>
 <script type="text/javascript">
 var myScroll;
 var db = new Vue({
   el: "#divBody",
   mounted: function() {
-    //myScroll实例化
-    myScroll = new IScroll('#wrapper', {
-      preventDefaultException: {
-        tagName: /^(DIV|A|LI|SPAN|INPUT|TEXTAREA|BUTTON|SELECT)$/
-      },
-      probeType: 3
-    });
-    //是否到页底向上拖动
-    myScroll.pullUpEnd = false;
     //是否启用滚动函数
-    myScroll.enable = true;
-    myScroll.on("scroll", function() {
-      //上拉40px加载
-      if ((-myScroll.y) > (-myScroll.maxScrollY + 40) && myScroll.pullUpEnd == false && myScroll.enable == true) {
-        myScroll.pullUpEnd = true;
-        $("#pullUp").attr("class", "flip");
-        $("#pullUpLabel").html("松手开始更新...");
+    myScroll = new iScroll('wrapper', {
+      useTransition: false,
+      vScrollbar:false,
+      onRefresh: function() {
+    	  $("#pullUp").attr("class", "");
+          $("#pullUpLabel").html("上拉加载更多...");
+      },
+      onScrollMove: function() {
+        //上拉40px加载
+        if ((-myScroll.y) > (-myScroll.maxScrollY + 40) && myScroll.pullUpEnd == false && myScroll.enable == true) {
+          myScroll.pullUpEnd = true;
+          $("#pullUp").attr("class", "flip");
+          $("#pullUpLabel").html("松手开始更新...");
+        }
+      },
+      onScrollEnd: function() {
+        //回弹到最后才加载
+        if (((Math.abs(myScroll.y) - Math.abs(myScroll.maxScrollY)) < 5) && myScroll.pullUpEnd == true //上拉后end才加载
+          && myScroll.enable == true) {
+          myScroll.pullUpEnd = false;
+          //loading样式
+          $("#pullUp").attr("class", "loading");
+          $("#pullUpLabel").html("加载中...");
+          //加载数据
+          db.getList();
+        }
       }
     });
-    myScroll.on("scrollEnd", function() {
-      //回弹到最后才加载
-      if (((Math.abs(myScroll.y) - Math.abs(myScroll.maxScrollY)) < 5) && myScroll.pullUpEnd == true //上拉后end才加载
-        && myScroll.enable == true) {
-        myScroll.pullUpEnd = false;
-        //loading样式
-        $("#pullUp").attr("class", "loading");
-        $("#pullUpLabel").html("加载中...");
-        //加载数据
-        db.getList();
-      }
-    });
+    //默认启动
+    myScroll.enable=true;
+    //是否到页底向上拖动
+    myScroll.pullUpEnd=false;
     //默认销量
     this.active = this.sort.sale;
     this.type = getQueryString("type");
@@ -111,7 +113,7 @@ var db = new Vue({
           } else {
             that.prodList = that.prodList.concat(data);
           }
-          //刷新高度
+          //数据渲染完成后刷新高度
           Vue.nextTick(function() {
             myScroll.refresh();
           });
@@ -123,8 +125,6 @@ var db = new Vue({
           $("#pullUp").hide();
           myScroll.enable = false;
         }
-        $("#pullUp").attr("class", "");
-        $("#pullUpLabel").html("上拉加载更多...");
       }, "json");
     },
     getParam: function() {
@@ -148,6 +148,8 @@ var db = new Vue({
       }
       //点击title pageNo还原第一页
       this.pageNo = 1;
+      //返回到最上面
+      myScroll.scrollTo(0,0);
       //true表示重新加载第一页
       this.getList(true);
     },
