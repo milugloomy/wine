@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wine.back.batch.UserBatch;
+import com.wine.back.common.RSAUtil;
 import com.wine.base.bean.Manager;
 import com.wine.base.bean.User;
 import com.wine.base.common.MyResEntity;
@@ -32,7 +33,12 @@ public class UserController {
 	private UserBatch userBatch;
 	
 	@RequestMapping("/login")
-	public MyResEntity login(String username,String password,HttpSession session) throws WineException{
+	public MyResEntity login(@RequestParam("username")String encUsername,
+			@RequestParam("password")String encPassword,HttpSession session) throws WineException{
+		//解密
+		String username=RSAUtil.decrypt(encUsername);
+		String password=RSAUtil.decrypt(encPassword);
+		
 		Manager manager=managerMapper.selectManagerByUsername(username);
 		if(manager==null)
 			throw new WineException("username.not.exist");

@@ -39,7 +39,7 @@
         <ul class="table-view list_col1 has_top">
           <li class="table-view-cell media" v-for="row in prodList" v-on:click="goDetail(row.productId)">
             <a data-transition="slide-in">
-              <img class="img-responsive" :src="row.imgUrl">
+              <img class="img-responsive" v-lazy="row.imgUrl">
               <div class="h4">{{row.productName}}</div>
               <p class="price">¥{{row.vipPrice}}</p>
               <del>¥{{row.originPrice}}</del>
@@ -53,11 +53,19 @@
   </div>
 </body>
 <script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/vue-lazyload.js"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/layer.js"></script>
 <script type="text/javascript" src="js/iscroll.js"></script>
 <script type="text/javascript" src="js/sync.js"></script>
 <script type="text/javascript">
+//懒加载
+Vue.use(VueLazyload, {
+	error: 'img/img_error.png',//这个是请求失败后显示的图片
+	loading: 'img/loading-0.gif',//这个是加载的loading过渡效果
+	try: 2 // 这个是加载图片数量
+})
+//iscroll对象
 var myScroll;
 var db = new Vue({
   el: "#divBody",

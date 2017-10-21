@@ -63,9 +63,8 @@
     methods: {
       login: function() {
         var user = {
-          username: encrypt.encrypt(db.username),
-          //加密
-          password: encrypt.encrypt(db.password)
+          username: db.username,
+          password: db.password
         }
         post2SRV("login", user, function(data) {
           if (document.getElementById("rememberMe").checked == true) {
@@ -86,6 +85,18 @@
       password: ""
     }
   });
+  </script>
+  <script type="text/javascript">
+  //使用公钥加密
+  var encrypt = new JSEncrypt();
+  encrypt.setPublicKey('-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC/fQ+z91P1/uYJKaQ2bMtlO+wZYcVfMMsmCEgPEE3YYrkUX6XqJe7xQ2KMlrR5R45f/1wUg1mnKtGLuBHmZVkQwd1LO0aXAkUdYAWitoJW0SMIkvk1bTehggX7fUE0aKUpSCkIykOF0LOn8UEADXgIRF6dKd67t2Lwcpn4CHmsYwIDAQAB-----END PUBLIC KEY-----');
+  var encrypted = encrypt.encrypt('hello world');
+  console.log('加密后数据:%o', encrypted);
+  //使用私钥解密
+  var decrypt = new JSEncrypt();
+  decrypt.setPrivateKey('-----BEGIN RSA PRIVATE KEY-----MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAL99D7P3U/X+5gkppDZsy2U77BlhxV8wyyYISA8QTdhiuRRfpeol7vFDYoyWtHlHjl//XBSDWacq0Yu4EeZlWRDB3Us7RpcCRR1gBaK2glbRIwiS+TVtN6GCBft9QTRopSlIKQjKQ4XQs6fxQQANeAhEXp0p3ru3YvBymfgIeaxjAgMBAAECgYADZqk8vQvUtq5HQ2ITRWNnbOUInl/vDOLOzh7ZhaScT0SSRBCiVAImbtf1P0f9T3QL6HEuPBb/jRcjsCVBPlOSnL5kFjVd6XvGO1RNL6t5NpskczDaJJzal4cuhybQkf8BVW0E2DDpkqYpAJiKyjcrCu69jCfPFOEPDkLuMTsHgQJBAOnxSdN1kQzaTz/VqYNJ+V8bOnUWgT1r2YJFMl5KElmq0HT0nsT0MnaSspXTcA98HFUMRQ97XVBArujVAgre0NECQQDRiw2XAIB+SI77j8AGNYgYOGXLyOYCRVu1d1D3FRrXpgpvR0TOYWlxD3DK0DoNY3PUialH1eab4u4dIFo+b5bzAkEAgxVymow71InW8hvUuf4PPx1Qqh8MF9CAth/z0yWKFrhByebvt8hlJk+YxZ8OIX8XmQghAkXLyZYU692/ITwsoQJBAJ7zroFnXhFtlRj6+J09KlnFHmMxqFj8qA7FzeNAXTZMvAmhtG4hssyS++q9fev+DzWgn4rglaiWwi3SBuLp30UCQQCvN1j7oP47Rg747T2JWSuU6MHREjqSw0N/rA1Y2aWynWVSrDG0lKZvPulmOw+xPo+K9SQAEa/Q6zhS8DCwY5Zh-----END RSA PRIVATE KEY-----');
+  var uncrypted = decrypt.decrypt(encrypted);
+  console.log('解密后数据:%o', uncrypted);
   </script>
 </body>
 

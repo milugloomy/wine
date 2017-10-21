@@ -1,7 +1,6 @@
 package com.wine.wx.controller;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class ProductController {
 	
 	@RequestMapping("/productDetail")
 	public MyResEntity productDetail(int productId) throws WineException{
-		List<Product> baseList=productCache.getBaseList();
+		List<Product> baseList=productCache.getSaleDescList();
 		for(Product product:baseList){
 			if(product.getProductId()==productId){
 				return new MyResEntity(product);
@@ -43,19 +42,30 @@ public class ProductController {
 			@RequestParam(defaultValue="desc")String sortType,
 			@RequestParam(defaultValue="all")String type){
 		
-		//排序依据
 		List<Product> baseList = null;
-		switch(sortBy){
-		case "time":
-			baseList=productCache.getTimeList();
-			break;
-		case "sale":
-			baseList=productCache.getSaleList();
-			break;
-		case "price":
-			baseList=productCache.getPriceList();
-			break;
+		//时间
+		if(sortBy.equals("time")){
+			if("desc".equals(sortType)){
+				baseList=productCache.getTimeDescList();
+			}else{
+				baseList=productCache.getTimeList();
+			}
+		//金额
+		}else if(sortBy.equals("price")){
+			if("desc".equals(sortType)){
+				baseList=productCache.getPriceDescList();
+			}else{
+				baseList=productCache.getPriceList();
+			}
+		//销量
+		}else{
+			if("desc".equals(sortType)){
+				baseList=productCache.getSaleDescList();
+			}else{
+				baseList=productCache.getSaleList();
+			}
 		}
+		
 		//酒类型
 		List<Product> typeList=new ArrayList<Product>();
 		if(type.equals("ww") || type.equals("rw")){
@@ -65,34 +75,18 @@ public class ProductController {
 				}
 			}
 		}else{
-			for(Product product:baseList){
-				typeList.add(product);
-			}
-//			typeList=baseList;
+			typeList=baseList;
 		}
-		//排序、分页
+		
+		//分页
 		List<Product> retList=new ArrayList<Product>();
-		//升序
-		if(sortType.equals("asc")){
-			int fromIndex=(pageNo-1)*Util.pageSize;
-			int toIndex=pageNo*Util.pageSize;
-			if(fromIndex<typeList.size()){
-				if(toIndex>typeList.size()){
-					toIndex=typeList.size();
-				}
-				retList=typeList.subList(fromIndex, toIndex);
+		int fromIndex=(pageNo-1)*Util.pageSize;
+		int toIndex=pageNo*Util.pageSize;
+		if(fromIndex<typeList.size()){
+			if(toIndex>typeList.size()){
+				toIndex=typeList.size();
 			}
-		//降序
-		}else{
-			int fromIndex=typeList.size()-pageNo*Util.pageSize;
-			int toIndex=typeList.size()-(pageNo-1)*Util.pageSize;
-			if(toIndex>0){
-				if(fromIndex<0){
-					fromIndex=0;
-				}
-				retList=typeList.subList(fromIndex, toIndex);
-				Collections.reverse(retList);
-			}
+			retList=typeList.subList(fromIndex, toIndex);
 		}
 		return new MyResEntity(retList);
 	}

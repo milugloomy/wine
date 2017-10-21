@@ -74,12 +74,12 @@ public class ProductBusiness {
 				//图片路径
 				String type=imgSrc.substring(imgSrc.indexOf("/")+1,imgSrc.indexOf(";"));
 				String fileName=Util.getTimeStr()+"."+type;
-				imgSrc="img/"+fileName;
+				imgSrc="upload/"+fileName;
 				//存储图片
 				Util.decodeAndSave(imgContent, imgPath+fileName);
 			//src为url形式的图片，直接存url
-			}else if(imgSrc.indexOf("img/")!=-1){
-				imgSrc=imgSrc.substring(imgSrc.indexOf("img/"));
+			}else if(imgSrc.indexOf("upload/")!=-1){
+				imgSrc=imgSrc.substring(imgSrc.indexOf("upload/"));
 			}
 			//插入数据库，和productId关联起来
 			Image image=new Image();
