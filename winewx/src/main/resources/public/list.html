@@ -39,7 +39,7 @@
         <ul class="table-view list_col1 has_top">
           <li class="table-view-cell media" v-for="row in prodList" v-on:click="goDetail(row.productId)">
             <a data-transition="slide-in">
-              <img class="img-responsive" v-lazy="row.imgUrl">
+              <img class="img-responsive" v-lazy="'upload/icon/'+row.imgUrl">
               <div class="h4">{{row.productName}}</div>
               <p class="price">¥{{row.vipPrice}}</p>
               <del>¥{{row.originPrice}}</del>

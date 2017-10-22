@@ -14,7 +14,7 @@
 <style type="text/css">
 .fa{
 	padding: 5px; 
-	font-size:18px;
+	font-size:16px;
 }
 </style>  
 </head>
@@ -30,7 +30,7 @@
       <div class="carousel-inner">
       	<div v-for="(row,index) in product.imgList" 
       		class="item" :class="index==0?'active':''">
-          <img :src="row.imgUrl">
+          <img :src="'upload/compressed/'+row.imgUrl">
         </div>
       </div> 
       <a class="carousel-control left" href="#banner" data-slide="prev"> </a> 
@@ -40,7 +40,7 @@
       <div class="h4">{{product.productName}}</div>
       <p class="price">￥{{product.vipPrice}}</p>
       <del>￥{{product.originPrice}}</del>
-      <button class="btn-link fa fa-comments-o pull-right"> 客服</button>
+      <a class="btn-link fa fa-comments-o pull-right" href="tel:15827296522"> 客服小莉</a>
       <!--添加客服-->
     </div>
     <div class="box"> 

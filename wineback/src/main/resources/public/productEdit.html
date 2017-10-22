@@ -22,7 +22,8 @@
   }
 
   .imgDiv img {
-    height: 120px;
+    max-height: 150px;
+    max-width: 150px;
   }
 
   .imgDiv .delete {
@@ -70,10 +71,10 @@
                 <div class="form-control" style="min-height:125px;" />
                 <template v-for="(img,index) in product.imgList">
                   <div class="imgDiv">
-                    <img :src="img.imgUrl" />
+                    <img :src="'upload/compressed/'+img.imgUrl" />
                     <a href="javascript:;" v-on:click="deletePic(index)" class="delete">
-								<i class="icon-remove"></i>
-   							</a>
+					  <i class="icon-remove"></i>
+   					</a>
                   </div>
                 </template>
                 <div>
@@ -140,6 +141,7 @@
       var that = this;
       post2SRV("productDetail", { productId: productId }, function(data) {
         that.product = data;
+        showImgUrl="upload/compressed/+img.imgUrl"
       }, "json");
     },
     methods: {
@@ -170,7 +172,7 @@
         var reader = new FileReader();
         reader.onload = function(e2) {
           var img = {
-            imgUrl: e2.target.result
+            imgUrl: "../../"+e2.target.result
           };
           db.product.imgList.push(img);
         };
@@ -186,7 +188,8 @@
       types: {
         ww: "白酒",
         rw: "红酒"
-      }
+      },
+      showImgUrl:""
     }
   });
   </script>

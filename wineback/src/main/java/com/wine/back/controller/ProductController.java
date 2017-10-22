@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
-import com.wine.back.business.ProductBusiness;
+import com.wine.back.service.ProductService;
 import com.wine.base.bean.Image;
 import com.wine.base.bean.Product;
 import com.wine.base.bean.ProductForm;
@@ -22,7 +22,7 @@ import com.wine.base.dao.ProductMapper;
 public class ProductController {
 	
 	@Autowired
-	private ProductBusiness productBusiness;
+	private ProductService productBusiness;
 	@Autowired
 	private ProductMapper productMapper;
 	

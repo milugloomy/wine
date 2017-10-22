@@ -22,7 +22,8 @@
   }
 
   .imgDiv img {
-    height: 120px;
+    max-height: 150px;
+    max-width: 150px;
   }
 
   .imgDiv .delete {
@@ -72,8 +73,8 @@
                   <div class="imgDiv">
                     <img :src="img.imgUrl" />
                     <a href="javascript:;" v-on:click="deletePic(index)" class="delete">
-								<i class="icon-remove"></i>
-   							</a>
+					  <i class="icon-remove"></i>
+   					</a>
                   </div>
                 </template>
                 <div>

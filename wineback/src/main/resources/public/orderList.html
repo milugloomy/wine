@@ -67,7 +67,7 @@
                 <td><a :href="'/wineback/orderDetail.html?orderId='+row.orderId">{{row.orderId}}</a></td>
                 <td>{{row.product.productName}}</td>
                 <td>
-                  <img width="70px" :src="row.product.imgUrl" />
+                  <img :src="'upload/icon/'+row.product.imgUrl" />
                 </td>
                 <td>{{row.user.nickname}}</td>
                 <td>{{row.amount}}元</td>

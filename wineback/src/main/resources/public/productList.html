@@ -51,7 +51,7 @@
                 <td>{{types[row.productType]}}</td>
                 <td><a href="javascript:;" v-on:click="goDetail(row.productId)">{{row.productName}}</a></td>
                 <td>
-                  <img width="70px" :src="row.imgUrl" />
+                  <img style="max-width:100px;max-height:100px;" :src="'upload/icon/'+row.imgUrl" />
                 </td>
                 <td>{{row.originPrice}}元</td>
                 <td>{{row.vipPrice}}元</td>

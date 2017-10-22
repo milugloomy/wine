@@ -1,4 +1,4 @@
-package com.wine.back.business;
+package com.wine.back.service;
 
 import java.util.Date;
 import java.util.List;
@@ -13,6 +13,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.wine.base.bean.Image;
 import com.wine.base.bean.Product;
 import com.wine.base.common.Util;
+import com.wine.base.common.WineException;
 import com.wine.base.dao.ImageMapper;
 import com.wine.base.dao.ProductMapper;
 
@@ -23,7 +24,7 @@ import com.wine.base.dao.ProductMapper;
  */
 
 @Service
-public class ProductBusiness {
+public class ProductService {
 	@Value("${img.path}")
     private String imgPath;
 	@Autowired
@@ -31,13 +32,15 @@ public class ProductBusiness {
 	@Autowired
 	private ImageMapper imageMapper;
 	@Autowired
+	private ImageService imageService;
+	@Autowired
 	private TransactionTemplate transactionTemplate;
 	
 	public Integer productAdd(Product newProduct, List<Image> imgList) {
 		newProduct.setAddTime(new Date());
 		newProduct.setStatus("N");
 		return transactionTemplate.execute(new TransactionCallback<Integer>(){
-			public Integer doInTransaction(TransactionStatus status) {
+			public Integer doInTransaction(TransactionStatus status){
 				newProduct.setStatus("N");
 				newProduct.setAddTime(new Date());
 				productMapper.insertSelective(newProduct);
@@ -68,18 +71,25 @@ public class ProductBusiness {
 		for(int i=0;i<imgList.size();i++){
 			String imgSrc=imgList.get(i).getImgUrl();
 			//base64数据格式的图片，存为图片
+			//src为url形式的图片，直接存url
 			if(imgSrc.startsWith("data:image")){
 				//图片内容
 				String imgContent=imgSrc.substring(imgSrc.indexOf(",")+1);
 				//图片路径
 				String type=imgSrc.substring(imgSrc.indexOf("/")+1,imgSrc.indexOf(";"));
 				String fileName=Util.getTimeStr()+"."+type;
-				imgSrc="upload/"+fileName;
+				imgSrc=fileName;
 				//存储图片
-				Util.decodeAndSave(imgContent, imgPath+fileName);
-			//src为url形式的图片，直接存url
-			}else if(imgSrc.indexOf("upload/")!=-1){
-				imgSrc=imgSrc.substring(imgSrc.indexOf("upload/"));
+				try {
+					//存原图
+					imageService.saveOriginal(imgContent, fileName);
+					//存压缩图
+					imageService.saveCompressed(fileName);
+					//存图标
+					imageService.saveIcon(fileName);
+				} catch (WineException e) {
+					e.printStackTrace();
+				}
 			}
 			//插入数据库，和productId关联起来
 			Image image=new Image();
