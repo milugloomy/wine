@@ -57,6 +57,7 @@
       if (cookieUsername != null && cookiePassword != null) {
         this.username = cookieUsername;
         this.password = cookiePassword;
+        document.getElementById("rememberMe").checked=true;
       }
       this.service = getQueryString("service") || "index.html";
     },

@@ -1,0 +1,123 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+   	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>定时任务</title>
+  <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+<style type="text/css">
+red{
+	color:red;
+}
+body{
+	font-size:18px;
+}
+</style>
+</head>
+<body>
+	<div class="container-fluid" id="divBody">
+		<div class="page-header" style="margin-top:20px;padding-bottom:0px;">
+	  		<h3>定时任务</h3>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">所有定时任务</div>
+			<table class="table">
+				<tr>
+					<th>id</th>
+					<th>组</th>
+					<th>名</th>
+					<th>cron</th>
+					<th>状态</th>
+					<th>已执行</th>
+					<th>上次执行</th>
+					<th>操作</th>
+				</tr>
+				<template v-for="row in list">
+				<tr>
+					<td style="color:blue">{{row.id}}</td>
+					<td>{{row.group}}</td>
+					<td>{{row.name}}</td>
+					<td>{{row.cron}}</td>
+					<td>
+						<template v-if="row.state==1">
+							运行中
+						</template>
+						<template v-if="row.state==0">
+							暂停
+						</template>
+					</td>
+					<td>{{row.executeTimes}}次</td>
+					<td>{{row.lastExeTime}}</td>
+					<td>
+						<template v-if="row.state==1">
+							<a v-on:click="pause(row.id)" href="javascript:;" >暂停</a>，
+						</template>
+						<template v-if="row.state==0">
+							<a v-on:click="resume(row.id)" href="javascript:;" >恢复</a>，
+						</template>
+						<a v-on:click="updatePre(row.id)" href="javascript:;" >更新</a>，
+						<a v-on:click="runOnce(row.id)" href="javascript:;" >执行一次</a>
+					</td>
+				</tr>
+				</template>
+			</table>
+			<div class="panel-footer" style="text-align: center">共{{list.length}}条</div>
+		</div>
+	</div>
+<script src="js/jquery.min.js"></script>
+<script src="js/vue.min.js"></script>
+<script src="js/layer.js"></script>
+<script src="js/sync.js"></script>
+<script type="text/javascript">
+var lg=new Vue({
+	el:"#divBody",
+	mounted:function(){
+		var that=this;
+		post2SRV("batch/batchList",function(data){
+			that.list=data;
+		},"json");
+	},
+	methods:{
+		pause:function(id){
+			post2SRV("batch/pause",{id:id},function(data){
+				layer.alert('暂停成功',function(){
+					window.location.reload();
+				});
+			},"json");
+		},
+		resume:function(id){
+			post2SRV("batch/resume",{id:id},function(data){
+				layer.alert('恢复成功',function(){
+					window.location.reload();
+				});
+			},"json");
+		},
+		updatePre:function(id){
+			layer.prompt({title:'请输入新的cron表达式',formType: 0},function(cron, index){
+				layer.close(index);
+				lg.update(id,cron);
+			});
+		},
+		update:function(id,cron){
+			$.post2SRV("batch/update",{id:id,cron:cron,sendTo:"abc,def"},function(data){
+				layer.alert('更新成功',function(){
+					window.location.reload();
+				});
+			},"json");
+		},
+		runOnce:function(id){
+			post2SRV("batch/runOnce",{id:id},function(data){
+				layer.alert('执行成功',function(){
+					window.location.reload();
+				});
+			},"json");
+		},
+	},
+	data:{
+		list:[]//显示list
+	}
+});
+
+</script> 
+	</body>
+</html>

@@ -22,6 +22,11 @@
     from image
     where product_id = #{productId,jdbcType=INTEGER} order by main_pic desc
   </select>
+  <select id="selectAll"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from image
+  </select>
   <delete id="deleteByProductId" parameterType="int">
     delete from image where product_id=#{productId}
   </delete>

@@ -51,16 +51,13 @@
             <tr>
               <td>商品名称:</td>
               <td>
-                <input type="text" v-model="product.productName" placeholder="请输入商品名称">
-              </td>
+                <input type="text" v-model="product.productName" placeholder="请输入商品名称"> </td>
             </tr>
             <tr>
               <td>商品类型:</td>
               <td>
                 <select v-model="product.productType" class="input-xlarge" style="width:120px">
-                  <option v-for="(value, key) in types" v-bind:value="key">
-                    {{value}}
-                  </option>
+                  <option v-for="(value, key) in types" v-bind:value="key"> {{value}} </option>
                 </select>
               </td>
             </tr>
@@ -71,18 +68,13 @@
                 <div class="form-control" style="min-height:125px;" />
                 <template v-for="(img,index) in product.imgList">
                   <div class="imgDiv">
-                    <img :src="'upload/compressed/'+img.imgUrl" />
-                    <a href="javascript:;" v-on:click="deletePic(index)" class="delete">
-					  <i class="icon-remove"></i>
-   					</a>
-                  </div>
+                    <img :src="'upload/compressed/'+img.imgUrl" /> <a href="javascript:;" v-on:click="deletePic(index)" class="delete">
+            <i class="icon-remove"></i>
+            </a> </div>
                 </template>
                 <div>
-                  <button style="margin-top:10px;" type="button" class="btn icon-plus" v-on:click="addPic">
-                    新增
-                  </button>
-                  <input type="file" v-on:change="uploadFile" id="uploadFile" style="display:none" />
-                </div>
+                  <button style="margin-top:10px;" type="button" class="btn icon-plus" v-on:click="addPic"> 新增 </button>
+                  <input type="file" name="file" v-on:change="uploadFile" id="uploadFile" style="display:none" /> </div>
               </td>
             </tr>
             <tr>
@@ -108,16 +100,12 @@
             </tr>
             <tr>
               <td></td>
-              <td>
-                <span id="errSpan" style="color:red;"></span>
-              </td>
+              <td> <span id="errSpan" style="color:red;"></span> </td>
             </tr>
             <tr>
               <td></td>
               <td>
-                <button type="button" class="btn btn-primary" v-on:click="doIt">
-                  <i class="icon-save"></i> 保存
-                </button>
+                <button type="button" class="btn btn-primary" v-on:click="doIt"> <i class="icon-save"></i> 保存 </button>
                 <button type="button" class="btn" onclick="window.history.go(-1)">取消</button>
               </td>
             </tr>
@@ -129,6 +117,7 @@
   </div>
   <script type="text/javascript" src="js/vue.min.js"></script>
   <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/jquery.form.js"></script>
   <script type="text/javascript" src="js/bootstrap.min.js"></script>
   <script type="text/javascript" src="js/layer.js"></script>
   <script type="text/javascript" src="js/sync.js"></script>
@@ -141,7 +130,6 @@
       var that = this;
       post2SRV("productDetail", { productId: productId }, function(data) {
         that.product = data;
-        showImgUrl="upload/compressed/+img.imgUrl"
       }, "json");
     },
     methods: {
@@ -155,7 +143,6 @@
           remain: this.product.totalQuantity,
           imgsStr: JSON.stringify(this.product.imgList)
         };
-
         post2SRV("productEdit", param, function(data) {
           window.location.href = "/wineback/productDetail.html?productId=" + db.product.productId;
         }, "json");
@@ -169,14 +156,29 @@
           alert('只能上传图片');
           return;
         }
-        var reader = new FileReader();
-        reader.onload = function(e2) {
-          var img = {
-            imgUrl: "../../"+e2.target.result
-          };
-          db.product.imgList.push(img);
-        };
-        reader.readAsDataURL(file);
+        //创建异步上传图片的form
+        var form = $("<form method='post' enctype='multipart/form-data'></form>");
+        var input = $("#uploadFile");
+        //form中添加待上传的文件
+        form.append(input.clone());
+        var loadLayer = layer.load(1, { shade: [0.5, '#fff'] });
+        form.ajaxSubmit({
+          type: 'post',
+          url: 'imageAdd',
+          dataType: "json",
+          success: function(data) {
+            layer.close(loadLayer);
+            if (data.retcode == "0000") {
+              var img = {
+                imgUrl: data.body
+              };
+              db.product.imgList.push(img);
+            }
+          }
+        });
+        //input内容清空 删掉form
+        input.val("");
+        form.remove();
       },
       deletePic: function(i) {
         //从list中删除
@@ -189,7 +191,6 @@
         ww: "白酒",
         rw: "红酒"
       },
-      showImgUrl:""
     }
   });
   </script>

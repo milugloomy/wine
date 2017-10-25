@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.wine.base.common.WineException;
 
@@ -40,13 +41,22 @@ public class ImageService {
 		iconPath=imgPath+"icon/";
 	}
 	
-//	@SuppressWarnings("restriction")
+	//file上传
+	public void saveOriginal(MultipartFile file,String fileName) throws WineException{
+		String path=originalPath+fileName;
+		try {
+			file.transferTo(new File(path));
+		} catch (IllegalStateException | IOException e) {
+			log.error(e.getMessage());
+			throw new WineException("img.save.original.error");
+		}
+	}
+	
+	//base64的上传
 	public void saveOriginal(String imgContent,String fileName) throws WineException{
 		String path=originalPath+fileName;
-//		BASE64Decoder decoder = new BASE64Decoder();
 		try {
 			FileOutputStream write = new FileOutputStream(new File(path));
-//			byte[] decoderBytes = decoder.decodeBuffer(imgContent);
 			byte[] decoderBytes = Base64.getDecoder().decode(imgContent);
 			write.write(decoderBytes);
 			write.close();

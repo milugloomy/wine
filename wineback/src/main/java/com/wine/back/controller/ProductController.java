@@ -47,7 +47,7 @@ public class ProductController {
 	}
 	
 	@RequestMapping("/productAdd")
-	public MyResEntity productAdd(ProductForm productForm,String imgsStr/*@RequestParam(value = "imgList[]")String[] imgs*/){
+	public MyResEntity productAdd(ProductForm productForm,String imgsStr){
 		List<Image> imgList=JSON.parseArray(imgsStr, Image.class);
 		Product product=new Product();
 		BeanUtils.copyProperties(productForm, product);

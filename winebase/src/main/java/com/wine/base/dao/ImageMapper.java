@@ -11,6 +11,8 @@ public interface ImageMapper {
     
     List<Image> selectByProductId(Integer productId);
     
+    List<Image> selectAll();
+    
     void deleteByProductId(Integer productId);
 
 }
