@@ -117,9 +117,10 @@
   </div>
   <script type="text/javascript" src="js/vue.min.js"></script>
   <script type="text/javascript" src="js/jquery.min.js"></script>
-  <script type="text/javascript" src="js/jquery.form.js"></script>
+  <!--   <script type="text/javascript" src="js/jquery.form.js"></script> -->
   <script type="text/javascript" src="js/bootstrap.min.js"></script>
   <script type="text/javascript" src="js/layer.js"></script>
+  <script type="text/javascript" src="js/fileUpload.js"></script>
   <script type="text/javascript" src="js/sync.js"></script>
   <script type="text/javascript" src="js/header.js"></script>
   <script type="text/javascript">
@@ -156,29 +157,12 @@
           alert('只能上传图片');
           return;
         }
-        //创建异步上传图片的form
-        var form = $("<form method='post' enctype='multipart/form-data'></form>");
-        var input = $("#uploadFile");
-        //form中添加待上传的文件
-        form.append(input.clone());
-        var loadLayer = layer.load(1, { shade: [0.5, '#fff'] });
-        form.ajaxSubmit({
-          type: 'post',
-          url: 'imageAdd',
-          dataType: "json",
-          success: function(data) {
-            layer.close(loadLayer);
-            if (data.retcode == "0000") {
-              var img = {
-                imgUrl: data.body
-              };
-              db.product.imgList.push(img);
-            }
-          }
+        $("#uploadFile").upload("imageAdd", function(data) {
+          var img = {
+            imgUrl: data
+          };
+          db.product.imgList.push(img);
         });
-        //input内容清空 删掉form
-        input.val("");
-        form.remove();
       },
       deletePic: function(i) {
         //从list中删除
