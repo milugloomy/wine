@@ -60,7 +60,7 @@
       #{subscribeTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
       #{userLevel,jdbcType=CHAR}, #{regTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.wine.base.bean.User">
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="userId" parameterType="com.wine.base.bean.User">
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userId != null">

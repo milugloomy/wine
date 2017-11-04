@@ -12,7 +12,7 @@ import com.wine.base.bean.AddressForm;
 import com.wine.base.common.MyResEntity;
 import com.wine.base.common.Util;
 import com.wine.base.dao.AddressMapper;
-import com.wine.wx.business.AddressBusiness;
+import com.wine.wx.service.AddressService;
 
 @RestController
 public class AddressController {
@@ -20,7 +20,7 @@ public class AddressController {
 	@Autowired
 	private AddressMapper addressMapper;
 	@Autowired
-	private AddressBusiness addressBusiness;
+	private AddressService addressService;
 	
 	@RequestMapping("/address")
 	public MyResEntity address(HttpSession session){
@@ -34,7 +34,7 @@ public class AddressController {
 		int userId=Util.getUserId(session);
 		Address address=new Address();
 		BeanUtils.copyProperties(addressForm, address);
-		address=addressBusiness.addressAdd(userId, address);
+		address=addressService.addressAdd(userId, address);
 		return new MyResEntity(address);
 	}
 	

@@ -24,9 +24,9 @@ public class WxService {
 	private HttpService httpService;
 	
 	public List<String> userList() throws WineException{
-		String url="https://api.weixin.qq.com/cgi-bin/user/get?access_token="+httpService.getAcToken();
-		String ret=httpService.wxGet(url);
-		JSONObject jo=JSON.parseObject(ret);
+		String url="https://api.weixin.qq.com/cgi-bin/user/get?access_token="
+				+httpService.getAcToken();
+		JSONObject jo=httpService.wxGetJson(url);
 		JSONArray ja=(JSONArray)((JSONObject)jo.get("data")).get("openid");
 		
 		List<String> openidList=new ArrayList<String>();
@@ -37,10 +37,19 @@ public class WxService {
 	}
 	
 	public User userDetail(String openid) throws WineException{
-		String url="https://api.weixin.qq.com/cgi-bin/user/info?access_token="+httpService.getAcToken()+"&openid="+openid;
+		String url="https://api.weixin.qq.com/cgi-bin/user/info?access_token="
+				+httpService.getAcToken()+"&openid="+openid;
 		String ret=httpService.wxGet(url);
 		User user=JSON.parseObject(ret,User.class);
 		return user;
+	}
+	
+	public String getOpenidByCode(String code) throws WineException{
+		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?"
+				+"appid="+HttpService.appId+"&secret="+HttpService.appSecret
+				+"&code="+code+"&grant_type=authorization_code";
+		JSONObject jo=httpService.wxGetJson(url);
+		return jo.getString("openid");
 	}
 	
 	public void createMenu() throws WineException{

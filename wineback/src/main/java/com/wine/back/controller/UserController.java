@@ -1,7 +1,9 @@
 package com.wine.back.controller;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wine.back.batch.UserBatch;
 import com.wine.back.common.RSAUtil;
 import com.wine.base.bean.Manager;
 import com.wine.base.bean.User;
@@ -29,8 +30,6 @@ public class UserController {
 	private UserMapper userMapper;
 	@Autowired
 	private WxService wxService;
-	@Autowired
-	private UserBatch userBatch;
 	
 	@RequestMapping("/login")
 	public MyResEntity login(@RequestParam("username")String encUsername,
@@ -46,11 +45,6 @@ public class UserController {
 			throw new WineException("password.err");
 		session.setAttribute("manager", manager);
 		return new MyResEntity();
-	}
-	
-	@RequestMapping("/isLogin")
-	public MyResEntity isLogin(HttpSession session){
-		return new MyResEntity(session.getAttribute("manager")!=null);
 	}
 	
 	@RequestMapping("/logout")
@@ -84,10 +78,10 @@ public class UserController {
 		return new MyResEntity(user);
 	}
 	
-	@RequestMapping("/userSync")
-	public MyResEntity userSync(String openid) throws WineException{
-		userBatch.updateUser();
-		return new MyResEntity();
+	@RequestMapping("/checkSignature")
+	public void checkSignature(String signature,String echostr,String timestamp,String nonce,HttpServletResponse response) throws WineException, IOException{
+		boolean b=wxService.checkSignature(signature, timestamp, nonce);
+		System.out.println(b);
+		response.getWriter().print(echostr);
 	}
-	
 }

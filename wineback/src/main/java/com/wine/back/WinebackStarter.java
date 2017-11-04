@@ -3,19 +3,8 @@ package com.wine.back;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Properties;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +20,7 @@ import org.springframework.util.ResourceUtils;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
-import com.alibaba.fastjson.JSONObject;
+import com.wine.back.common.LoginFilter;
 
 import batch.service.BatchFactoryBean;
 
@@ -47,74 +36,12 @@ public class WinebackStarter {
 		SpringApplication.run(WinebackStarter.class, args);
 	}
 	
-	//登录过滤器,暂时注释
+	//登录过滤器
 	@Bean
     public FilterRegistrationBean myFilter1() {
-    	FilterRegistrationBean f = new FilterRegistrationBean(new Filter(){
-			public void init(FilterConfig filterConfig) throws ServletException {
-        	}
-
-			public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
-					throws IOException, ServletException {
-				HttpServletRequest request=(HttpServletRequest)servletRequest;
-				HttpServletResponse response=(HttpServletResponse)servletResponse;
-				HttpSession session=request.getSession();
-				
-				String uri=request.getRequestURI();
-				
-				//访问登录页判断跳转到service标签的url页
-				if(uri.equals("/wineback/login.html")){
-					if(session.getAttribute("manager")!=null){
-						String redirect=request.getParameter("service");
-						redirect=redirect==null?"/wineback/index.html":redirect;
-						response.sendRedirect(redirect);
-					}else{
-						chain.doFilter(servletRequest, servletResponse);
-					}
-					return;
-				}
-				
-				String service=uri;
-				if(request.getQueryString()!=null)
-					service+="?"+request.getQueryString();
-				
-				if(needLogin(session, uri)){
-					//ajax请求
-					if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
-						response.setContentType("text/html;charset=UTF-8");
-						JSONObject jo=new JSONObject();
-						jo.put("retcode", "302");
-						jo.put("body", "/wineback/login.html");
-						PrintWriter pw=response.getWriter();
-						pw.write(jo.toJSONString());
-						pw.flush();
-						pw.close();
-					//页面请求
-					}else{
-						response.sendRedirect("/wineback/login.html?service="+service);
-					}
-				}else{
-					chain.doFilter(servletRequest, servletResponse);
-				}
-			}
-			private boolean needLogin(HttpSession session,String uri){
-				//静态资源不拦截
-				if(uri.endsWith(".js") || uri.endsWith(".gif") || uri.endsWith("jpg")
-						|| uri.endsWith(".png") || uri.endsWith(".css") || uri.endsWith("ico") )
-					return false;
-				//登录交易
-				if(uri.equals("/wineback/login")){
-					return false;
-				}
-				//其他的判断session
-				if(session.getAttribute("manager")==null)
-					return true;
-				return false;
-			}
-			public void destroy() {}
-		});
+    	FilterRegistrationBean f = new FilterRegistrationBean(new LoginFilter());
         f.addUrlPatterns("/*");  
-        f.setName("authFilter");
+        f.setName("loginFilter");
         return f;  
     }
 	//druid过滤器

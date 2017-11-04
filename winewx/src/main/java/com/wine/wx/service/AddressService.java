@@ -1,4 +1,4 @@
-package com.wine.wx.business;
+package com.wine.wx.service;
 
 import java.util.Date;
 
@@ -12,7 +12,7 @@ import com.wine.base.bean.Address;
 import com.wine.base.dao.AddressMapper;
 
 @Service
-public class AddressBusiness {
+public class AddressService {
 	@Autowired
 	private AddressMapper addressMapper;
 	@Autowired
