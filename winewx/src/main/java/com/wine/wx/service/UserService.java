@@ -24,7 +24,7 @@ public class UserService {
 		if(user==null){
 			user=wxService.userDetail(openid);
 			//未关注
-			if(user==null){
+			if(user.getSubscribe().equals("0")){
 				return null;
 			}
 			//微信时间戳要乘以1000
