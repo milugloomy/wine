@@ -38,6 +38,7 @@ public class LoginFilter implements Filter{
 					+ "&scope=snsapi_base"
 					+ "&state=STATE"
 					+ "#wechat_redirect";
+			System.out.println("redirect:"+wxUrl);
 			response.sendRedirect(wxUrl);
 		}else{
 			chain.doFilter(servletRequest, servletResponse);
