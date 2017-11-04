@@ -47,7 +47,8 @@ public class LoginFilter implements Filter{
 	private boolean needLogin(HttpSession session,String uri){
 		//静态资源不拦截
 		if(uri.endsWith(".js") || uri.endsWith(".gif") || uri.endsWith(".jpg")
-				|| uri.endsWith(".png") || uri.endsWith(".css") || uri.endsWith(".ico") )
+				|| uri.endsWith(".png") || uri.endsWith(".css") || uri.endsWith(".ico")
+				|| uri.endsWith(".txt"))
 			return false;
 		//登录交易
 		if(uri.equals("/winewx/login")){
