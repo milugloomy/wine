@@ -17,24 +17,24 @@ public class UserService {
 	@Autowired
 	private WxService wxService;
 	
-	public User getUser(String code){
+	public User getUser(String code) throws WineException{
 		User user=null;
-		try {
-			String openid = wxService.getOpenidByCode(code);
-			user=userMapper.selectByOpenid(openid);
+		String openid = wxService.getOpenidByCode(code);
+		user=userMapper.selectByOpenid(openid);
+		if(user==null){
+			user=wxService.userDetail(openid);
+			//未关注
 			if(user==null){
-				user=wxService.userDetail(openid);
-				//微信时间戳要乘以1000
-				Date subscribeTime=user.getSubscribeTime();
-				subscribeTime.setTime(subscribeTime.getTime()*1000);
-				user.setSubscribeTime(subscribeTime);
-				user.setStatus("N");
-				user.setRegTime(new Date());
-				//用户插入数据库
-				userMapper.insertSelective(user);
+				return null;
 			}
-		} catch (WineException e) {
-			e.printStackTrace();
+			//微信时间戳要乘以1000
+			Date subscribeTime=user.getSubscribeTime();
+			subscribeTime.setTime(subscribeTime.getTime()*1000);
+			user.setSubscribeTime(subscribeTime);
+			user.setStatus("N");
+			user.setRegTime(new Date());
+			//用户插入数据库
+			userMapper.insertSelective(user);
 		}
 		return user;
 	}

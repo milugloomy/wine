@@ -83,6 +83,8 @@ public class HttpService {
 	
 	public String wxGet(String url){
 		String res=restTemplate.getForObject(url, String.class);
+		log.info("微信接口：{}",url);
+		log.info("微信返回：{}",res);
 		return res;
 	}
 	

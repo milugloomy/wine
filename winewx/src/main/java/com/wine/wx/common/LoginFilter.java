@@ -54,6 +54,10 @@ public class LoginFilter implements Filter{
 		if(uri.equals("/winewx/login")){
 			return false;
 		}
+		//未关注跳转到推广页
+		if(uri.equals("/winewx/promote.html")){
+			return false;
+		}
 		//其他的判断session
 		if(session.getAttribute("user")==null)
 			return true;
