@@ -29,8 +29,11 @@ public class HttpService {
 	/*public static String appId="wxee167cddcba2af47";
 	public static String appSecret="971412dbe7e6f89204675995409c251a";*/
 	//测试号
-	public static String appId="wx158fc360fd937056";
-	public static String appSecret="646049a506fd0007b8367a7a9f73ac83";
+	/*public static String appId="wx158fc360fd937056";
+	public static String appSecret="646049a506fd0007b8367a7a9f73ac83";*/
+	//生产号
+	public static String appId="wx5da1f2074f5077a2";
+	public static String appSecret="242179f06e43018689be5475e911fb19";
 	public static String[] whiteIp=new String[]{"58.48.244.252","59.172.234.164","171.113.111.219"};
 	
 	private String acToken;
