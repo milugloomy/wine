@@ -1,4 +1,4 @@
-package com.wine.wx.cache;
+package com.wine.base.common;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 

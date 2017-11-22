@@ -20,12 +20,27 @@
 		<result column="main_pic" property="mainPic"/>
 	</collection>
   </resultMap>
-  <select id="selectAllProduct" resultMap="BaseResultMap">
-    select a.*,b.* from product a,image b where a.product_id=b.product_id
-  </select>
   <select id="selectByPageNo" resultMap="BaseResultMap">
     select a.*,b.img_url from product a,image b where a.product_id=b.product_id and b.main_pic=1 and a.status='N'
 		order by a.add_time desc
+	limit #{offset},#{length}
+  </select>
+  <select id="selectProductList" resultMap="BaseResultMap">
+    select a.*,b.img_url from product a,image b where a.product_id=b.product_id and b.main_pic=1 and a.status='N'
+		<if test="type != 'all'">
+			and a.product_type=#{type}
+		</if>
+		order by 
+		<if test="sortBy == 'sale'">
+			(a.total_quantity-a.remain)
+		</if>
+		<if test="sortBy == 'price'">
+			a.vip_price
+		</if>
+		<if test="sortBy == 'time'">
+			a.add_time
+		</if>
+		${sortType}
 	limit #{offset},#{length}
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

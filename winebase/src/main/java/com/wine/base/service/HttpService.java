@@ -2,7 +2,6 @@ package com.wine.base.service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.text.MessageFormat;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -36,11 +35,6 @@ public class HttpService {
 	public static String appSecret="242179f06e43018689be5475e911fb19";
 	public static String[] whiteIp=new String[]{"58.48.244.252","59.172.234.164","171.113.111.219"};
 	
-	private String acToken;
-	private String jsapiTicket;
-	private long acTokenTime;
-	private long jsapiTicketTime;
-
 	private HttpClient httpClient;
 	private RestTemplate restTemplate;
 	
@@ -55,30 +49,6 @@ public class HttpService {
             	break;
             }
         }
-	}
-	
-	public String getAcToken() throws WineException{
-		if(acTokenTime==0l||acToken==null||
-				(System.currentTimeMillis()-acTokenTime)>7200*1000){
-			String url=MessageFormat.format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}", 
-					appId,appSecret);
-			JSONObject jo=wxGetJson(url);
-			acToken=(String)jo.get("access_token");
-			acTokenTime=System.currentTimeMillis();
-		}
-		return acToken;
-	}
-	public String getJsapiTicket() throws WineException{
-		if(jsapiTicketTime==0l||jsapiTicket==null||
-				(System.currentTimeMillis()-jsapiTicketTime)>7200*1000){
-			
-			String url="https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="
-					+ getAcToken()+"&type=jsapi";
-			JSONObject jo=wxGetJson(url);
-			jsapiTicket=(String)jo.get("ticket");
-			jsapiTicketTime=System.currentTimeMillis();
-		}
-		return jsapiTicket;
 	}
 	
 	public String wxGet(String url){

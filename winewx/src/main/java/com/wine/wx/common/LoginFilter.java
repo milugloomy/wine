@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.wine.base.bean.User;
+import com.wine.base.common.SpringUtil;
+import com.wine.base.dao.UserMapper;
 import com.wine.base.service.HttpService;
 
 public class LoginFilter implements Filter{
@@ -35,7 +38,8 @@ public class LoginFilter implements Filter{
 					+ "appid="+HttpService.appId
 					+ "&redirect_uri="+URLEncoder.encode(domain+"/winewx/login","utf-8")
 					+ "&response_type=code"
-					+ "&scope=snsapi_base"
+//					+ "&scope=snsapi_base"//不需用户同意即可获取用户信息，需用户关注
+					+ "&scope=snsapi_userinfo"//未关注可获取用户信息，需用户同意
 					+ "&state=STATE"
 					+ "#wechat_redirect";
 			System.out.println("redirect:"+wxUrl);
@@ -43,6 +47,14 @@ public class LoginFilter implements Filter{
 		}else{
 			chain.doFilter(servletRequest, servletResponse);
 		}
+		
+		/*if(request.getSession().getAttribute("user")==null){
+			String openid="o3HV8wuWpQTW_ugMf7y7R8JCLcUU";
+			UserMapper userMapper=(UserMapper)SpringUtil.getBean("userMapper");
+			User user=userMapper.selectByOpenid(openid);
+			request.getSession().setAttribute("user", user);
+		}
+		chain.doFilter(servletRequest, servletResponse);*/
 	}
 	private boolean needLogin(HttpSession session,String uri){
 		//静态资源不拦截

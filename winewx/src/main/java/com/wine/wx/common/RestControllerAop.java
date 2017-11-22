@@ -35,12 +35,6 @@ public class RestControllerAop {
 		}
 		log.info("param:{}",param);
 		
-		/*if(request.getSession().getAttribute("user")==null){
-			String openid="oEiYVv601cx0w3qFcSTxi-dM9mpg";
-			User user=userMapper.selectByOpenid(openid);
-			request.getSession().setAttribute("user", user);
-		}*/
-
 		try {
 			Object result = pjp.proceed(pjp.getArgs());
 			return result;

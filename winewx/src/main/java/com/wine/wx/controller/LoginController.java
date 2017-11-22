@@ -19,10 +19,10 @@ public class LoginController {
 	
 	@RequestMapping("/login")
 	public ModelAndView winewxlogin(String code,HttpSession session) throws WineException{
-		User user=userService.getUser(code);
+		User user=userService.getFollowUser(code);
 		//用户未关注
 		if(user==null){
-			return new ModelAndView("redirect:promote.html");
+			user=userService.getUnfollowUser(code);
 		}
 		session.setAttribute("user", user);
 		return new ModelAndView("redirect:index.html");

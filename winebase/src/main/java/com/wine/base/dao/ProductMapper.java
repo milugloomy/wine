@@ -9,13 +9,15 @@ import com.wine.base.bean.Product;
 public interface ProductMapper {
 	List<Product> selectByPageNo(@Param("offset")Integer offset,@Param("length")Integer length);
 	
-    Product selectByPrimaryKey(Integer productId);
+	List<Product> selectProductList(@Param("offset")Integer offset,@Param("length")Integer length, 
+			@Param("sortBy")String sortBy, @Param("sortType")String sortType, 
+			@Param("type")String type);
+
+	Product selectByPrimaryKey(Integer productId);
     
     //假删除，更新状态
     int deleteByPrimaryKey(Integer productId);
     
-    List<Product> selectAllProduct();
-
     int insert(Product record);
 
     int insertSelective(Product record);
@@ -25,4 +27,5 @@ public interface ProductMapper {
     int updateByPrimaryKey(Product record);
 
 	int selectTotal();
+
 }

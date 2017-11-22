@@ -4,6 +4,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
@@ -14,11 +15,13 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 
+//ehcache配置
+@EnableCaching
 @Configuration
 public class MyWebConfig extends WebMvcConfigurerAdapter{
 
 	@Value("${img.path}")
-    private String imgPath;
+	private String imgPath;
 
 	//使用fastjson
 	@Override
@@ -29,27 +32,40 @@ public class MyWebConfig extends WebMvcConfigurerAdapter{
 
 		FastJsonConfig fastJsonConfig = new FastJsonConfig();  
 		fastJsonConfig.setSerializerFeatures(  
-			SerializerFeature.PrettyFormat  
-		);  
+				SerializerFeature.PrettyFormat  
+				);  
 		fastJsonConfig.setCharset(Charset.forName("UTF-8"));
 		fastConverter.setFastJsonConfig(fastJsonConfig);  
 
 		converters.add(fastConverter);  
 	}
-	
+
 	@Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/upload/**").addResourceLocations("file:"+imgPath);
-//        registry.addResourceHandler("/img/**").addResourceLocations("classpath:/myimg/");
-        super.addResourceHandlers(registry);
-    }
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/upload/**").addResourceLocations("file:"+imgPath);
+		//        registry.addResourceHandler("/img/**").addResourceLocations("classpath:/myimg/");
+		super.addResourceHandlers(registry);
+	}
 
 	//过滤带后缀的请求
 	//http://www.jianshu.com/p/02bff08fcced
 	@Override
 	public void configurePathMatch(PathMatchConfigurer configurer) {
 		configurer.setUseSuffixPatternMatch(false).
-			setUseTrailingSlashMatch(true);
+		setUseTrailingSlashMatch(true);
 	}
+
+	/*//ehcache配置bean
+	@Bean
+	public EhCacheCacheManager ehCacheCacheManager(EhCacheManagerFactoryBean bean){
+		return new EhCacheCacheManager(bean.getObject());
+	}
+	@Bean
+	public EhCacheManagerFactoryBean ehCacheManagerFactoryBean(){
+		EhCacheManagerFactoryBean factoryBean = new EhCacheManagerFactoryBean();
+		factoryBean.setConfigLocation(new ClassPathResource("ehcache.xml"));
+		factoryBean.setShared(true);
+		return factoryBean;
+	}*/
 
 }

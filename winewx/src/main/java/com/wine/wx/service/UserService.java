@@ -5,9 +5,11 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.wine.base.bean.LoginAcToken;
 import com.wine.base.bean.User;
 import com.wine.base.common.WineException;
 import com.wine.base.dao.UserMapper;
+import com.wine.base.service.TokenService;
 import com.wine.base.service.WxService;
 
 @Service
@@ -16,8 +18,11 @@ public class UserService {
 	private UserMapper userMapper;
 	@Autowired
 	private WxService wxService;
+	@Autowired
+	private TokenService tokenService;
 	
-	public User getUser(String code) throws WineException{
+	//关注用户
+	public User getFollowUser(String code) throws WineException{
 		User user=null;
 		String openid = wxService.getOpenidByCode(code);
 		user=userMapper.selectByOpenid(openid);
@@ -38,4 +43,27 @@ public class UserService {
 		}
 		return user;
 	}
+
+	//未关注用户
+	public User getUnfollowUser(String code) throws WineException {
+		LoginAcToken tk=tokenService.getLoginAcToken(code);
+		
+		String openid=tk.getOpenid();
+//		String refresh_token=tk.getRefresh_token();
+		String access_token=tk.getAccess_token();
+		
+		User user=wxService.unfollowUserDetail(access_token, openid);
+		
+		//数据库没有则插入
+		User dbUser=userMapper.selectByOpenid(openid);
+		if(dbUser==null){
+			//未关注
+			user.setSubscribe("0");
+			user.setStatus("N");
+			user.setRegTime(new Date());
+			userMapper.insertSelective(user);
+		}
+		return user;
+	}
+	
 }

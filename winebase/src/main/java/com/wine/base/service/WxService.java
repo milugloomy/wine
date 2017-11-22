@@ -22,10 +22,12 @@ public class WxService {
 	private String token="token_wine";
 	@Autowired
 	private HttpService httpService;
+	@Autowired
+	private TokenService tokenService;
 	
 	public List<String> userList() throws WineException{
 		String url="https://api.weixin.qq.com/cgi-bin/user/get?access_token="
-				+httpService.getAcToken();
+				+tokenService.getAcToken();
 		JSONObject jo=httpService.wxGetJson(url);
 		JSONArray ja=(JSONArray)((JSONObject)jo.get("data")).get("openid");
 		
@@ -38,7 +40,15 @@ public class WxService {
 	
 	public User userDetail(String openid) throws WineException{
 		String url="https://api.weixin.qq.com/cgi-bin/user/info?access_token="
-				+httpService.getAcToken()+"&openid="+openid;
+				+tokenService.getAcToken()+"&openid="+openid;
+		String ret=httpService.wxGet(url);
+		User user=JSON.parseObject(ret,User.class);
+		return user;
+	}
+	
+	public User unfollowUserDetail(String access_token,String openid) throws WineException{
+		String url="https://api.weixin.qq.com/sns/userinfo?access_token="
+				+ access_token+"&openid="+openid+"&lang=zh_CN"; 
 		String ret=httpService.wxGet(url);
 		User user=JSON.parseObject(ret,User.class);
 		return user;
@@ -53,7 +63,7 @@ public class WxService {
 	}
 	
 	public void createMenu() throws WineException{
-		String url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token="+httpService.getAcToken();
+		String url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token="+tokenService.getAcToken();
 		JSONObject jo=new JSONObject();
 		JSONArray menus=new JSONArray();
 		//第一个菜单

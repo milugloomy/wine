@@ -17,12 +17,13 @@ import com.wine.base.common.MyResEntity;
 import com.wine.base.common.Util;
 import com.wine.base.common.WineException;
 import com.wine.base.service.HttpService;
+import com.wine.base.service.TokenService;
 
 @RestController
 public class UserController {
 	
 	@Autowired
-	private HttpService httpService;
+	private TokenService tokenService;
 	
 	@RequestMapping("/userInfo")
 	public MyResEntity userInfo(HttpSession session){
@@ -41,7 +42,7 @@ public class UserController {
 		signJo.put("timestamp", now);
 
 		//获取jsapi_ticket
-		String jsapiTicket = httpService.getJsapiTicket();
+		String jsapiTicket = tokenService.getJsapiTicket();
 		try {
 			// 注意这里参数名必须全部小写，且必须有序
 			String str = "jsapi_ticket=" + jsapiTicket 
