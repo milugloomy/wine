@@ -17,7 +17,7 @@ public class ImgCprs {
 	public static void main(String[] args) throws IOException {
 		String fileName="20151224095328247.jpg";
 		Thumbnails.of(original_path+fileName)  
-		.size(800,800)//宽高
+		.size(600,600)//宽高
 	    .keepAspectRatio(true)//宽高保持比例
 //		.scale(1f)//size
 		.outputQuality(0.5f)//质量

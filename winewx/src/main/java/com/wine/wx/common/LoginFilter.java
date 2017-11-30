@@ -13,9 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.wine.base.bean.User;
-import com.wine.base.common.SpringUtil;
-import com.wine.base.dao.UserMapper;
 import com.wine.base.service.HttpService;
 
 public class LoginFilter implements Filter{
@@ -67,9 +64,9 @@ public class LoginFilter implements Filter{
 			return false;
 		}
 		//未关注跳转到推广页
-		if(uri.equals("/winewx/promote.html")){
+		/*if(uri.equals("/winewx/promote.html")){
 			return false;
-		}
+		}*/
 		//其他的判断session
 		if(session.getAttribute("user")==null)
 			return true;

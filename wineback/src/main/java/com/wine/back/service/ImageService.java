@@ -105,7 +105,8 @@ public class ImageService {
 	}
 	
 	public static void main(String[] args) throws IOException{
-		String originalDir="D:\\tmp\\prodImg\\original";
+		String baseDir="D:\\Workspaces\\HkWorkspace\\mtroom\\src\\main\\resources\\public\\image\\";
+		String originalDir=baseDir+"original";
 		File dir=new File(originalDir);
 		for(int i=0;i<dir.listFiles().length;i++){
 			File file=dir.listFiles()[i];
@@ -114,24 +115,24 @@ public class ImageService {
 			int height=originalImg.getHeight();
 			int width=originalImg.getWidth();
 			//大图压缩尺寸到800内
-			if(height>800 || width>800){
+			if(height>600 || width>600){
 				Thumbnails.of(originalImg)
-				.size(800,800)//宽高
+				.size(600,600)//宽高
 			    .keepAspectRatio(true)//宽高保持比例
 				.outputQuality(0.5f)//质量
-			    .toFile("D:\\tmp\\prodImg\\compressed\\"+file.getName());
-			//宽高都小于800的图不压缩尺寸
+			    .toFile(baseDir+"compressed\\"+file.getName());
+			//宽高都小于600的图不压缩尺寸
 			}else{
 				Thumbnails.of(originalImg)
 				.scale(1)
 				.outputQuality(0.5f)//质量
-			    .toFile("D:\\tmp\\prodImg\\compressed\\"+file.getName());
+			    .toFile(baseDir+"compressed\\"+file.getName());
 			}
 			//存图标
 			Thumbnails.of(originalImg)
 				.size(100,100)//压缩后宽高
 				.keepAspectRatio(true)//宽高保持比例
-				.toFile("D:\\tmp\\prodImg\\icon\\"+file.getName());
+				.toFile(baseDir+"icon\\"+file.getName());
 		}
 	}
 }

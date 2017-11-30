@@ -39,7 +39,7 @@ public class MyBatisConfig {
 		dataSource.setMinIdle(Integer.valueOf(env.getProperty("ds.minIdle"))); 
 		dataSource.setTimeBetweenEvictionRunsMillis(Integer.valueOf(env.getProperty("ds.timeBetweenEvictionRunsMillis"))); 
 		dataSource.setMinEvictableIdleTimeMillis(Integer.valueOf(env.getProperty("ds.minEvictableIdleTimeMillis"))); 
-		dataSource.setValidationQuery(env.getProperty("ds.minEvictableIdleTimeMillis")); 
+		dataSource.setValidationQuery(env.getProperty("ds.validationQuery")); 
 		dataSource.setTestWhileIdle(Boolean.valueOf(env.getProperty("ds.testWhileIdle"))); 
 		dataSource.setTestOnBorrow(Boolean.valueOf(env.getProperty("ds.testOnBorrow"))); 
 		dataSource.setTestOnReturn(Boolean.valueOf(env.getProperty("ds.testOnReturn"))); 
