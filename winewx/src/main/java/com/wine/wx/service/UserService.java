@@ -23,9 +23,8 @@ public class UserService {
 	
 	//关注用户
 	public User getFollowUser(String code) throws WineException{
-		User user=null;
 		String openid = wxService.getOpenidByCode(code);
-		user=userMapper.selectByOpenid(openid);
+		User user=userMapper.selectByOpenid(openid);
 		if(user==null){
 			user=wxService.userDetail(openid);
 			//未关注

@@ -35,8 +35,8 @@ public class LoginFilter implements Filter{
 					+ "appid="+HttpService.appId
 					+ "&redirect_uri="+URLEncoder.encode(domain+"/winewx/login","utf-8")
 					+ "&response_type=code"
-//					+ "&scope=snsapi_base"//不需用户同意即可获取用户信息，需用户关注
-					+ "&scope=snsapi_userinfo"//未关注可获取用户信息，需用户同意
+					+ "&scope=snsapi_base"//不需用户同意即可获取用户信息，需用户关注
+//					+ "&scope=snsapi_userinfo"//未关注可获取用户信息，需用户同意
 					+ "&state=STATE"
 					+ "#wechat_redirect";
 			System.out.println("redirect:"+wxUrl);

@@ -33,7 +33,6 @@ public class HttpService {
 	//生产号
 	public static String appId="wx5da1f2074f5077a2";
 	public static String appSecret="242179f06e43018689be5475e911fb19";
-	public static String[] whiteIp=new String[]{"58.48.244.252","59.172.234.164","171.113.111.219"};
 	
 	private HttpClient httpClient;
 	private RestTemplate restTemplate;
@@ -59,9 +58,9 @@ public class HttpService {
 	}
 	
 	public JSONObject wxGetJson(String url) throws WineException{
-		String res=restTemplate.getForObject(url, String.class);
+		String res=wxGet(url);
 		JSONObject jo=JSONObject.parseObject(res);
-		if(jo.containsKey("errcode")){
+		if(jo.containsKey("errcode") && !jo.get("errcode").equals(0)){
 			throw new WineException(jo.getString("errcode"),(String)jo.get("errmsg"));
 		}
 		return jo;
