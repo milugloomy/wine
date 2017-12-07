@@ -58,7 +58,15 @@
 <script type="text/javascript" src="js/layer.js"></script>
 <script type="text/javascript" src="js/iscroll.js"></script>
 <script type="text/javascript" src="js/sync.js"></script>
-<script type="text/javascript">
+<script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/wineShare.js"></script>
+<script>
+Wine.wineShare({
+	title: '花道酒业',
+	desc: '花道酒业-澳洲贝尔维德尔酒庄原装进口',
+	link: window.location.href,
+	imgUrl: 'img/getheadimg.jpg'
+});
 //懒加载
 Vue.use(VueLazyload, {
 	error: 'img/img_error.png',//这个是请求失败后显示的图片
