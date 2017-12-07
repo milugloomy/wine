@@ -22,7 +22,7 @@ import com.wine.base.bean.User;
 
 public class Util {
 
-	public static int pageSize=9;
+	public static int pageSize=10;
 
 	public static String getTimeStr() {
 		Date now=new Date();
