@@ -1,0 +1,93 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>花道酒业管理后台</title>
+  <meta content="webkit" name="renderer" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
+</head>
+<body class="">
+<div id="menu">
+    <mymenu menu1="true"></mymenu>
+</div>
+<div class="content" id="divBody">
+	<mynav name="密码修改页"></mynav>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="btn-toolbar">
+				<button class="btn btn-primary" v-on:click="doIt">
+					<i class="icon-save"></i> 保存
+				</button>
+				<button class="btn">取消</button>
+				<div class="btn-group"></div>
+			</div>
+			<div class="well">
+				<div class="tab-pane active in" id="home">
+					<form id="form" action="/imgl/modifyPwd.do" method="post">
+						<table class="table">
+							<tr>
+								<td style="width: 20%; border-top: none;">旧密码:</td>
+								<td style="border-top: none;">
+									<input type="password" v-model="oldPwd" placeholder="请输入原密码">
+								</td>
+							</tr>
+							<tr>
+								<td>新密码:</td>
+								<td><input type="password" v-model="newPwd1" placeholder="请输入密码"></td>
+							</tr>
+							<tr>
+								<td>确认密码:</td>
+								<td><input type="password" v-model="newPwd2" placeholder="请再次输入密码"></td>
+							</tr>
+						</table>
+						<div id="error" style="color:red"></div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+  <script type="text/javascript" src="js/vue.min.js"></script>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/layer.js"></script>
+  <script type="text/javascript" src="js/sync.js"></script>
+  <script type="text/javascript" src="js/header.js"></script>
+  <script type="text/javascript" src="js/jsencrypt.min.js"></script>
+  <script type="text/javascript">
+  var db = new Vue({
+    el: "#divBody",
+    mounted: function() {
+    },
+    methods: {
+		doIt:function(){
+			if(db.newPwd1!=db.newPwd2){
+				layer.alert("两次输入不一致");
+				return;
+			}
+			var param={
+				encOldPwd: encrypt.encrypt(db.oldPwd),
+				encPwd: encrypt.encrypt(db.newPwd1),
+			}
+			post2SRV("modifyPwd", param, function(data) {
+	       		layer.msg("修改成功");
+	        	setTimeout(function(){ 
+	        		window.location.href = '/wineback/index.html';
+	           	}, 1000);
+            }, "json");
+		}
+    },
+    data: {
+    	oldPwd:"",
+    	newPwd1:"",
+    	newPwd2:""
+    }
+  });
+  </script>
+</body>
+
+</html>

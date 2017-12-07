@@ -18,4 +18,13 @@
   <select id="selectManagerByUsername" resultMap="BaseResultMap">
     select * from manager where username=#{username}
   </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from manager
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <update id="updatePassword">
+    update manager set password=#{pwd} where id=#{managerId}
+  </update>
 </mapper>
