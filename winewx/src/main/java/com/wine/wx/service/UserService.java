@@ -28,7 +28,7 @@ public class UserService {
 		if(user==null){
 			user=wxService.userDetail(openid);
 			//未关注
-			if(user.getSubscribe().equals("0")){
+			if(user==null || user.getSubscribe().equals("0")){
 				return null;
 			}
 			//微信时间戳要乘以1000
@@ -45,7 +45,6 @@ public class UserService {
 
 	//未关注用户
 	public User getUnfollowUser(String code) throws WineException {
-		//TODO  code been used
 		LoginAcToken tk=tokenService.getLoginAcToken(code);
 		
 		String openid=tk.getOpenid();
