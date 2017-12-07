@@ -22,13 +22,13 @@ import com.wine.base.dao.ProductMapper;
 public class ProductController {
 	
 	@Autowired
-	private ProductService productBusiness;
+	private ProductService productService;
 	@Autowired
 	private ProductMapper productMapper;
 	
 	@RequestMapping("/productDetail")
 	public MyResEntity productDetail(int productId) throws WineException{
-		Product product=productMapper.selectByPrimaryKey(productId);
+		Product product=productService.productDetail(productId);
 		return new MyResEntity(product);
 	}
 	
@@ -47,20 +47,22 @@ public class ProductController {
 	}
 	
 	@RequestMapping("/productAdd")
-	public MyResEntity productAdd(ProductForm productForm,String imgsStr){
-		List<Image> imgList=JSON.parseArray(imgsStr, Image.class);
+	public MyResEntity productAdd(ProductForm productForm,String imgStr,String detailImgSrc){
+		List<Image> imgList=JSON.parseArray(imgStr, Image.class);
+		List<Image> detailImgList=JSON.parseArray(detailImgSrc, Image.class);
 		Product product=new Product();
 		BeanUtils.copyProperties(productForm, product);
-		int productId=productBusiness.productAdd(product,imgList);
+		int productId=productService.productAdd(product,imgList,detailImgList);
 		return new MyResEntity(productId);
 	}
 	
 	@RequestMapping("/productEdit")
-	public MyResEntity productEdit(ProductForm productForm,String imgsStr){
-		List<Image> imgList=JSON.parseArray(imgsStr, Image.class);
+	public MyResEntity productEdit(ProductForm productForm,String imgStr,String detailImgSrc){
+		List<Image> imgList=JSON.parseArray(imgStr, Image.class);
+		List<Image> detailImgList=JSON.parseArray(detailImgSrc, Image.class);
 		Product product=new Product();
 		BeanUtils.copyProperties(productForm, product);
-		productBusiness.productEdit(product,imgList);
+		productService.productEdit(product,imgList,detailImgList);
 		return new MyResEntity();
 	}
 	

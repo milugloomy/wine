@@ -1,5 +1,6 @@
 package com.wine.back.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class ProductService {
 	@Autowired
 	private TransactionTemplate transactionTemplate;
 	
-	public Integer productAdd(Product newProduct, List<Image> imgList) {
+	public Integer productAdd(Product newProduct, List<Image> imgList, List<Image> detailImgList) {
 		newProduct.setAddTime(new Date());
 		newProduct.setStatus("N");
 		return transactionTemplate.execute(new TransactionCallback<Integer>(){
@@ -43,12 +44,14 @@ public class ProductService {
 				int productId=newProduct.getProductId();
 				//存图片
 				insertImages(imgList, productId);
+				//存详情图片
+				insertDetailImages(detailImgList, productId);
 				return productId;
 			}
 		});
 	}
 	
-	public void productEdit(Product product, List<Image> imgList) {
+	public void productEdit(Product product, List<Image> imgList, List<Image> detailImgList) {
 		transactionTemplate.execute(new TransactionCallback<Object>(){
 			public Object doInTransaction(TransactionStatus status) {
 				int productId=product.getProductId();
@@ -58,11 +61,25 @@ public class ProductService {
 				productMapper.updateByPrimaryKeySelective(product);
 				//插入新图片
 				insertImages(imgList, productId);
+				//插入详情图片
+				insertDetailImages(detailImgList, productId);
 				return null;
 			}
 		});
 	}
 	
+	protected void insertDetailImages(List<Image> detailImgList, int productId) {
+		for(int i=0;i<detailImgList.size();i++){
+			String imgSrc=detailImgList.get(i).getImgUrl();
+			//插入数据库，和productId关联起来
+			Image image=new Image();
+			image.setMainPic(2);//详情图片，类型为2
+			image.setImgUrl(imgSrc);
+			image.setProductId(productId);
+			imageMapper.insert(image);
+		}
+	}
+
 	private void insertImages(List<Image> imgList,int productId){
 		for(int i=0;i<imgList.size();i++){
 			String imgSrc=imgList.get(i).getImgUrl();
@@ -78,6 +95,22 @@ public class ProductService {
 			image.setProductId(productId);
 			imageMapper.insert(image);
 		}
+	}
+
+	public Product productDetail(int productId) {
+		Product product=productMapper.selectByPrimaryKey(productId);
+		List<Image> detailImgList=new ArrayList<Image>();
+		List<Image> imgList=product.getImgList();
+		for(int i=0;i<imgList.size();i++){//main_pic 是2 的是参数图片
+			Image image=imgList.get(i);
+			if(image.getMainPic()==2){
+				detailImgList.add(image);
+				imgList.remove(i);
+				i--;
+			}
+		}
+		product.setDetailImgList(detailImgList);
+		return product;
 	}
 	
 }

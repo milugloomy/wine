@@ -60,7 +60,7 @@ public class LoginFilter implements Filter{
 				|| uri.endsWith(".txt"))
 			return false;
 		//登录交易
-		if(uri.equals("/winewx/login")){
+		if(uri.equals("/winewx/login") || uri.equals("/winewx/unfollowLogin")){
 			return false;
 		}
 		//未关注跳转到推广页

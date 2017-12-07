@@ -13,7 +13,7 @@ import com.wine.base.bean.Image;
 import com.wine.base.common.WineException;
 import com.wine.base.dao.ImageMapper;
 
-import batch.common.MyBatch;
+import mybatch.common.MyBatch;
 
 @Service
 public class ImageBatch {

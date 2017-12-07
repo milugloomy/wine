@@ -11,6 +11,21 @@
     <result column="remain" jdbcType="INTEGER" property="remain" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="pp" jdbcType="VARCHAR" property="pp" />
+    <result column="bzfs" jdbcType="VARCHAR" property="bzfs" />
+    <result column="tl" jdbcType="VARCHAR" property="tl" />
+    <result column="zl" jdbcType="VARCHAR" property="zl" />
+    <result column="ptpz" jdbcType="VARCHAR" property="ptpz" />
+    <result column="nf" jdbcType="VARCHAR" property="nf" />
+    <result column="sych" jdbcType="VARCHAR" property="sych" />
+    <result column="nzgy" jdbcType="VARCHAR" property="nzgy" />
+    <result column="kg" jdbcType="VARCHAR" property="kg" />
+    <result column="gfj" jdbcType="VARCHAR" property="gfj" />
+    <result column="dpcy" jdbcType="VARCHAR" property="dpcy" />
+    <result column="xq" jdbcType="VARCHAR" property="xq" />
+    <result column="jkfs" jdbcType="VARCHAR" property="jkfs" />
+    <result column="xjsj" jdbcType="VARCHAR" property="xjsj" />
+    <result column="cpcd" jdbcType="VARCHAR" property="cpcd" />
     <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
     <collection property="imgList" ofType="com.wine.base.bean.Image">
 		<id column="img_id" property="imgId"/>
@@ -53,12 +68,20 @@
     update product set status='C' where product_id = #{productId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wine.base.bean.Product">
-    insert into product (product_id, product_type, origin_price, vip_price, 
-      product_name, total_quantity, remain, 
-      status, add_time)
-    values (#{productId,jdbcType=INTEGER},#{productType,jdbcType=VARCHAR}, #{originPrice,jdbcType=DOUBLE}, #{vipPrice,jdbcType=DOUBLE}, 
-      #{productName,jdbcType=VARCHAR}, #{totalQuantity,jdbcType=INTEGER}, #{remain,jdbcType=INTEGER}, 
-      #{status,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP})
+    insert into product (product_id, product_type, origin_price, 
+      vip_price, product_name, total_quantity, 
+      remain, status, add_time, 
+      pp, bzfs, tl, zl, 
+      ptpz, nf, sych, nzgy, 
+      kg, gfj, dpcy, xq, 
+      jkfs, xjsj, cpcd)
+    values (#{productId,jdbcType=INTEGER}, #{productType,jdbcType=VARCHAR}, #{originPrice,jdbcType=DOUBLE}, 
+      #{vipPrice,jdbcType=DOUBLE}, #{productName,jdbcType=VARCHAR}, #{totalQuantity,jdbcType=INTEGER}, 
+      #{remain,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{pp,jdbcType=VARCHAR}, #{bzfs,jdbcType=VARCHAR}, #{tl,jdbcType=VARCHAR}, #{zl,jdbcType=VARCHAR}, 
+      #{ptpz,jdbcType=VARCHAR}, #{nf,jdbcType=VARCHAR}, #{sych,jdbcType=VARCHAR}, #{nzgy,jdbcType=VARCHAR}, 
+      #{kg,jdbcType=VARCHAR}, #{gfj,jdbcType=VARCHAR}, #{dpcy,jdbcType=VARCHAR}, #{xq,jdbcType=VARCHAR}, 
+      #{jkfs,jdbcType=VARCHAR}, #{xjsj,jdbcType=VARCHAR}, #{cpcd,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" useGeneratedKeys="true" keyProperty="productId" parameterType="com.wine.base.bean.Product">
     insert into product
@@ -90,6 +113,51 @@
       <if test="addTime != null">
         add_time,
       </if>
+      <if test="pp != null">
+        pp,
+      </if>
+      <if test="bzfs != null">
+        bzfs,
+      </if>
+      <if test="tl != null">
+        tl,
+      </if>
+      <if test="zl != null">
+        zl,
+      </if>
+      <if test="ptpz != null">
+        ptpz,
+      </if>
+      <if test="nf != null">
+        nf,
+      </if>
+      <if test="sych != null">
+        sych,
+      </if>
+      <if test="nzgy != null">
+        nzgy,
+      </if>
+      <if test="kg != null">
+        kg,
+      </if>
+      <if test="gfj != null">
+        gfj,
+      </if>
+      <if test="dpcy != null">
+        dpcy,
+      </if>
+      <if test="xq != null">
+        xq,
+      </if>
+      <if test="jkfs != null">
+        jkfs,
+      </if>
+      <if test="xjsj != null">
+        xjsj,
+      </if>
+      <if test="cpcd != null">
+        cpcd,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="productId != null">
@@ -119,16 +187,61 @@
       <if test="addTime != null">
         #{addTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="pp != null">
+        #{pp,jdbcType=VARCHAR},
+      </if>
+      <if test="bzfs != null">
+        #{bzfs,jdbcType=VARCHAR},
+      </if>
+      <if test="tl != null">
+        #{tl,jdbcType=VARCHAR},
+      </if>
+      <if test="zl != null">
+        #{zl,jdbcType=VARCHAR},
+      </if>
+      <if test="ptpz != null">
+        #{ptpz,jdbcType=VARCHAR},
+      </if>
+      <if test="nf != null">
+        #{nf,jdbcType=VARCHAR},
+      </if>
+      <if test="sych != null">
+        #{sych,jdbcType=VARCHAR},
+      </if>
+      <if test="nzgy != null">
+        #{nzgy,jdbcType=VARCHAR},
+      </if>
+      <if test="kg != null">
+        #{kg,jdbcType=VARCHAR},
+      </if>
+      <if test="gfj != null">
+        #{gfj,jdbcType=VARCHAR},
+      </if>
+      <if test="dpcy != null">
+        #{dpcy,jdbcType=VARCHAR},
+      </if>
+      <if test="xq != null">
+        #{xq,jdbcType=VARCHAR},
+      </if>
+      <if test="jkfs != null">
+        #{jkfs,jdbcType=VARCHAR},
+      </if>
+      <if test="xjsj != null">
+        #{xjsj,jdbcType=VARCHAR},
+      </if>
+      <if test="cpcd != null">
+        #{cpcd,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.wine.base.bean.Product">
     update product
     <set>
-      <if test="originPrice != null">
-        origin_price = #{originPrice,jdbcType=DOUBLE},
-      </if>
       <if test="productType != null">
         product_type = #{productType,jdbcType=VARCHAR},
+      </if>
+      <if test="originPrice != null">
+        origin_price = #{originPrice,jdbcType=DOUBLE},
       </if>
       <if test="vipPrice != null">
         vip_price = #{vipPrice,jdbcType=DOUBLE},
@@ -148,19 +261,79 @@
       <if test="addTime != null">
         add_time = #{addTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="pp != null">
+        pp = #{pp,jdbcType=VARCHAR},
+      </if>
+      <if test="bzfs != null">
+        bzfs = #{bzfs,jdbcType=VARCHAR},
+      </if>
+      <if test="tl != null">
+        tl = #{tl,jdbcType=VARCHAR},
+      </if>
+      <if test="zl != null">
+        zl = #{zl,jdbcType=VARCHAR},
+      </if>
+      <if test="ptpz != null">
+        ptpz = #{ptpz,jdbcType=VARCHAR},
+      </if>
+      <if test="nf != null">
+        nf = #{nf,jdbcType=VARCHAR},
+      </if>
+      <if test="sych != null">
+        sych = #{sych,jdbcType=VARCHAR},
+      </if>
+      <if test="nzgy != null">
+        nzgy = #{nzgy,jdbcType=VARCHAR},
+      </if>
+      <if test="kg != null">
+        kg = #{kg,jdbcType=VARCHAR},
+      </if>
+      <if test="gfj != null">
+        gfj = #{gfj,jdbcType=VARCHAR},
+      </if>
+      <if test="dpcy != null">
+        dpcy = #{dpcy,jdbcType=VARCHAR},
+      </if>
+      <if test="xq != null">
+        xq = #{xq,jdbcType=VARCHAR},
+      </if>
+      <if test="jkfs != null">
+        jkfs = #{jkfs,jdbcType=VARCHAR},
+      </if>
+      <if test="xjsj != null">
+        xjsj = #{xjsj,jdbcType=VARCHAR},
+      </if>
+      <if test="cpcd != null">
+        cpcd = #{cpcd,jdbcType=VARCHAR},
+      </if>
     </set>
     where product_id = #{productId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wine.base.bean.Product">
     update product
-    set origin_price = #{originPrice,jdbcType=DOUBLE},
-      product_type=#{productType,jdbcType=VARCHAR},
+    set product_type = #{productType,jdbcType=VARCHAR},
+      origin_price = #{originPrice,jdbcType=DOUBLE},
       vip_price = #{vipPrice,jdbcType=DOUBLE},
       product_name = #{productName,jdbcType=VARCHAR},
       total_quantity = #{totalQuantity,jdbcType=INTEGER},
       remain = #{remain,jdbcType=INTEGER},
       status = #{status,jdbcType=VARCHAR},
-      add_time = #{addTime,jdbcType=TIMESTAMP}
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      pp = #{pp,jdbcType=VARCHAR},
+      bzfs = #{bzfs,jdbcType=VARCHAR},
+      tl = #{tl,jdbcType=VARCHAR},
+      zl = #{zl,jdbcType=VARCHAR},
+      ptpz = #{ptpz,jdbcType=VARCHAR},
+      nf = #{nf,jdbcType=VARCHAR},
+      sych = #{sych,jdbcType=VARCHAR},
+      nzgy = #{nzgy,jdbcType=VARCHAR},
+      kg = #{kg,jdbcType=VARCHAR},
+      gfj = #{gfj,jdbcType=VARCHAR},
+      dpcy = #{dpcy,jdbcType=VARCHAR},
+      xq = #{xq,jdbcType=VARCHAR},
+      jkfs = #{jkfs,jdbcType=VARCHAR},
+      xjsj = #{xjsj,jdbcType=VARCHAR},
+      cpcd = #{cpcd,jdbcType=VARCHAR}
     where product_id = #{productId,jdbcType=INTEGER}
   </update>
 

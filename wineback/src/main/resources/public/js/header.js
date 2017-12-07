@@ -38,7 +38,7 @@ Vue.component('mymenu', {
 				<li><a href="/wineback/index.html">主页</a></li>\
 				<li><a href="/wineback/productList.html">商品管理</a></li>\
 				<li><a href="/wineback/orderList.html">订单管理</a></li>\
-				<li><a href="#">批量程序管理</a></li>\
+				<li><a href="/wineback/batch/index.html" target="_blank">批量程序管理</a></li>\
 			</ul>\
 			<a href="#accounts-menu" class="nav-header" data-toggle="collapse">\
 				<i class="icon-briefcase"></i>用户管理\

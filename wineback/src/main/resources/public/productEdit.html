@@ -1,32 +1,32 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <title>花道酒业管理后台</title>
-  <meta content="webkit" name="renderer" />
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/theme.css">
-  <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
-  <style type="text/css">
-  input {
+    <meta charset="utf-8">
+    <title>花道酒业管理后台</title>
+    <meta content="webkit" name="renderer" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
+    <style type="text/css">
+        input {
     margin-bottom: 0px;
     height: 30px;
-  }
+}
 
-  .imgDiv {
+.imgDiv {
     display: inline-block;
     position: relative;
     margin-right: 10px;
-  }
+}
 
-  .imgDiv img {
+.imgDiv img {
     max-height: 150px;
     max-width: 150px;
-  }
+}
 
-  .imgDiv .delete {
+.imgDiv .delete {
     background-color: rgba(255, 255, 255, 0.5);
     filter: op;
     position: absolute;
@@ -34,150 +34,287 @@
     right: 0px;
     font-size: 28px;
     padding-top: 5px;
-  }
-  </style>
+}
+    </style>
 </head>
 
 <body>
-  <div id="menu">
-    <mymenu menu1="true"></mymenu>
-  </div>
-  <div class="content" id="divBody">
-    <mynav name="商品编辑页"></mynav>
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="well">
-          <table class="table">
-            <tr>
-              <td>商品名称:</td>
-              <td>
-                <input type="text" v-model="product.productName" placeholder="请输入商品名称"> </td>
-            </tr>
-            <tr>
-              <td>商品类型:</td>
-              <td>
-                <select v-model="product.productType" class="input-xlarge" style="width:120px">
-                  <option v-for="(value, key) in types" v-bind:value="key"> {{value}} </option>
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td>商品图片:
-                <br/>第一张为默认图片</td>
-              <td>
-                <div class="form-control" style="min-height:125px;" />
-                <template v-for="(img,index) in product.imgList">
-                  <div class="imgDiv">
-                    <img :src="'upload/compressed/'+img.imgUrl" /> <a href="javascript:;" v-on:click="deletePic(index)" class="delete">
-            <i class="icon-remove"></i>
-            </a> </div>
-                </template>
-                <div>
-                  <button style="margin-top:10px;" type="button" class="btn icon-plus" v-on:click="addPic"> 新增 </button>
-                  <input type="file" name="file" v-on:change="uploadFile" id="uploadFile" style="display:none" /> </div>
-              </td>
-            </tr>
-            <tr>
-              <td>原价:</td>
-              <td>
-                <input type="number" v-model="product.originPrice" placeholder="请输入价格" /> 元</td>
-            </tr>
-            <tr>
-              <td>vip价格:</td>
-              <td>
-                <input type="number" v-model="product.vipPrice" placeholder="请输入价格" /> 元</td>
-              </td>
-            </tr>
-            <tr>
-              <td>商品总数量:</td>
-              <td>
-                <input type="number" v-model="product.totalQuantity" placeholder="请输入商品总数量" /> 个</td>
-            </tr>
-            <tr>
-              <td>库存量:</td>
-              <td>
-                <input type="number" v-model="product.totalQuantity" placeholder="请输入商品总数量" /> 个</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td> <span id="errSpan" style="color:red;"></span> </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>
-                <button type="button" class="btn btn-primary" v-on:click="doIt"> <i class="icon-save"></i> 保存 </button>
-                <button type="button" class="btn" onclick="window.history.go(-1)">取消</button>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
+    <div id="menu">
+        <mymenu menu1="true"></mymenu>
     </div>
-    <myfooter></myfooter>
-  </div>
-  <script type="text/javascript" src="js/vue.min.js"></script>
-  <script type="text/javascript" src="js/jquery.min.js"></script>
-  <!--   <script type="text/javascript" src="js/jquery.form.js"></script> -->
-  <script type="text/javascript" src="js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="js/layer.js"></script>
-  <script type="text/javascript" src="js/fileUpload.js"></script>
-  <script type="text/javascript" src="js/sync.js"></script>
-  <script type="text/javascript" src="js/header.js"></script>
-  <script type="text/javascript">
-  var db = new Vue({
-    el: "#divBody",
-    mounted: function() {
-      var productId = getQueryString("productId");
-      var that = this;
-      post2SRV("productDetail", { productId: productId }, function(data) {
-        that.product = data;
-      }, "json");
-    },
-    methods: {
-      doIt: function() {
-        var param = {
-          productId: this.product.productId,
-          productName: this.product.productName,
-          originPrice: this.product.originPrice,
-          vipPrice: this.product.vipPrice,
-          totalQuantity: this.product.totalQuantity,
-          remain: this.product.totalQuantity,
-          imgsStr: JSON.stringify(this.product.imgList)
-        };
-        post2SRV("productEdit", param, function(data) {
-          window.location.href = "/wineback/productDetail.html?productId=" + db.product.productId;
-        }, "json");
-      },
-      addPic: function() {
-        $("#uploadFile").click();
-      },
-      uploadFile: function(e) {
-        var file = e.target.files[0];;
-        if (file.type.indexOf('image') == -1) {
-          alert('只能上传图片');
-          return;
-        }
-        $("#uploadFile").upload("imageAdd", function(data) {
-          var img = {
-            imgUrl: data
-          };
-          db.product.imgList.push(img);
+    <div class="content" id="divBody">
+        <mynav name="商品编辑页"></mynav>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="well">
+                    <table class="table">
+                        <tr>
+                            <td>商品名称:</td>
+                            <td>
+                                <input type="text" v-model="product.productName" placeholder="请输入商品名称">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>商品类型:</td>
+                            <td>
+                                <select v-model="product.productType" class="input-xlarge" style="width:120px">
+                                    <option v-for="(value, key) in types" v-bind:value="key">{{value}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>商品图片:
+                                <br/>第一张为默认图片</td>
+                            <td>
+                                <div class="form-control" style="min-height:125px;" />
+                                <template v-for="(img,index) in product.imgList">
+                                    <div class="imgDiv">
+                                        <img :src="'upload/compressed/'+img.imgUrl" />
+                                        <a href="javascript:;" v-on:click="deletePic(index)" class="delete"> <i class="icon-remove"></i>
+                                        </a>
+                                    </div>
+                                </template>
+                                <div>
+                                    <button style="margin-top:10px;" type="button" class="btn icon-plus" v-on:click="addPic">新增</button>
+                                    <input type="file" name="file" v-on:change="uploadFile" id="uploadFile" style="display:none" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>原价:</td>
+                            <td>
+                                <input type="number" v-model="product.originPrice" placeholder="请输入价格" />元</td>
+                        </tr>
+                        <tr>
+                            <td>vip价格:</td>
+                            <td>
+                                <input type="number" v-model="product.vipPrice" placeholder="请输入价格" />元</td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>商品总数量:</td>
+                            <td>
+                                <input type="number" v-model="product.totalQuantity" placeholder="请输入商品总数量" />个</td>
+                        </tr>
+                        <tr>
+                            <td>库存量:</td>
+                            <td>
+                                <input type="number" v-model="product.totalQuantity" placeholder="请输入商品总数量" />个</td>
+                        </tr>
+              <tr>
+                <td colespan="2"><b>以下是商品详情：</b></td>
+              </tr>
+              			<tr>
+                            <td>详情图片:</td>
+                            <td>
+                                <div class="form-control" style="min-height:125px;" />
+                                <template v-for="(img,index) in product.detailImgList">
+                                    <div class="imgDiv">
+                                        <img :src="'upload/compressed/'+img.imgUrl" />
+                                        <a href="javascript:;" v-on:click="deleteDetailPic(index)" class="delete"> <i class="icon-remove"></i>
+                                        </a>
+                                    </div>
+                                </template>
+                                <div>
+                                    <button style="margin-top:10px;" type="button" class="btn icon-plus" v-on:click="addDetailPic">新增</button>
+                                    <input type="file" name="file" v-on:change="uploadDetailFile" id="uploadDetailFile" style="display:none" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>品牌:</td>
+                            <td>
+                                <input type="text" v-model="product.pp" placeholder="请输入品牌" /></td>
+                        </tr>
+                        <tr>
+                            <td>包装方式:</td>
+                            <td>
+                                <input type="text" v-model="product.bzfs" placeholder="请输入包装方式" /></td>
+                        </tr>
+                        <tr>
+                            <td>糖量:</td>
+                            <td>
+                                <input type="text" v-model="product.tl" placeholder="请输入糖量" /></td>
+                        </tr>
+                        <tr>
+                            <td>种类:</td>
+                            <td>
+                                <input type="text" v-model="product.zl" placeholder="请输入种类" /></td>
+                        </tr>
+                        <tr>
+                            <td>葡萄品种:</td>
+                            <td>
+                                <input type="text" v-model="product.ptpz" placeholder="请输入葡萄品种" /></td>
+                        </tr>
+                        <tr>
+                            <td>年份:</td>
+                            <td>
+                                <input type="text" v-model="product.nf" placeholder="请输入年份" /></td>
+                        </tr>
+                        <tr>
+                            <td>适用场合</td>
+                            <td>
+                                <input type="text" v-model="product.sych" placeholder="请输入适用场合" /></td>
+                        </tr>
+                        <tr>
+                            <td>酿造工艺:</td>
+                            <td>
+                                <input type="text" v-model="product.nzgy" placeholder="请输入酿造工艺" /></td>
+                        </tr>
+                        <tr>
+                            <td>口感:</td>
+                            <td>
+                                <input type="text" v-model="product.kg" placeholder="请输入口感" /></td>
+                        </tr>
+                        <tr>
+                            <td>高分酒:</td>
+                            <td>
+                                <input type="text" v-model="product.gfj" placeholder="请输入高分酒" /></td>
+                        </tr>
+                        <tr>
+                            <td>搭配菜肴:</td>
+                            <td>
+                                <input type="text" v-model="product.dpcy" placeholder="请输入搭配菜肴" /></td>
+                        </tr>
+                        <tr>
+                            <td>香气:</td>
+                            <td>
+                                <input type="text" v-model="product.xq" placeholder="请输入香气" /></td>
+                        </tr>
+                        <tr>
+                            <td>进口方式:</td>
+                            <td>
+                                <input type="text" v-model="product.jkfs" placeholder="请输入进口方式" /></td>
+                        </tr>
+                        <tr>
+                            <td>醒酒时间:</td>
+                            <td>
+                                <input type="text" v-model="product.xjsj" placeholder="请输入醒酒时间" /></td>
+                        </tr>
+                        <tr>
+                            <td>产品产地:</td>
+                            <td>
+                                <input type="text" v-model="product.cpcd" placeholder="请输入产品产地" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td> <span id="errSpan" style="color:red;"></span> 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button type="button" class="btn btn-primary" v-on:click="doIt"> <i class="icon-save"></i> 保存</button>
+                                <button type="button" class="btn" onclick="window.history.go(-1)">取消</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <myfooter></myfooter>
+    </div>
+    <script type="text/javascript" src="js/vue.min.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <!--   <script type="text/javascript" src="js/jquery.form.js"></script> -->
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/layer.js"></script>
+    <script type="text/javascript" src="js/fileUpload.js"></script>
+    <script type="text/javascript" src="js/sync.js"></script>
+    <script type="text/javascript" src="js/header.js"></script>
+    <script type="text/javascript">
+        var db = new Vue({
+            el: "#divBody",
+            mounted: function() {
+                var productId = getQueryString("productId");
+                var that = this;
+                post2SRV("productDetail", {
+                    productId: productId
+                }, function(data) {
+                    that.product = data;
+                }, "json");
+            },
+            methods: {
+                doIt: function() {
+                    var param = {
+                        productId: this.product.productId,
+                        productName: this.product.productName,
+                        originPrice: this.product.originPrice,
+                        vipPrice: this.product.vipPrice,
+                        totalQuantity: this.product.totalQuantity,
+                        remain: this.product.totalQuantity,
+                        pp:this.product.pp,
+                        bzfs:this.product.bzfs,
+                        tl:this.product.tl,
+                        zl:this.product.zl,
+                        ptpz:this.product.ptpz,
+                        nf:this.product.nf,
+                        sych:this.product.sych,
+                        nzgy:this.product.nzgy,
+                        kg:this.product.kg,
+                        gfj:this.product.gfj,
+                        dpcy:this.product.dpcy,
+                        xq:this.product.xq,
+                        jkfs:this.product.jkfs,
+                        xjsj:this.product.xjsj,
+                        cpcd:this.product.cpcd,
+                        imgStr: JSON.stringify(this.product.imgList),
+                        detailImgSrc: JSON.stringify(this.product.detailImgList)
+                    };
+                    post2SRV("productEdit", param, function(data) {
+                        window.location.href = "/wineback/productDetail.html?productId=" + db.product.productId;
+                    }, "json");
+                },
+                addPic: function() {
+                    $("#uploadFile").click();
+                },
+                uploadFile: function(e) {
+                    var file = e.target.files[0];;
+                    if (file.type.indexOf('image') == -1) {
+                        alert('只能上传图片');
+                        return;
+                    }
+                    $("#uploadFile").upload("imageAdd", function(data) {
+                        var img = {
+                            imgUrl: data
+                        };
+                        db.product.imgList.push(img);
+                    });
+                },
+                deletePic: function(i) {
+                    //从list中删除
+                    this.product.imgList.splice(i, 1);
+                },
+                addDetailPic: function() {
+                    $("#uploadDetailFile").click();
+                },
+                uploadDetailFile: function(e) {
+                    var file = e.target.files[0];;
+                    if (file.type.indexOf('image') == -1) {
+                        alert('只能上传图片');
+                        return;
+                    }
+                    $("#uploadDetailFile").upload("imageAdd", function(data) {
+                        var img = {
+                            imgUrl: data
+                        };
+                        db.product.detailImgList.push(img);
+                    });
+                },
+                deleteDetailPic: function(i) {
+                    //从list中删除
+                    this.product.detailImgList.splice(i, 1);
+                }
+            },
+            data: {
+                product: {},
+                types: {
+                    ww: "白酒",
+                    rw: "红酒"
+                },
+            }
         });
-      },
-      deletePic: function(i) {
-        //从list中删除
-        this.product.imgList.splice(i, 1);
-      }
-    },
-    data: {
-      product: {},
-      types: {
-        ww: "白酒",
-        rw: "红酒"
-      },
-    }
-  });
-  </script>
+    </script>
 </body>
 
 </html>

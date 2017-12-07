@@ -1,5 +1,6 @@
 package com.wine.wx.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import com.wine.base.bean.Image;
 import com.wine.base.bean.Product;
 import com.wine.base.common.Util;
 import com.wine.base.dao.ProductMapper;
@@ -31,9 +33,20 @@ public class ProductService{
 		return list;
 	}
 
-	@Cacheable(value = "product",key="#productId")
+//	@Cacheable(value = "product",key="#productId")
 	public Product getDetail(int productId) {
 		Product product=productMapper.selectByPrimaryKey(productId);
+		List<Image> detailImgList=new ArrayList<Image>();
+		List<Image> imgList=product.getImgList();
+		for(int i=0;i<imgList.size();i++){//main_pic 是2 的是参数图片
+			Image image=imgList.get(i);
+			if(image.getMainPic()==2){
+				detailImgList.add(image);
+				imgList.remove(i);
+				i--;
+			}
+		}
+		product.setDetailImgList(detailImgList);
 		return product;
 	}
 	

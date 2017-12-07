@@ -61,25 +61,43 @@
     <div class="tab-content detail_class2">
       <!--分页-->
       <div class="tab-pane active" id="tabs01">
-        <div class="detail">图文介绍，嵌入p和img标签</div>
+        <div v-for="(row,index) in product.detailImgList" class="detail" >
+          <img v-lazy="'upload/compressed/'+row.imgUrl" style="width:100%">
+        </div>
       </div>
       <div class="tab-pane" id="tabs02">
         <ul class="info">
-          <li><span class="col1">上市时间: </span><span>2017年夏季</span></li>
-          <li><span class="col1">属性2: </span><span>值</span></li>
-          <li><span class="col1">属性3: </span><span>值</span></li>
-          <li><span class="col1">属性4: </span><span>值</span></li>
-          <li><span class="col1">属性5: </span><span>值</span></li>
+<li v-if="product.pp!=null && product.pp!=''"><span class="col1">品牌: </span><span>{{product.pp}}</span></li>
+<li v-if="product.bzfs!=null && product.bzfs!=''"><span class="col1">包装方式: </span><span>{{product.bzfs}}</span></li>
+<li v-if="product.tl!=null && product.tl!=''"><span class="col1">糖量: </span><span>{{product.tl}}</span></li>
+<li v-if="product.zl!=null && product.zl!=''"><span class="col1">种类: </span><span>{{product.zl}}</span></li>
+<li v-if="product.ptpz!=null && product.ptpz!=''"><span class="col1">葡萄品种: </span><span>{{product.ptpz}}</span></li>
+<li v-if="product.nf!=null && product.nf!=''"><span class="col1">年份: </span><span>{{product.nf}}</span></li>
+<li v-if="product.sych!=null && product.sych!=''"><span class="col1">适用场合: </span><span>{{product.sych}}</span></li>
+<li v-if="product.nzgy!=null && product.nzgy!=''"><span class="col1">酿造工艺: </span><span>{{product.nzgy}}</span></li>
+<li v-if="product.kg!=null && product.kg!=''"><span class="col1">口感: </span><span>{{product.kg}}</span></li>
+<li v-if="product.gfj!=null && product.gfj!=''"><span class="col1">高分酒: </span><span>{{product.gfj}}</span></li>
+<li v-if="product.dpcy!=null && product.dpcy!=''"><span class="col1">搭配菜肴: </span><span>{{product.dpcy}}</span></li>
+<li v-if="product.xq!=null && product.xq!=''"><span class="col1">香气: </span><span>{{product.xq}}</span></li>
+<li v-if="product.jkfs!=null && product.jkfs!=''"><span class="col1">进口方式: </span><span>{{product.jkfs}}</span></li>
+<li v-if="product.xjsj!=null && product.xjsj!=''"><span class="col1">醒酒时间: </span><span>{{product.xjsj}}</span></li>
+<li v-if="product.cpcd!=null && product.cpcd!=''"><span class="col1">产品产地: </span><span>{{product.cpcd}}</span></li>
         </ul>
       </div>
     </div>
   </div>
   <script type="text/javascript" src="js/vue.min.js"></script>
+  <script type="text/javascript" src="js/vue-lazyload.js"></script>
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="js/bootstrap.min.js"></script>
   <script type="text/javascript" src="js/layer.js"></script>
   <script type="text/javascript" src="js/sync.js"></script>
   <script>
+  Vue.use(VueLazyload, {
+		error: 'img/img_error.png',//这个是请求失败后显示的图片
+		loading: 'img/loading-0.gif',//这个是加载的loading过渡效果
+		try: 2 // 这个是加载图片数量
+  })
   var db = new Vue({
     el: "#divBody",
     mounted: function() {

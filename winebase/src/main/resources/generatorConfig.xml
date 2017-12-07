@@ -17,7 +17,7 @@
 			targetProject="src/main/java" />
 		<javaClientGenerator targetPackage="com.wine.base.dao"
 			targetProject="src/main/java" type="XMLMAPPER" />
-		<table tableName="jnl" domainObjectName="Jnl"
+		<table tableName="product" domainObjectName="Product"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			enableInsert="true" >

@@ -45,6 +45,7 @@ public class UserService {
 
 	//未关注用户
 	public User getUnfollowUser(String code) throws WineException {
+		//TODO  code been used
 		LoginAcToken tk=tokenService.getLoginAcToken(code);
 		
 		String openid=tk.getOpenid();

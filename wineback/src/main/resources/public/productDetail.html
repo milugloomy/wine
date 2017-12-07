@@ -1,141 +1,210 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <title>花道酒业管理后台</title>
-  <meta content="webkit" name="renderer" />
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/theme.css">
-  <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
-<style type="text/css">
-  td img {
+    <meta charset="utf-8">
+    <title>花道酒业管理后台</title>
+    <meta content="webkit" name="renderer" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
+    <style type="text/css">
+        td img {
     max-height: 150px;
     max-width: 150px;
-  }
-</style>
+}
+    </style>
 </head>
 
 <body>
-  <div id="menu">
-    <mymenu menu1="true"></mymenu>
-  </div>
-  <div class="content" id="divBody">
-    <mynav name="商品详情页"></mynav>
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="btn-toolbar">
-          <button v-on:click="edit" class="btn btn-primary">
-            <i class="icon-pencil"></i> 编辑
-          </button>
-          <a class="btn" v-on:click="deleteConfirm(product.productId)">
-					<i class="icon-remove"></i> 删除</a>
-          <div class="btn-group"></div>
-        </div>
-        <div class="well">
-          <div class="tab-pane active in" id="home">
-            <table class="table">
-              <tr>
-                <td>商品名称:</td>
-                <td>{{product.productName}}</td>
-              </tr>
-              <tr>
-                <td>商品类型:</td>
-                <td>{{types[product.productType]}}</td>
-              </tr>
-              <tr>
-                <td>商品图片:
-                  <br/>(点击查看原图)</td>
-                <td>
-                  <template v-for="img in product.imgList">
-                    <a :href="'upload/original/'+img.imgUrl" target="_blank">
-					  <img :src="'upload/compressed/'+img.imgUrl" />
-					</a> &nbsp;
-                  </template>
-                </td>
-              </tr>
-              <tr>
-                <td>原价:</td>
-                <td>{{product.originPrice}}元</td>
-                </td>
-              </tr>
-              <tr>
-                <td>vip价:</td>
-                <td>{{product.vipPrice}}元</td>
-              </tr>
-              <tr>
-                <td>商品总数量:</td>
-                <td>{{product.totalQuantity}}件</td>
-              </tr>
-              <tr>
-                <td>库存量:</td>
-                <td>{{product.remain}}件</td>
-              </tr>
-              <tr>
-                <td>添加时间:</td>
-                <td>{{product.addTime}}</td>
-              </tr>
-              <tr>
-                <td colespan="2"><b>以下是商品详情：</b></td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <button style="margin-left:45%" class="btn btn-primary" onclick="location='/wineback/productList.html'">
-          <i class="icon-arrow-left"></i>返回
-        </button>
-      </div>
+    <div id="menu">
+        <mymenu menu1="true"></mymenu>
     </div>
-    <myfooter></myfooter>
-  </div>
-  <script type="text/javascript" src="js/vue.min.js"></script>
-  <script type="text/javascript" src="js/jquery.min.js"></script>
-  <script type="text/javascript" src="js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="js/layer.js"></script>
-  <script type="text/javascript" src="js/sync.js"></script>
-  <script type="text/javascript" src="js/header.js"></script>
-  <script type="text/javascript">
-  var db = new Vue({
-    el: "#divBody",
-    mounted: function() {
-      var productId = getQueryString("productId");
-      var that = this;
-      post2SRV("productDetail", { productId: productId }, function(data) {
-        that.product = data;
-      }, "json");
-    },
-    methods: {
-      deleteConfirm: function(productId) {
-        var deleteLayer = layer.confirm("<div style='font-size:16px'>确认删除该商品么</div>", {
-          title: "删除确认",
-          btn: ["确定", "取消"],
-          btn1: function() {
-            post2SRV("productDelete", { productId: productId }, function(data) {
-              layer.close(deleteLayer);
-              layer.msg("删除成功", {
-                time: 1000, //10s后自动关闭
-              });
-              setTimeout(function() {
-                window.location.href = '/wineback/productList.html';
-              }, 800);
-            }, "json");
-          },
+    <div class="content" id="divBody">
+        <mynav name="商品详情页"></mynav>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="btn-toolbar">
+                    <button v-on:click="edit" class="btn btn-primary"> <i class="icon-pencil"></i> 编辑</button>
+                    <a class="btn" v-on:click="deleteConfirm(product.productId)">	<i class="icon-remove"></i> 删除</a>
+                    <div class="btn-group"></div>
+                </div>
+                <div class="well">
+                    <div class="tab-pane active in" id="home">
+                        <table class="table">
+                            <tr>
+                                <td>商品名称:</td>
+                                <td>{{product.productName}}</td>
+                            </tr>
+                            <tr>
+                                <td>商品类型:</td>
+                                <td>{{types[product.productType]}}</td>
+                            </tr>
+                            <tr>
+                                <td>商品图片:
+                                    <br/>(点击查看原图)</td>
+                                <td>
+                                    <template v-for="img in product.imgList">
+                                        <a :href="'upload/original/'+img.imgUrl" target="_blank">
+                                            <img :src="'upload/compressed/'+img.imgUrl" />
+                                        </a>&nbsp;</template>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>原价:</td>
+                                <td>{{product.originPrice}}元</td>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>vip价:</td>
+                                <td>{{product.vipPrice}}元</td>
+                            </tr>
+                            <tr>
+                                <td>商品总数量:</td>
+                                <td>{{product.totalQuantity}}件</td>
+                            </tr>
+                            <tr>
+                                <td>库存量:</td>
+                                <td>{{product.remain}}件</td>
+                            </tr>
+                            <tr>
+                                <td>添加时间:</td>
+                                <td>{{product.addTime}}</td>
+                            </tr>
+                            <tr>
+                                <td colespan="2"><b>以下是商品详情：</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>详情图片:
+                                    <br/>(点击查看原图)</td>
+                                <td>
+                                    <template v-for="img in product.detailImgList">
+                                        <a :href="'upload/original/'+img.imgUrl" target="_blank">
+                                            <img :src="'upload/compressed/'+img.imgUrl" />
+                                        </a>&nbsp;</template>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>品牌:</td>
+                                <td>{{product.pp}}</td>
+                            </tr>
+                            <tr>
+                                <td>包装方式:</td>
+                                <td>{{product.bzfs}}</td>
+                            </tr>
+                            <tr>
+                                <td>糖量:</td>
+                                <td>{{product.tl}}</td>
+                            </tr>
+                            <tr>
+                                <td>种类:</td>
+                                <td>{{product.zl}}</td>
+                            </tr>
+                            <tr>
+                                <td>葡萄品种:</td>
+                                <td>{{product.ptpz}}</td>
+                            </tr>
+                            <tr>
+                                <td>年份:</td>
+                                <td>{{product.nf}}</td>
+                            </tr>
+                            <tr>
+                                <td>适用场合</td>
+                                <td>{{product.sych}}</td>
+                            </tr>
+                            <tr>
+                                <td>酿造工艺:</td>
+                                <td>{{product.nzgy}}</td>
+                            </tr>
+                            <tr>
+                                <td>口感:</td>
+                                <td>{{product.kg}}</td>
+                            </tr>
+                            <tr>
+                                <td>高分酒:</td>
+                                <td>{{product.gfj}}</td>
+                            </tr>
+                            <tr>
+                                <td>搭配菜肴:</td>
+                                <td>{{product.dpcy}}</td>
+                            </tr>
+                            <tr>
+                                <td>香气:</td>
+                                <td>{{product.xq}}</td>
+                            </tr>
+                            <tr>
+                                <td>进口方式:</td>
+                                <td>{{product.jkfs}}</td>
+                            </tr>
+                            <tr>
+                                <td>醒酒时间:</td>
+                                <td>{{product.xjsj}}</td>
+                            </tr>
+                            <tr>
+                                <td>产品产地:</td>
+                                <td>{{product.cpcd}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <button style="margin-left:45%" class="btn btn-primary" onclick="location='/wineback/productList.html'"> <i class="icon-arrow-left"></i>返回</button>
+            </div>
+        </div>
+        <myfooter></myfooter>
+    </div>
+    <script type="text/javascript" src="js/vue.min.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/layer.js"></script>
+    <script type="text/javascript" src="js/sync.js"></script>
+    <script type="text/javascript" src="js/header.js"></script>
+    <script type="text/javascript">
+        var db = new Vue({
+            el: "#divBody",
+            mounted: function() {
+                var productId = getQueryString("productId");
+                var that = this;
+                post2SRV("productDetail", {
+                    productId: productId
+                }, function(data) {
+                    that.product = data;
+                }, "json");
+            },
+            methods: {
+                deleteConfirm: function(productId) {
+                    var deleteLayer = layer.confirm("<div style='font-size:16px'>确认删除该商品么</div>", {
+                        title: "删除确认",
+                        btn: ["确定", "取消"],
+                        btn1: function() {
+                            post2SRV("productDelete", {
+                                productId: productId
+                            }, function(data) {
+                                layer.close(deleteLayer);
+                                layer.msg("删除成功", {
+                                    time: 1000, //10s后自动关闭
+                                });
+                                setTimeout(function() {
+                                    window.location.href = '/wineback/productList.html';
+                                }, 800);
+                            }, "json");
+                        },
+                    });
+                },
+                edit: function() {
+                    window.location.href = "/wineback/productEdit.html?productId=" + this.product.productId;
+                }
+            },
+            data: {
+                product: {},
+                types: {
+                    ww: "白酒",
+                    rw: "红酒"
+                }
+            }
         });
-      },
-      edit: function() {
-        window.location.href = "/wineback/productEdit.html?productId=" + this.product.productId;
-      }
-    },
-    data: {
-      product: {},
-      types: {
-        ww: "白酒",
-        rw: "红酒"
-      }
-    }
-  });
-  </script>
+    </script>
 </body>
 
 </html>

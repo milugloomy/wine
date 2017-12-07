@@ -13,7 +13,7 @@ import com.wine.base.common.WineException;
 import com.wine.base.dao.UserMapper;
 import com.wine.base.service.WxService;
 
-import batch.common.MyBatch;
+import mybatch.common.MyBatch;
 
 @Service
 public class UserBatch {

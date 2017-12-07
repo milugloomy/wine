@@ -1,18 +1,10 @@
 package com.wine.back;
 
-import java.nio.charset.Charset;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.alibaba.fastjson.support.config.FastJsonConfig;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 
 @Configuration
 public class MyWebConfig extends WebMvcConfigurerAdapter{
@@ -20,7 +12,7 @@ public class MyWebConfig extends WebMvcConfigurerAdapter{
 	@Value("${img.path}")
     private String imgPath;
 
-	//使用fastjson
+	/*//使用fastjson
 	@Override
 	public void configureMessageConverters(  
 			List<HttpMessageConverter<?>> converters) {  
@@ -35,7 +27,7 @@ public class MyWebConfig extends WebMvcConfigurerAdapter{
 		fastConverter.setFastJsonConfig(fastJsonConfig);  
 
 		converters.add(fastConverter);  
-	}
+	}*/
 	
 	@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
