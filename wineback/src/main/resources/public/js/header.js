@@ -20,19 +20,19 @@ Vue.component('mymenu', {
 						</a>\
 						<ul class="dropdown-menu">\
 							<li><a href="/wineback/modifyPwd.html">密码修改</a></li>\
-							<li><a href="/wineback/adminLog.html">日志查看</a></li>\
+//							<li><a href="/wineback/adminLog.html">日志查看</a></li>\
 							<li class="divider"></li>\
 							<li><a href="javascript:;" tabindex="-1" v-on:click="logout">登出</a></li>\
 						</ul>\
 					</li>\
 				</ul>\
-				<a class="brand" href="index.html"><span class="second">花道酒业管理后台</span></a>\
+				<a class="brand" href="index.html"><span class="second">花冠盛到酒业管理后台</span></a>\
 			</div>\
 		</div>\
 		<div class="copyrights">版权信息</div>\
 		<div class="sidebar-nav">\
 			<a href="#dashboard-menu" class="nav-header" data-toggle="collapse">\
-				<i class="icon-dashboard"></i>花道酒业\
+				<i class="icon-dashboard"></i>花冠盛到酒业\
 			</a>\
 			<ul id="dashboard-menu" class="nav nav-list collapse" v-bind:class="{in:menu1}">\
 				<li><a href="/wineback/index.html">主页</a></li>\
@@ -90,7 +90,7 @@ Vue.component('mynav', {
 				<h1 class="page-title">{{name}}</h1>\
 			</div>\
 			<ul class="breadcrumb">\
-				<li><a href="/wineback/index.html">花道酒业</a> <span class="divider">/</span></li>\
+				<li><a href="/wineback/index.html">花冠盛到酒业</a> <span class="divider">/</span></li>\
 				<li class="active">{{name}}</li>\
 			</ul>\
 		<div>',
