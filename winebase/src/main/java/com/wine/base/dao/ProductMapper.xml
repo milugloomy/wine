@@ -61,7 +61,7 @@
 	limit #{offset},#{length}
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select a.*,b.* from product a,image b where a.product_id=b.product_id and a.product_id=#{productId}
+    select a.*,b.* from product a left join image b on a.product_id=b.product_id where a.product_id=#{productId}
   </select>
   <select id="selectTotal" resultType="java.lang.Integer">
     select count(*) from product where status='N'
