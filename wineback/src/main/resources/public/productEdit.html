@@ -261,6 +261,30 @@
                         imgStr: JSON.stringify(this.product.imgList),
                         detailImgSrc: JSON.stringify(this.product.detailImgList)
                     };
+                    if(this.productName==""){
+                    	layer.msg("请输入商品名称");
+                        return;
+                    }
+                    if(this.productType==""){
+                    	layer.msg("请选择商品类型");
+                        return;
+                    }
+                    if(this.imgList.length==0){
+                    	layer.msg("请上传商品图片");
+                        return;
+                    }
+                    if(this.imgList.length==0){
+                    	layer.msg("请输入商品原价");
+                        return;
+                    }
+                    if(this.imgList.length==0){
+                    	layer.msg("请输入商品vip价格");
+                        return;
+                    }
+                    if(this.totalQuantity.length==0){
+                    	layer.msg("请输入商品库存量");
+                        return;
+                    }
                     post2SRV("productEdit", param, function(data) {
                         window.location.href = "/wineback/productDetail.html?productId=" + db.product.productId;
                     }, "json");

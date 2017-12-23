@@ -36,9 +36,7 @@
 	</collection>
   </resultMap>
   <select id="selectByPageNo" resultMap="BaseResultMap">
-    select a.*,b.img_url from product a left join image b 
-		on a.product_id=b.product_id and b.main_pic=1
-		where a.status='N'
+    select a.*,b.img_url from product a,image b where a.product_id=b.product_id and b.main_pic=1 and a.status='N'
 		order by a.add_time desc
 	limit #{offset},#{length}
   </select>
@@ -61,10 +59,10 @@
 	limit #{offset},#{length}
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select a.*,b.* from product a left join image b on a.product_id=b.product_id where a.product_id=#{productId}
+    select a.*,b.* from product a,image b where a.product_id=b.product_id and a.product_id=#{productId}
   </select>
   <select id="selectTotal" resultType="java.lang.Integer">
-    select count(*) from product where status='N'
+    select count(*) from product a,image b where a.product_id=b.product_id and b.main_pic=1 and  a.status='N'
   </select>  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     update product set status='C' where product_id = #{productId,jdbcType=INTEGER}
