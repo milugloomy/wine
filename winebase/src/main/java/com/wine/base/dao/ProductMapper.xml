@@ -36,7 +36,8 @@
 	</collection>
   </resultMap>
   <select id="selectByPageNo" resultMap="BaseResultMap">
-    select a.*,b.img_url from product a,image b where a.product_id=b.product_id and b.main_pic=1 and a.status='N'
+    select a.*,b.img_url from product a left join image b 
+		on a.product_id=b.product_id and b.main_pic=1
 		order by a.add_time desc
 	limit #{offset},#{length}
   </select>
