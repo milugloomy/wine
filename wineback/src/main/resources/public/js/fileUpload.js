@@ -3,7 +3,10 @@
 	var uploadDiv='<div id="progressNumber"></div>';
 	var msgLayer;
 	var obj;
-	$.fn.upload = function(url,callback) {
+	$.fn.upload = function(url,param,callback) {
+		if(callback==undefined){
+			callback=param;
+		}
 		obj=this;
 		var file=obj[0].files[0];
 		if (file) {
@@ -12,6 +15,12 @@
 			});
 			var fd = new FormData();
 			fd.append("file", file);
+			//判断是否传入param
+			if(param.constructor==Object){
+				for(i in param){
+					fd.append(i,param[i])
+				}
+			}
 			var xhr = new XMLHttpRequest();
 			xhr.upload.addEventListener("progress", uploadProgress, false);
 			xhr.addEventListener("load", uploadComplete.bind(event,callback), false);

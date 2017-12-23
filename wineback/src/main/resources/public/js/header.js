@@ -5,6 +5,9 @@ Vue.component('mymenu', {
     },
     menu2: {
       default: false
+    },
+    menu3: {
+      default: false
     }
   },
   //v-bind:class 中 样式名带-的 需加单引号
@@ -45,6 +48,12 @@ Vue.component('mymenu', {
 			</a>\
 			<ul id="accounts-menu" class="nav nav-list collapse" v-bind:class="{in:menu2}">\
 				<li><a href="/wineback/userList.html">关注用户</a></li>\
+			</ul>\
+			<a href="#setting-menu" class="nav-header" data-toggle="collapse">\
+			<i class="icon-play"></i>参数配置\
+			</a>\
+			<ul id="setting-menu" class="nav nav-list collapse" v-bind:class="{in:menu3}">\
+				<li><a href="/wineback/imgSet.html">图片压缩比率</a></li>\
 			</ul>\
 		</div>\
 	</div>\

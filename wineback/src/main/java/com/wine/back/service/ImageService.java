@@ -11,11 +11,14 @@ import javax.imageio.ImageIO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.wine.base.bean.ImageSetting;
 import com.wine.base.common.WineException;
+import com.wine.base.dao.ImageSettingMapper;
 
 import net.coobird.thumbnailator.Thumbnails;
 
@@ -33,12 +36,19 @@ public class ImageService {
 	//压缩成图标路径
 	private String iconPath;
 	
+	private ImageSetting imageSetting;
+	
+	@Autowired
+	private ImageSettingMapper imageSettingMapper;
+	
 	
 	@PostConstruct
 	public void pathInit(){
 		originalPath=imgPath+"original/";
 		compressedPath=imgPath+"compressed/";
 		iconPath=imgPath+"icon/";
+		
+		imageSetting=imageSettingMapper.select();
 	}
 	
 	//file上传
@@ -67,16 +77,22 @@ public class ImageService {
 	}
 	
 	public void saveCompressed(String fileName) throws WineException{
+		//取默认参数
+		Double compressedRate=imageSetting.getCompressedRate();
+		Integer compressedPix=imageSetting.getCompressedPix();
+		saveCompressed(fileName, compressedRate, compressedPix);
+	}
+	public void saveCompressed(String fileName,Double compressedRate,Integer compressedPix) throws WineException{
 		try {
 			BufferedImage originalImg=ImageIO.read(new File(originalPath+fileName));
 			int height=originalImg.getHeight();
 			int width=originalImg.getWidth();
 			//大图压缩尺寸到800内
-			if(height>800 || width>800){
+			if(height>compressedPix || width>compressedPix){
 				Thumbnails.of(originalImg)
-				.size(800,800)//宽高
+				.size(compressedPix,compressedPix)//宽高
 			    .keepAspectRatio(true)//宽高保持比例
-				.outputQuality(0.5f)//质量
+				.outputQuality(compressedRate/100.0)//质量
 //				.watermark(Positions.BOTTOM_RIGHT,ImageIO.read(new File(shuiyin_img)),0.5f)//水印
 			    .toFile(compressedPath+fileName);
 			//宽高都小于800的图不压缩尺寸
@@ -93,9 +109,14 @@ public class ImageService {
 	}
 	
 	public void saveIcon(String fileName) throws WineException{
+		//取默认参数
+		Integer iconPix=imageSetting.getIconPix();
+		saveIcon(fileName, iconPix);
+	}
+	public void saveIcon(String fileName,Integer iconPix) throws WineException{
 		try {
 			Thumbnails.of(originalPath+fileName)
-				.size(100,100)//压缩后宽高
+				.size(iconPix,iconPix)//压缩后宽高
 				.keepAspectRatio(true)//宽高保持比例
 				.toFile(iconPath+fileName);
 		} catch (IOException e) {
@@ -104,6 +125,16 @@ public class ImageService {
 		}
 	}
 	
+	public void saveImageConfig(Double compressedRate, Integer compressedPix, Integer iconPix) {
+		imageSetting.setCompressedPix(compressedPix);
+		imageSetting.setCompressedRate(compressedRate);
+		imageSetting.setIconPix(iconPix);
+		imageSettingMapper.updateByPrimaryKeySelective(imageSetting);
+	}
+	public ImageSetting queryImageConfig() {
+		return imageSetting;
+	}
+
 	public static void main(String[] args) throws IOException{
 		String baseDir="D:\\Workspaces\\HkWorkspace\\mtroom\\src\\main\\resources\\public\\image\\";
 		String originalDir=baseDir+"original";
@@ -135,4 +166,5 @@ public class ImageService {
 				.toFile(baseDir+"icon\\"+file.getName());
 		}
 	}
+
 }

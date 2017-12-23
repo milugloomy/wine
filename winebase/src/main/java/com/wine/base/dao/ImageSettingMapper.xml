@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wine.base.dao.ImageSettingMapper">
+  <resultMap id="BaseResultMap" type="com.wine.base.bean.ImageSetting">
+    <result column="compressed_rate" jdbcType="DOUBLE" property="compressedRate" />
+    <result column="compressed_pix" jdbcType="INTEGER" property="compressedPix" />
+    <result column="icon_pix" jdbcType="INTEGER" property="iconPix" />
+  </resultMap>
+  <insert id="insert" parameterType="com.wine.base.bean.ImageSetting">
+    insert into imagesetting (compressed_rate, compressed_pix, icon_pix
+      )
+    values (#{compressedRate,jdbcType=DOUBLE}, #{compressedPix,jdbcType=INTEGER}, #{iconPix,jdbcType=INTEGER}
+      )
+  </insert>
+  <select id="select" resultMap="BaseResultMap">
+    select * from imagesetting
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wine.base.bean.ImageSetting">
+    update imagesetting
+    <set>
+      <if test="compressedRate != null">
+        compressed_rate = #{compressedRate,jdbcType=DOUBLE},
+      </if>
+      <if test="compressedPix != null">
+        compressed_pix = #{compressedPix,jdbcType=INTEGER},
+      </if>
+      <if test="iconPix != null">
+        icon_pix = #{iconPix,jdbcType=INTEGER},
+      </if>
+    </set>
+  </update>
+</mapper>
