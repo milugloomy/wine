@@ -6,12 +6,12 @@
   <meta content="webkit" name="renderer" />
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/theme.css">
   <link rel="stylesheet" href="css/font-awesome/css/font-awesome.css">
 </head>
 
-<body>
+<body onkeydown="keyLogin();">
   <div class="navbar">
     <div class="navbar-inner">
       <ul class="nav pull-right">
@@ -87,6 +87,10 @@
       password: ""
     }
   });
+  function keyLogin(){
+	if (event.keyCode==13)   //回车键的键值为13
+	  db.login();
+  }
   </script>
 </body>
 

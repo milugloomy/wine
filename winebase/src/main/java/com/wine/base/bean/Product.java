@@ -29,6 +29,7 @@ public class Product {
     
     private List<Image> imgList; 
     private List<Image> detailImgList; 
+    private List<Param> paramList; 
     
     private String pp;//品牌
     private String bzfs;//包装方式
@@ -260,6 +261,14 @@ public class Product {
 
 	public void setCpcd(String cpcd) {
 		this.cpcd = cpcd;
+	}
+
+	public List<Param> getParamList() {
+		return paramList;
+	}
+
+	public void setParamList(List<Param> paramList) {
+		this.paramList = paramList;
 	}
 	
 }

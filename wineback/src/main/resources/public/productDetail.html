@@ -86,65 +86,9 @@
                                         </a>&nbsp;</template>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>品牌:</td>
-                                <td>{{product.pp}}</td>
-                            </tr>
-                            <tr>
-                                <td>包装方式:</td>
-                                <td>{{product.bzfs}}</td>
-                            </tr>
-                            <tr>
-                                <td>糖量:</td>
-                                <td>{{product.tl}}</td>
-                            </tr>
-                            <tr>
-                                <td>种类:</td>
-                                <td>{{product.zl}}</td>
-                            </tr>
-                            <tr>
-                                <td>葡萄品种:</td>
-                                <td>{{product.ptpz}}</td>
-                            </tr>
-                            <tr>
-                                <td>年份:</td>
-                                <td>{{product.nf}}</td>
-                            </tr>
-                            <tr>
-                                <td>适用场合</td>
-                                <td>{{product.sych}}</td>
-                            </tr>
-                            <tr>
-                                <td>酿造工艺:</td>
-                                <td>{{product.nzgy}}</td>
-                            </tr>
-                            <tr>
-                                <td>口感:</td>
-                                <td>{{product.kg}}</td>
-                            </tr>
-                            <tr>
-                                <td>高分酒:</td>
-                                <td>{{product.gfj}}</td>
-                            </tr>
-                            <tr>
-                                <td>搭配菜肴:</td>
-                                <td>{{product.dpcy}}</td>
-                            </tr>
-                            <tr>
-                                <td>香气:</td>
-                                <td>{{product.xq}}</td>
-                            </tr>
-                            <tr>
-                                <td>进口方式:</td>
-                                <td>{{product.jkfs}}</td>
-                            </tr>
-                            <tr>
-                                <td>醒酒时间:</td>
-                                <td>{{product.xjsj}}</td>
-                            </tr>
-                            <tr>
-                                <td>产品产地:</td>
-                                <td>{{product.cpcd}}</td>
+                            <tr v-for="param in product.paramList">
+                                <td>{{param.name}}：</td>
+                                <td>{{param.value}}</td>
                             </tr>
                         </table>
                     </div>

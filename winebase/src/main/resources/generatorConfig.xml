@@ -17,7 +17,7 @@
 			targetProject="src/main/java" />
 		<javaClientGenerator targetPackage="com.wine.base.dao"
 			targetProject="src/main/java" type="XMLMAPPER" />
-		<table tableName="imageSetting" domainObjectName="ImageSetting"
+		<table tableName="param" domainObjectName="Param"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			enableInsert="true" >

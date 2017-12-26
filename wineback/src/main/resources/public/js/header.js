@@ -13,7 +13,7 @@ Vue.component('mymenu', {
   //v-bind:class 中 样式名带-的 需加单引号
   template: '<div>\
 		<div class="navbar">\
-			<div class="navbar-inner">\
+			<div class="navbar-inner" style="min-height:50px;">\
 				<ul class="nav pull-right">\
 					<li id="fat-menu" class="dropdown">\
 						<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"> \
@@ -23,13 +23,12 @@ Vue.component('mymenu', {
 						</a>\
 						<ul class="dropdown-menu">\
 							<li><a href="/wineback/modifyPwd.html">密码修改</a></li>\
-//							<li><a href="/wineback/adminLog.html">日志查看</a></li>\
 							<li class="divider"></li>\
 							<li><a href="javascript:;" tabindex="-1" v-on:click="logout">登出</a></li>\
 						</ul>\
 					</li>\
 				</ul>\
-				<a class="brand" href="index.html"><span class="second">花冠盛到酒业管理后台</span></a>\
+				<a class="brand" href="index.html"><span class="second" style="font-size:28px;">花冠盛到酒业管理后台</span></a>\
 			</div>\
 		</div>\
 		<div class="copyrights">版权信息</div>\
@@ -54,6 +53,7 @@ Vue.component('mymenu', {
 			</a>\
 			<ul id="setting-menu" class="nav nav-list collapse" v-bind:class="{in:menu3}">\
 				<li><a href="/wineback/imgSet.html">图片压缩比率</a></li>\
+				<li><a href="/wineback/paramEdit.html">商品参数设置</a></li>\
 			</ul>\
 		</div>\
 	</div>\

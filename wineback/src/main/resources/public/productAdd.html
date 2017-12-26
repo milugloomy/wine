@@ -49,13 +49,13 @@
             <div class="well">
                 <table class="table">
                     <tr>
-                        <td>商品名称:</td>
+                        <td>商品名称：</td>
                         <td>
                             <input type="text" v-model="productName" placeholder="请输入商品名称">
                         </td>
                     </tr>
                     <tr>
-                        <td>商品类型:</td>
+                        <td>商品类型：</td>
                         <td>
                             <select v-model="productType" class="input-xlarge" style="width:120px">
                                 <option v-for="(value, key) in types" v-bind:value="key">{{value}}</option>
@@ -63,7 +63,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>商品图片:
+                        <td>商品图片：
                             <br/>第一张为默认图片</td>
                         <td>
                             <div class="form-control" style="min-height:125px;" />
@@ -81,23 +81,23 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>原价:</td>
+                        <td>原价：</td>
                         <td>
                             <input type="number" v-model="originPrice" placeholder="请输入价格" />元</td>
                     </tr>
                     <tr>
-                        <td>vip价格:</td>
+                        <td>vip价格：</td>
                         <td>
                             <input type="number" v-model="vipPrice" placeholder="请输入价格" />元</td>
                         </td>
                     </tr>
                     <tr>
-                        <td>商品总数量:</td>
+                        <td>商品总数量：</td>
                         <td>
                             <input type="number" v-model="totalQuantity" placeholder="请输入商品总数量" />个</td>
                     </tr>
                     <tr>
-                        <td>库存量:</td>
+                        <td>库存量：</td>
                         <td>
                             <input type="number" v-model="totalQuantity" placeholder="请输入商品总数量" />个</td>
                     </tr>
@@ -105,7 +105,7 @@
                 <td colespan="2"><b>以下是商品详情：</b></td>
               </tr>
                     <tr>
-                    	<td>详情图片:</td>
+                    	<td>详情图片：</td>
                         <td>
                             <div class="form-control" style="min-height:125px;" />
                             <template v-for="(img,index) in detailImgList">
@@ -121,84 +121,10 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td>品牌:</td>
+                    <tr v-for="param in paramList">
+                    	<td>{{param.name}}：</td>
                         <td>
-                            <input type="text" v-model="pp" placeholder="请输入品牌" /></td>
-                    </tr>
-                    <tr>
-                        <td>包装方式:</td>
-                        <td>
-                            <input type="text" v-model="bzfs" placeholder="请输入包装方式" /></td>
-                    </tr>
-                    <tr>
-                        <td>糖量:</td>
-                        <td>
-                            <input type="text" v-model="tl" placeholder="请输入糖量" /></td>
-                    </tr>
-                    <tr>
-                        <td>种类:</td>
-                        <td>
-                            <input type="text" v-model="zl" placeholder="请输入种类" /></td>
-                    </tr>
-                    <tr>
-                        <td>葡萄品种:</td>
-                        <td>
-                            <input type="text" v-model="ptpz" placeholder="请输入葡萄品种" /></td>
-                    </tr>
-                    <tr>
-                        <td>年份:</td>
-                        <td>
-                            <input type="text" v-model="nf" placeholder="请输入年份" /></td>
-                    </tr>
-                    <tr>
-                        <td>适用场合</td>
-                        <td>
-                            <input type="text" v-model="sych" placeholder="请输入适用场合" /></td>
-                    </tr>
-                    <tr>
-                        <td>酿造工艺:</td>
-                        <td>
-                            <input type="text" v-model="nzgy" placeholder="请输入酿造工艺" /></td>
-                    </tr>
-                    <tr>
-                        <td>口感:</td>
-                        <td>
-                            <input type="text" v-model="kg" placeholder="请输入口感" /></td>
-                    </tr>
-                    <tr>
-                        <td>高分酒:</td>
-                        <td>
-                            <input type="text" v-model="gfj" placeholder="请输入高分酒" /></td>
-                    </tr>
-                    <tr>
-                        <td>搭配菜肴:</td>
-                        <td>
-                            <input type="text" v-model="dpcy" placeholder="请输入搭配菜肴" /></td>
-                    </tr>
-                    <tr>
-                        <td>香气:</td>
-                        <td>
-                            <input type="text" v-model="xq" placeholder="请输入香气" /></td>
-                    </tr>
-                    <tr>
-                        <td>进口方式:</td>
-                        <td>
-                            <input type="text" v-model="jkfs" placeholder="请输入进口方式" /></td>
-                    </tr>
-                    <tr>
-                        <td>醒酒时间:</td>
-                        <td>
-                            <input type="text" v-model="xjsj" placeholder="请输入醒酒时间" /></td>
-                    </tr>
-                    <tr>
-                        <td>产品产地:</td>
-                        <td>
-                            <input type="text" v-model="cpcd" placeholder="请输入产品产地" /></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td> <span id="errSpan" style="color:red;"></span> 
+                            <input type="text" v-model="param.value" :placeholder="'请输入'+param.name" />
                         </td>
                     </tr>
                     <tr>
@@ -224,7 +150,12 @@
 <script type="text/javascript">
 var db = new Vue({
     el: "#divBody",
-    mounted: function() {},
+    mounted: function() {
+    	var that=this;
+    	post2SRV("paramDefault",function(data){
+    		that.paramList=data;
+    	});
+    },
     methods: {
         doIt: function() {
             var param = {
@@ -234,23 +165,9 @@ var db = new Vue({
                 vipPrice: this.vipPrice,
                 totalQuantity: this.totalQuantity,
                 remain: this.totalQuantity,
-                pp:this.pp,
-                bzfs:this.bzfs,
-                tl:this.tl,
-                zl:this.zl,
-                ptpz:this.ptpz,
-                nf:this.nf,
-                sych:this.sych,
-                nzgy:this.nzgy,
-                kg:this.kg,
-                gfj:this.gfj,
-                dpcy:this.dpcy,
-                xq:this.xq,
-                jkfs:this.jkfs,
-                xjsj:this.xjsj,
-                cpcd:this.cpcd,
                 imgStr:JSON.stringify(this.imgList),
-                detailImgSrc:JSON.stringify(this.detailImgList)
+                detailImgSrc:JSON.stringify(this.detailImgList),
+                paramStr:JSON.stringify(this.paramList),
             };
             if(this.productName==""){
             	layer.msg("请输入商品名称");
@@ -264,18 +181,18 @@ var db = new Vue({
             	layer.msg("请上传商品图片");
                 return;
             }
-            if(this.imgList.length==0){
+            if(this.originPrice==0){
             	layer.msg("请输入商品原价");
                 return;
             }
-            if(this.imgList.length==0){
+            if(this.vipPrice==0){
             	layer.msg("请输入商品vip价格");
                 return;
             }
-            if(this.totalQuantity.length==0){
+            if(this.totalQuantity==0){
             	layer.msg("请输入商品库存量");
                 return;
-            }
+            } 
             post2SRV("productAdd", param, function(data) {
                 var productId = data;
                 window.location.href = "/wineback/productDetail.html?productId=" + productId;
@@ -330,21 +247,7 @@ var db = new Vue({
         vipPrice: "",
         totalQuantity: "",
         remain: "",
-        pp:"",
-        bzfs:"",
-        tl:"",
-        zl:"",
-        ptpz:"",
-        nf:"",
-        sych:"",
-        nzgy:"",
-        kg:"",
-        gfj:"",
-        dpcy:"",
-        xq:"",
-        jkfs:"",
-        xjsj:"",
-        cpcd:"",
+        paramList:[],
         imgList: [],
         detailImgList: [],
         types: {

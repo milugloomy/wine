@@ -121,85 +121,10 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td>品牌:</td>
+                        <tr v-for="param in product.paramList">
+                            <td>{{param.name}}：</td>
                             <td>
-                                <input type="text" v-model="product.pp" placeholder="请输入品牌" /></td>
-                        </tr>
-                        <tr>
-                            <td>包装方式:</td>
-                            <td>
-                                <input type="text" v-model="product.bzfs" placeholder="请输入包装方式" /></td>
-                        </tr>
-                        <tr>
-                            <td>糖量:</td>
-                            <td>
-                                <input type="text" v-model="product.tl" placeholder="请输入糖量" /></td>
-                        </tr>
-                        <tr>
-                            <td>种类:</td>
-                            <td>
-                                <input type="text" v-model="product.zl" placeholder="请输入种类" /></td>
-                        </tr>
-                        <tr>
-                            <td>葡萄品种:</td>
-                            <td>
-                                <input type="text" v-model="product.ptpz" placeholder="请输入葡萄品种" /></td>
-                        </tr>
-                        <tr>
-                            <td>年份:</td>
-                            <td>
-                                <input type="text" v-model="product.nf" placeholder="请输入年份" /></td>
-                        </tr>
-                        <tr>
-                            <td>适用场合</td>
-                            <td>
-                                <input type="text" v-model="product.sych" placeholder="请输入适用场合" /></td>
-                        </tr>
-                        <tr>
-                            <td>酿造工艺:</td>
-                            <td>
-                                <input type="text" v-model="product.nzgy" placeholder="请输入酿造工艺" /></td>
-                        </tr>
-                        <tr>
-                            <td>口感:</td>
-                            <td>
-                                <input type="text" v-model="product.kg" placeholder="请输入口感" /></td>
-                        </tr>
-                        <tr>
-                            <td>高分酒:</td>
-                            <td>
-                                <input type="text" v-model="product.gfj" placeholder="请输入高分酒" /></td>
-                        </tr>
-                        <tr>
-                            <td>搭配菜肴:</td>
-                            <td>
-                                <input type="text" v-model="product.dpcy" placeholder="请输入搭配菜肴" /></td>
-                        </tr>
-                        <tr>
-                            <td>香气:</td>
-                            <td>
-                                <input type="text" v-model="product.xq" placeholder="请输入香气" /></td>
-                        </tr>
-                        <tr>
-                            <td>进口方式:</td>
-                            <td>
-                                <input type="text" v-model="product.jkfs" placeholder="请输入进口方式" /></td>
-                        </tr>
-                        <tr>
-                            <td>醒酒时间:</td>
-                            <td>
-                                <input type="text" v-model="product.xjsj" placeholder="请输入醒酒时间" /></td>
-                        </tr>
-                        <tr>
-                            <td>产品产地:</td>
-                            <td>
-                                <input type="text" v-model="product.cpcd" placeholder="请输入产品产地" /></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td> <span id="errSpan" style="color:red;"></span> 
-                            </td>
+                                <input type="text" v-model="param.value" :placeholder="'请输入'+param.name" /></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -243,45 +168,31 @@
                         vipPrice: this.product.vipPrice,
                         totalQuantity: this.product.totalQuantity,
                         remain: this.product.totalQuantity,
-                        pp:this.product.pp,
-                        bzfs:this.product.bzfs,
-                        tl:this.product.tl,
-                        zl:this.product.zl,
-                        ptpz:this.product.ptpz,
-                        nf:this.product.nf,
-                        sych:this.product.sych,
-                        nzgy:this.product.nzgy,
-                        kg:this.product.kg,
-                        gfj:this.product.gfj,
-                        dpcy:this.product.dpcy,
-                        xq:this.product.xq,
-                        jkfs:this.product.jkfs,
-                        xjsj:this.product.xjsj,
-                        cpcd:this.product.cpcd,
                         imgStr: JSON.stringify(this.product.imgList),
-                        detailImgSrc: JSON.stringify(this.product.detailImgList)
+                        detailImgSrc: JSON.stringify(this.product.detailImgList),
+                        paramStr:JSON.stringify(this.product.paramList),
                     };
-                    if(this.productName==""){
+                    if(this.product.productName==""){
                     	layer.msg("请输入商品名称");
                         return;
                     }
-                    if(this.productType==""){
+                    if(this.product.productType==""){
                     	layer.msg("请选择商品类型");
                         return;
                     }
-                    if(this.imgList.length==0){
+                    if(this.product.imgList.length==0){
                     	layer.msg("请上传商品图片");
                         return;
                     }
-                    if(this.imgList.length==0){
+                    if(this.product.originPrice==0){
                     	layer.msg("请输入商品原价");
                         return;
                     }
-                    if(this.imgList.length==0){
+                    if(this.product.vipPrice==0){
                     	layer.msg("请输入商品vip价格");
                         return;
                     }
-                    if(this.totalQuantity.length==0){
+                    if(this.product.totalQuantity==0){
                     	layer.msg("请输入商品库存量");
                         return;
                     }

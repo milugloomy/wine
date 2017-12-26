@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.wine.back.service.ProductService;
 import com.wine.base.bean.Image;
+import com.wine.base.bean.Param;
 import com.wine.base.bean.Product;
 import com.wine.base.bean.ProductForm;
 import com.wine.base.common.MyResEntity;
@@ -47,22 +48,26 @@ public class ProductController {
 	}
 	
 	@RequestMapping("/productAdd")
-	public MyResEntity productAdd(ProductForm productForm,String imgStr,String detailImgSrc){
+	public MyResEntity productAdd(ProductForm productForm,String imgStr,
+			String detailImgSrc, String paramStr){
 		List<Image> imgList=JSON.parseArray(imgStr, Image.class);
 		List<Image> detailImgList=JSON.parseArray(detailImgSrc, Image.class);
+		List<Param> paramList=JSON.parseArray(paramStr, Param.class);
 		Product product=new Product();
 		BeanUtils.copyProperties(productForm, product);
-		int productId=productService.productAdd(product,imgList,detailImgList);
+		int productId=productService.productAdd(product,paramList,imgList,detailImgList);
 		return new MyResEntity(productId);
 	}
 	
 	@RequestMapping("/productEdit")
-	public MyResEntity productEdit(ProductForm productForm,String imgStr,String detailImgSrc){
+	public MyResEntity productEdit(ProductForm productForm,String imgStr,
+			String detailImgSrc, String paramStr){
 		List<Image> imgList=JSON.parseArray(imgStr, Image.class);
 		List<Image> detailImgList=JSON.parseArray(detailImgSrc, Image.class);
+		List<Param> paramList=JSON.parseArray(paramStr, Param.class);
 		Product product=new Product();
 		BeanUtils.copyProperties(productForm, product);
-		productService.productEdit(product,imgList,detailImgList);
+		productService.productEdit(product,paramList,imgList,detailImgList);
 		return new MyResEntity();
 	}
 	
